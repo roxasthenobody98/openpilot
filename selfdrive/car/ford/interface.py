@@ -86,10 +86,10 @@ class CarInterface(CarInterfaceBase):
     ret.brakeMaxV = [1., 0.8]
 
     ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS, ECU_FINGERPRINT, candidate, Ecu.fwdCamera) or has_relay
-    ret.openpilotLongitudinalControl = False
+    ret.openpilotLongitudinalControl = True #was False
     cloudlog.warning("ECU Camera Simulated: %r", ret.enableCamera)
 
-    ret.stoppingControl = False
+    ret.stoppingControl = True #was False
     ret.startAccel = 0.0
 
     ret.longitudinalTuning.deadzoneBP = [0., 9.]
@@ -158,7 +158,7 @@ class CarInterface(CarInterfaceBase):
     if ret.gasPressed:
       events.append(create_event('pedalPressed', [ET.PRE_ENABLE]))
 
-    if self.CS.lkas_state not in [2, 3] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled:
+    if self.CS.lkas_state not in [4,5] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled: # was 2, 3
       events.append(create_event('steerTempUnavailableMute', [ET.WARNING]))
 
     ret.events = events
