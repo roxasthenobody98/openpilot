@@ -12,9 +12,6 @@ from cereal import car
 
 def get_startup_alert(car_recognized, controller_available):
   alert = 'startup'
-  if Params().get("GitRemote", encoding="utf8") in ['git@github.com:commaai/openpilot.git', 'https://github.com/commaai/openpilot.git']:
-    if Params().get("GitBranch", encoding="utf8") not in ['devel', 'release2-staging', 'dashcam-staging', 'release2', 'dashcam']:
-      alert = 'startupMaster'
   if not car_recognized:
     alert = 'startupNoCar'
   elif car_recognized and not controller_available:
