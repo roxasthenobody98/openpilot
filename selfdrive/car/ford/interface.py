@@ -43,7 +43,7 @@ class CarInterface(CarInterfaceBase):
     ret.isPandaBlack = has_relay
 
     ret.safetyModel = car.CarParams.SafetyModel.ford
-    ret.dashcamOnly = True
+    ret.dashcamOnly = False
 
     # pedal
     ret.enableCruise = True
@@ -52,11 +52,11 @@ class CarInterface(CarInterfaceBase):
     ret.steerRatio = 14.8
     ret.mass = 3045. * CV.LB_TO_KG + STD_CARGO_KG
     ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-    ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.01], [0.005]]     # TODO: tune this
+    ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.03], [0.005]]     # TODO: tune this was 0.01
     ret.lateralTuning.pid.kf = 1. / MAX_ANGLE   # MAX Steer angle to normalize FF
-    ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
+    ret.steerActuatorDelay = 0.5  # Default delay, not measured yet was 0.4
     ret.steerLimitTimer = 0.8
-    ret.steerRateCost = 1.0
+    ret.steerRateCost = 2.0 #was 1.0
     ret.centerToFront = ret.wheelbase * 0.44
     tire_stiffness_factor = 0.5328
 
@@ -85,11 +85,11 @@ class CarInterface(CarInterfaceBase):
     ret.brakeMaxBP = [5., 20.]
     ret.brakeMaxV = [1., 0.8]
 
-    ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS, ECU_FINGERPRINT, candidate, Ecu.fwdCamera) or has_relay
-    ret.openpilotLongitudinalControl = False
+    ret.enableCamera = True #is_ecu_disconnected(fingerprint[0], FINGERPRINTS, ECU_FINGERPRINT, candidate, Ecu.fwdCamera) or has_relay
+    ret.openpilotLongitudinalControl = True #was False
     cloudlog.warning("ECU Camera Simulated: %r", ret.enableCamera)
 
-    ret.stoppingControl = False
+    ret.stoppingControl = True #was False
     ret.startAccel = 0.0
 
     ret.longitudinalTuning.deadzoneBP = [0., 9.]
@@ -158,7 +158,7 @@ class CarInterface(CarInterfaceBase):
     if ret.gasPressed:
       events.append(create_event('pedalPressed', [ET.PRE_ENABLE]))
 
-    if self.CS.lkas_state not in [2, 3] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled:
+    if self.CS.lkas_state not in [4,5] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled: # was 2, 3
       events.append(create_event('steerTempUnavailableMute', [ET.WARNING]))
 
     ret.events = events

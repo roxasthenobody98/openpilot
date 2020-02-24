@@ -17,6 +17,7 @@ class CAR:
   F150 = "FORD F150" # 2015+
   FUSION = "FORD FUSION" # 2013+
   MUSTANG = "FORD MUSTANG" # 2018+ 2015-2017 has acc only. 2015-2017 shares arch with Mustang 2018+. May be able to add IPMA to HS2. Not available on Shelby GT350 or GT500.
+  MONDEO = "FORD MONDEO" # euro spec fusion. maintained by tambetm
   RANGER = "FORD RANGER" # 2019+
   TAURUS = "FORD TAURUS" # 2014+ 2010-2013 has acc only. 2013 shares arch with Taurus 2014+. May be able to add IPMA to HS2.
   #Ford models with lkas or acc but not both
@@ -49,10 +50,13 @@ FINGERPRINTS = {
   #CAR.EXPLORER: [{
   #}], 
   CAR.F150: [{ 
-	74: 8, 75: 8, 76: 8, 118: 8, 119: 8, 120: 8, 125: 8, 129: 8,130: 8, 131: 8, 133: 8, 145: 8, 146: 8, 357: 8, 359: 8, 376: 8, 390: 8, 391: 8, 392: 8, 394: 8, 512: 8, 514: 8, 516: 8, 531: 8, 532: 8, 534: 8, 535: 8, 560: 8, 578: 8, 611: 8, 613: 8, 673: 8, 827: 8, 848: 8, 934: 8, 935: 8, 936: 8, 938: 8, 939: 8, 947: 8, 963: 8, 970: 8, 972: 8, 984: 8, 992: 8, 994: 8, 997: 8, 998: 8, 1003: 8, 1006: 8, 1034: 8, 1042: 8, 1045: 8,1046: 8, 1047: 8, 1054: 8, 1058: 8, 1059: 8, 1068: 8, 1072: 8, 1090: 8, 1091: 8, 1093: 8, 1105: 8, 1107: 8, 1108: 8, 1109: 8, 1114: 8, 1186: 8, 1200: 8, 1430: 8, 1438: 8, 1441: 8, 1459: 8, 1461: 8, 1472: 8, 1824: 8
+    74: 8, 75: 8, 76: 8, 118: 8, 119: 8, 120: 8, 125: 8, 129: 8,130: 8, 131: 8, 133: 8, 145: 8, 146: 8, 357: 8, 359: 8, 376: 8, 390: 8, 391: 8, 392: 8, 394: 8, 512: 8, 514: 8, 516: 8, 531: 8, 532: 8, 534: 8, 535: 8, 560: 8, 578: 8, 611: 8, 613: 8, 673: 8, 827: 8, 848: 8, 934: 8, 935: 8, 936: 8, 938: 8, 939: 8, 947: 8, 963: 8, 970: 8, 972: 8, 984: 8, 992: 8, 994: 8, 997: 8, 998: 8, 1003: 8, 1006: 8, 1034: 8, 1042: 8, 1045: 8,1046: 8, 1047: 8, 1054: 8, 1058: 8, 1059: 8, 1068: 8, 1072: 8, 1090: 8, 1091: 8, 1093: 8, 1105: 8, 1107: 8, 1108: 8, 1109: 8, 1114: 8, 1186: 8, 1200: 8, 1430: 8, 1438: 8, 1441: 8, 1459: 8, 1461: 8, 1472: 8, 1824: 8
   }],
   #CAR.MUSTANG: [{
   #}], 
+  CAR.MONDEO: [{
+    71: 8, 73: 8, 74: 8, 75: 8, 76: 8, 118: 8, 119: 8, 120: 8, 125: 8, 129: 8, 130: 8, 131: 8, 132: 8, 133: 8, 145: 8, 146: 8, 357: 8, 359: 8, 376: 8, 512: 8, 514: 8, 516: 8, 531: 8, 532: 8, 534: 8, 535: 8, 560: 8, 578: 8, 609: 8, 673: 8, 825: 8, 827: 8, 848: 8, 936: 8, 947: 8, 963: 8, 972: 8, 992: 8, 994: 8, 998: 8, 1003: 8, 1034: 8, 1045: 8, 1046: 8, 1058: 8, 1059: 8, 1068: 8, 1071: 8, 1072: 8, 1073: 8, 1108: 8, 1109: 8, 1200: 8, 1214: 8, 1215: 8, 1430: 8, 1438: 8, 1459: 8
+  }],
   #CAR.RANGER: [{
   #}], 
   #CAR.TAURUS: [{
@@ -87,7 +91,7 @@ FINGERPRINTS = {
 }
 
 ECU_FINGERPRINT = {
-  Ecu.fwdCamera: [970, 973, 984]
+  Ecu.fwdCamera: [970, 972, 984]
 }
 
 DBC = {
@@ -97,8 +101,9 @@ DBC = {
   #CAR.ESCAPE: dbc_dict('placeholder', 'placeholder'),
   #CAR.EXPEDITION: dbc_dict('placeholder', 'placeholder'),
   #CAR.EXPLORER: dbc_dict('placeholder', 'placeholder'),
-  CAR.F150: dbc_dict('ford_fusion_2018_pt', 'ford_fusion_2018_adas'),
+  CAR.F150: dbc_dict('ford_mondeo_2016_pt', 'ford_fusion_2018_adas'),
   #CAR.MUSTANG: dbc_dict('placeholder', 'placeholder'),
+  CAR.MONDEO: dbc_dict('ford_mondeo_2016_pt', 'ford_fusion_2018_adas'),
   #CAR.RANGER: dbc_dict('placeholder', 'placeholder'),
   #CAR.TAURUS: dbc_dict('placeholder', 'placeholder'),
   #CAR.FLEX: dbc_dict('placeholder', 'placeholder'),
