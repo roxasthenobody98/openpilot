@@ -35,7 +35,7 @@ BS_:
 
 BU_: XXX
 
-BO_ 133 EPAS_INFO: 8 XXX
+BO_ 130 EPAS_INFO: 8 XXX
  SG_ SteMdule_U_Meas : 39|8@0+ (0.05,6.0) [0|0] "Volts" XXX
  SG_ SteMdule_I_Est : 21|12@0+ (0.05,-64.0) [0|0] "Amps" XXX
  SG_ EPAS_FAILURE : 9|2@0+ (1,0) [0|0] "" XXX
@@ -47,7 +47,7 @@ BO_ 133 EPAS_INFO: 8 XXX
  SG_ SAPPAngleControlStat2 : 11|1@0+ (1,0) [0|0] "" XXX
  SG_ SAPPAngleControlStat1 : 23|2@0+ (1,0) [0|0] "" XXX
 
-BO_ 118 Steering_Wheel_Data_CG1: 8 XXX
+BO_ 133 Steering_Wheel_Data_CG1: 8 XXX
  SG_ SteWhlRelInit_An_Sns : 6|15@0+ (0.1,-1600.0) [0|0] "deg" XXX
  SG_ SteWhlRelCalib_An_Sns : 23|15@0+ (0.1,-1600.0) [0|0] "deg" XXX
  SG_ SteWhlRelInit2_An_Sns : 55|16@0+ (0.1,-3200.0) [0|0] "deg" XXX
