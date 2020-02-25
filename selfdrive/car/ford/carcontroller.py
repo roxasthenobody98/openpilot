@@ -14,7 +14,7 @@ class CarController():
     self.enabled_last = False
     self.main_on_last = False
     self.vehicle_model = vehicle_model
-    self.generic_toggle_last = 0
+    self.distance_increase_last = 0
     self.steer_alert_last = False
     self.lkas_action = 0
 
@@ -37,7 +37,7 @@ class CarController():
 
         # The use of the toggle below is handy for trying out the various LKAS modes
         if TOGGLE_DEBUG:
-          self.lkas_action += int(CS.generic_toggle and not self.generic_toggle_last)
+          self.lkas_action += int(CS.distance_increase and not self.distance_increase_last)
           self.lkas_action &= 0xf
         else:
           self.lkas_action = 5   # 4 and 5 seem the best. 8 and 9 seem to aggressive and laggy
