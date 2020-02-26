@@ -88,8 +88,4 @@ class CarState():
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
-    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"]
-    #self.distance_increase = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
-    #self.distance_decrease = bool(cp.vl["Steering_Buttons"]["Dist_Decr"])
-    #self.cruise_cancel = bool(cp.vl["Steering_Buttons"]["Cancel"])
-    #self.cruise_resume = bool(cp.vl["Steering_Buttons"]["Resume"])
+    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
