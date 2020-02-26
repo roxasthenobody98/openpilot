@@ -44,7 +44,7 @@ class CarController():
 
         can_sends.append(create_steer_command(self.packer, apply_steer, enabled,
                                               CS.lkas_state, CS.angle_steers, curvature, self.lkas_action))
-        self.generic_toggle_last = CS.generic_toggle
+        self.distance_increase_last = CS.distance_increase
 
       if (frame % 100) == 0:
 
