@@ -22,9 +22,9 @@ def get_can_parser(CP):
     ("LaActDeny_B_Actl", "Lane_Keep_Assist_Status", 0),
     ("ApedPosScal_Pc_Actl", "EngineData_14", 0.),
     ("Dist_Incr", "Steering_Buttons", 0.),
-    ("Dist_Decr", "Steering_Buttons", 0.),
-    ("Cancel", "Steering_Buttons", 0.),
-    ("Resume", "Steering_Buttons", 0.),
+    #("Dist_Decr", "Steering_Buttons", 0.),
+    #("Cancel", "Steering_Buttons", 0.),
+    #("Resume", "Steering_Buttons", 0.),
     ("Brake_Drv_Appl", "Cruise_Status", 0.),
     ("Brake_Lights", "BCM_to_HS_Body", 0.),
   ]
@@ -88,7 +88,8 @@ class CarState():
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
-    self.distance_increase = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
-    self.distance_decrease = bool(cp.vl["Steering_Buttons"]["Dist_Decr"])
-    self.cruise_cancel = bool(cp.vl["Steering_Buttons"]["Cancel"])
-    self.cruise_resume = bool(cp.vl["Steering_Buttons"]["Resume"])
+    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"]
+    #self.distance_increase = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
+    #self.distance_decrease = bool(cp.vl["Steering_Buttons"]["Dist_Decr"])
+    #self.cruise_cancel = bool(cp.vl["Steering_Buttons"]["Cancel"])
+    #self.cruise_resume = bool(cp.vl["Steering_Buttons"]["Resume"])
