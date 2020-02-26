@@ -136,7 +136,7 @@ class CarInterface(CarInterfaceBase):
     ret.cruiseState.speed = self.CS.v_cruise_pcm
     ret.cruiseState.available = self.CS.pcm_acc_status != 0
 
-    ret.genericToggle = self.CS.generic_toggle
+    ret.distanceincreace = self.CS.distance_increase
 
     # events
     events = []
