@@ -39,8 +39,8 @@ class CarState():
   def __init__(self, CP):
 
     self.CP = CP
-    self.left_blinker_on = 0
-    self.right_blinker_on = 0
+    self.left_blinker_on = False # was 0
+    self.right_blinker_on = False # was 0
 
     # initialize can parser
     self.car_fingerprint = CP.carFingerprint
@@ -55,7 +55,7 @@ class CarState():
                          K=[[0.12287673], [0.29666309]])
     self.v_ego = 0.0
 
-  def update(self, cp):
+  def update(self, cp, cp_lkas):
     # update prevs, update must run once per loop
     self.prev_left_blinker_on = self.left_blinker_on
     self.prev_right_blinker_on = self.right_blinker_on
@@ -81,10 +81,10 @@ class CarState():
     self.v_cruise_pcm = cp.vl["Cruise_Status"]['Set_Speed'] * CV.MPH_TO_MS
     self.pcm_acc_status = cp.vl["Cruise_Status"]['Cruise_State']
     self.main_on = cp.vl["Cruise_Status"]['Cruise_State'] != 0
-    self.lkas_state = cp.vl["Lane_Keep_Assist_Status"]['LaActAvail_D_Actl']
+    self.lkas_state = cp_lkas.vl["Lane_Keep_Assist_Status"]['LaActAvail_D_Actl']
     # TODO: we also need raw driver torque, needed for Assisted Lane Change
-    self.steer_override = not cp.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl']
-    self.steer_error = cp.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl']
+    self.steer_override = not cp_lkas.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl']
+    self.steer_error = cp_lkas.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl']
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
