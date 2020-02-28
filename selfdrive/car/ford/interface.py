@@ -40,6 +40,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.carName = "ford"
     ret.carFingerprint = candidate
+    re.carVin = vin
     ret.isPandaBlack = has_relay
 
     ret.safetyModel = car.CarParams.SafetyModel.ford
@@ -111,7 +112,7 @@ class CarInterface(CarInterfaceBase):
     # create message
     ret = car.CarState.new_message()
 
-    ret.canValid = self.cp.can_valid and self.cp_lkas.can_valid
+    ret.canValid = self.cp.can_valid #and self.cp_lkas.can_valid
 
     # speeds
     ret.vEgo = self.CS.v_ego
@@ -171,6 +172,7 @@ class CarInterface(CarInterfaceBase):
 
     if self.CS.steer_error:
       events.append(create_event('steerUnavailable', [ET.NO_ENTRY, ET.IMMEDIATE_DISABLE, ET.PERMANENT]))
+      print("steerUnavailable!!!")
 
     # enable request in prius is simple, as we activate when Toyota is active (rising edge)
     if ret.cruiseState.enabled and not self.cruise_enabled_prev:
@@ -189,7 +191,7 @@ class CarInterface(CarInterfaceBase):
     if ret.gasPressed:
       events.append(create_event('pedalPressed', [ET.PRE_ENABLE]))
 
-    if self.CS.lkas_state not in [4,5] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled: # was 2, 3
+    if self.CS.lkas_state not in [2,3] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled: # was 2, 3
       events.append(create_event('steerTempUnavailableMute', [ET.WARNING]))
 
     ret.events = events
