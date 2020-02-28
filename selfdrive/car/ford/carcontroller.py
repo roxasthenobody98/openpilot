@@ -2,7 +2,7 @@ from cereal import car
 from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.fordcan import make_can_msg, create_steer_command, create_lkas_ui, \
                                        spam_cancel_button
-from selfdrive.can.packer import CANPacker
+from opendbc.can.packer import CANPacker
 
 
 MAX_STEER_DELTA = 1
