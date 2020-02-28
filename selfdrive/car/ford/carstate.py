@@ -89,3 +89,10 @@ class CarState():
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
     self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
+    self.left_blinker_on = bool(cp.vl["Steering_Buttons"]["Left_Turn_Light"])
+    self.right_blinker_on = bool(cp.vl["Steering_Buttons"]["Right_Turn_Light"])
+    door_fl_open = bool(cp.vl["Doors"]["Door_FL_Open"])
+    door_fr_open = bool(cp.vl["Doors"]["Door_FR_Open"])
+    door_rl_open = bool(cp.vl["Doors"]["Door_RL_Open"])
+    door_rr_open = bool(cp.vl["Doors"]["Door_RR_Open"])
+    self.door_open = door_fl_open or door_fr_open or door_rl_open or door_rr_open
