@@ -28,6 +28,12 @@ def get_can_parser(CP):
     #("Resume", "Steering_Buttons", 0.),
     ("Brake_Drv_Appl", "Cruise_Status", 0.),
     ("Brake_Lights", "BCM_to_HS_Body", 0.),
+    ("Left_Turn_Light", "Steering_Buttons", 0.),
+    ("Right_Turn_Light", "Steering_Buttons", 0.),
+    ("Door_FL_Open", "Doors", 0.),
+    ("Door_FR_Open", "Doors", 0.),
+    ("Door_RL_Open", "Doors", 0.),
+    ("Door_RR_Open", "Doors", 0.),
   ]
 
   checks = [
