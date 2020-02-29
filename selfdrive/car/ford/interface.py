@@ -111,7 +111,7 @@ class CarInterface(CarInterfaceBase):
     # create message
     ret = car.CarState.new_message()
 
-    ret.canValid = self.cp.can_valid #and self.cp_lkas.can_valid
+    ret.canValid = self.cp.can_valid
 
     # speeds
     ret.vEgo = self.CS.v_ego
@@ -190,9 +190,10 @@ class CarInterface(CarInterfaceBase):
     if ret.gasPressed:
       events.append(create_event('pedalPressed', [ET.PRE_ENABLE]))
 
-    if self.CS.lkas_state not in [2,3] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled: # was 2, 3
+    if self.CS.lkas_state not in [2, 3] and ret.vEgo > 13.* CV.MPH_TO_MS and ret.cruiseState.enabled:
       events.append(create_event('steerTempUnavailableMute', [ET.WARNING]))
-
+      print ("steerTempUnavailableMute!!!")
+      
     ret.events = events
 
     self.gas_pressed_prev = ret.gasPressed
