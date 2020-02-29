@@ -14,7 +14,6 @@ bool ford_moving = false;
 static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 
   int addr = GET_ADDR(to_push);
-  int bus = GET_BUS(to_push);
 
   if (addr == 0x217) {
     // wheel speeds are 14 bits every 16
@@ -55,10 +54,10 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     ford_gas_prev = gas;
   }
 
-  if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
-    relay_malfunction = true;
-  }
-  return 1;
+  #if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
+  #  relay_malfunction = true;
+  #}
+  #return 1;
 }
 
 // all commands: just steering
@@ -77,9 +76,9 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
-  if (relay_malfunction) {
-    tx = 0;
-  }
+  #if (relay_malfunction) {
+  #  tx = 0;
+  #}
 
   // STEER: safety check
   if (addr == 0x3CA) {
@@ -101,6 +100,21 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
 
   // 1 allows the message through
   return tx;
+}
+
+static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
+
+  int bus_fwd = -1;
+  int addr = GET_ADDR(to_fwd);
+  // forward CAN 0 -> 2 so stock LKAS camera sees messages
+  if (bus_num == 0) {
+    bus_fwd = 2;
+  }
+  // forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
+  if (bus_num == 2 && (addr != 0x3CA) && (addr != 0x3D8)) {
+    bus_fwd = 0;
+  }
+  return bus_fwd;
 }
 
 // TODO: keep camera on bus 2 and make a fwd_hook
