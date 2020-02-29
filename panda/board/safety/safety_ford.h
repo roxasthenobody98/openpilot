@@ -112,6 +112,6 @@ const safety_hooks ford_hooks = {
   .rx = ford_rx_hook,
   .tx = ford_tx_hook,
   .tx_lin = nooutput_tx_lin_hook,
-  .ignition = default_ign_hook,
+  //.ignition = default_ign_hook,
   .fwd = ford_fwd_hook,
 };
