@@ -91,7 +91,7 @@ FINGERPRINTS = {
 }
 
 ECU_FINGERPRINT = {
-  Ecu.fwdCamera: [970, 972, 984]
+  Ecu.fwdCamera: [970, 973, 984]
 }
 
 DBC = {
