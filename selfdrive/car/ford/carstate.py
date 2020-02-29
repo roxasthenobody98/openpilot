@@ -4,7 +4,7 @@ from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.values import DBC
 from common.kalman.simple_kalman import KF1D
 
-WHEEL_RADIUS = 0.33
+WHEEL_RADIUS = 0.334
 
 def get_can_parser(CP):
 
