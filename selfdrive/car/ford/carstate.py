@@ -82,10 +82,10 @@ class CarState():
     self.v_cruise_pcm = cp.vl["Cruise_Status"]['Set_Speed'] * CV.MPH_TO_MS
     self.pcm_acc_status = cp.vl["Cruise_Status"]['Cruise_State']
     self.main_on = cp.vl["Cruise_Status"]['Cruise_State'] != 0
-    self.lkas_state = cp_lkas.vl["Lane_Keep_Assist_Status"]['LaActAvail_D_Actl']
+    self.lkas_state = cp.vl["Lane_Keep_Assist_Status"]['LaActAvail_D_Actl']
     # TODO: we also need raw driver torque, needed for Assisted Lane Change
-    self.steer_override = not cp_lkas.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl']
-    self.steer_error = cp_lkas.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl']
+    self.steer_override = not cp.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl']
+    self.steer_error = cp.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl']
     print ("lkas_state:", self.lkas_state, "steer_override:", self.steer_override, "steer_error:", self.steer_error)
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
