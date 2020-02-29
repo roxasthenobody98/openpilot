@@ -22,6 +22,7 @@ def get_can_parser(CP):
     ("LaActDeny_B_Actl", "Lane_Keep_Assist_Status", 0),
     ("ApedPosScal_Pc_Actl", "EngineData_14", 0.),
     ("Dist_Incr", "Steering_Buttons", 0.),
+    ("Lane_Keep_Toggle", "Steering_Buttons", 0.),
     #("Dist_Decr", "Steering_Buttons", 0.),
     #("Cancel", "Steering_Buttons", 0.),
     #("Resume", "Steering_Buttons", 0.),
@@ -55,7 +56,7 @@ class CarState():
                          K=[[0.12287673], [0.29666309]])
     self.v_ego = 0.0
 
-  def update(self, cp, cp_lkas):
+  def update(self, cp):
     # update prevs, update must run once per loop
     self.prev_left_blinker_on = self.left_blinker_on
     self.prev_right_blinker_on = self.right_blinker_on
@@ -85,10 +86,12 @@ class CarState():
     # TODO: we also need raw driver torque, needed for Assisted Lane Change
     self.steer_override = not cp_lkas.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl']
     self.steer_error = cp_lkas.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl']
+    print ("lkas_state:", self.lkas_state, "steer_override:", self.steer_override, "steer_error:", self.steer_error)
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
     self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
+    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Lane_Keep_Toggle"])
     self.left_blinker_on = bool(cp.vl["Steering_Buttons"]["Left_Turn_Light"])
     self.right_blinker_on = bool(cp.vl["Steering_Buttons"]["Right_Turn_Light"])
     door_fl_open = bool(cp.vl["Doors"]["Door_FL_Open"])
