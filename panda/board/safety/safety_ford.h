@@ -14,7 +14,7 @@ bool ford_moving = false;
 static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 
   int addr = GET_ADDR(to_push);
-
+  int bus = GET_BUS(to_push);
   if (addr == 0x217) {
     // wheel speeds are 14 bits every 16
     ford_moving = false;
@@ -53,7 +53,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     }
     ford_gas_prev = gas;
   }
-  return rx;
+  return 1;
 }
 
  if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
