@@ -106,7 +106,7 @@ class CarInterface(CarInterfaceBase):
     # ******************* do can recv *******************
     self.cp.update_strings(can_strings)
 
-    self.CS.update(self.cp, self.cp_lkas)
+    self.CS.update(self.cp)# self.cp_lkas
 
     # create message
     ret = car.CarState.new_message()
