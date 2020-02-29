@@ -15,6 +15,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 
   int addr = GET_ADDR(to_push);
   int bus = GET_BUS(to_push);
+
   if (addr == 0x217) {
     // wheel speeds are 14 bits every 16
     ford_moving = false;
@@ -26,7 +27,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
   // state machine to enter and exit controls
   if (addr == 0x83) {
     bool cancel = GET_BYTE(to_push, 1) & 0x1;
-    bool set_or_resume = GET_BYTE(to_push, 3) & 0x1A;
+    bool set_or_resume = GET_BYTE(to_push, 3) & 0x30;
     if (cancel) {
       controls_allowed = 0;
     }
@@ -53,10 +54,8 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     }
     ford_gas_prev = gas;
   }
-  return 1;
-}
 
- if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
+  if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
     relay_malfunction = true;
   }
   return 1;
@@ -71,16 +70,17 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
 
   int tx = 1;
+  int addr = GET_ADDR(to_send);
+
   // disallow actuator commands if gas or brake (with vehicle moving) are pressed
   // and the the latching controls_allowed flag is True
   int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
-  int addr = GET_ADDR(to_send);
 
-   if (relay_malfunction) {
+  if (relay_malfunction) {
     tx = 0;
   }
-  
+
   // STEER: safety check
   if (addr == 0x3CA) {
     if (!current_controls_allowed) {
@@ -94,7 +94,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   // FORCE CANCEL: safety check only relevant when spamming the cancel button
   // ensuring that set and resume aren't sent
   if (addr == 0x83) {
-    if ((GET_BYTE(to_send, 3) & 0x1A) != 0) {
+    if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
       tx = 0;
     }
   }
@@ -103,26 +103,12 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   return tx;
 }
 
-static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
-
-  int bus_fwd = -1;
-  int addr = GET_ADDR(to_fwd);
-  // forward CAN 0 -> 2 so stock LKAS camera sees messages
-  if (bus_num == 0) {
-    bus_fwd = 2;
-  }
-  // forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
-  if (bus_num == 2 && (addr != 0x3CA) && (addr != 0x3D8)) {
-    bus_fwd = 0;
-  }
-  return bus_fwd;
-}
+// TODO: keep camera on bus 2 and make a fwd_hook
 
 const safety_hooks ford_hooks = {
   .init = nooutput_init,
   .rx = ford_rx_hook,
   .tx = ford_tx_hook,
   .tx_lin = nooutput_tx_lin_hook,
-  //.ignition = default_ign_hook,
-  .fwd = ford_fwd_hook,
+  .fwd = default_fwd_hook,
 };
