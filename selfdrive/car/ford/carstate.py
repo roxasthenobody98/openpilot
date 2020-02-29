@@ -90,7 +90,7 @@ class CarState():
     self.user_gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl']
     self.brake_pressed = bool(cp.vl["Cruise_Status"]["Brake_Drv_Appl"])
     self.brake_lights = bool(cp.vl["BCM_to_HS_Body"]["Brake_Lights"])
-    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
+    self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Lane_Keep_Toggle"])
     self.left_blinker_on = bool(cp.vl["Steering_Buttons"]["Left_Turn_Light"])
     self.right_blinker_on = bool(cp.vl["Steering_Buttons"]["Right_Turn_Light"])
     door_fl_open = bool(cp.vl["Doors"]["Door_FL_Open"])
