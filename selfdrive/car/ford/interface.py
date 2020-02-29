@@ -40,7 +40,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.carName = "ford"
     ret.carFingerprint = candidate
-    re.carVin = vin
+    ret.carVin = vin
     ret.isPandaBlack = has_relay
 
     ret.safetyModel = car.CarParams.SafetyModel.ford
