@@ -94,7 +94,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   // ensuring that set and resume aren't sent
   if (addr == 0x83) {
     if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
-      tx = 0;
+      tx = 1;
     }
   }
 
