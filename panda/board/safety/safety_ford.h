@@ -54,10 +54,10 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     ford_gas_prev = gas;
   }
 
-  #if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
-  #  relay_malfunction = true;
-  #}
-  #return 1;
+  //if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (bus == 0) && (addr == 0x3CA)) {
+  //  relay_malfunction = true;
+  //}
+  //return 1;
 }
 
 // all commands: just steering
@@ -76,9 +76,9 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
-  #if (relay_malfunction) {
-  #  tx = 0;
-  #}
+  //if (relay_malfunction) {
+  //  tx = 0;
+  //}
 
   // STEER: safety check
   if (addr == 0x3CA) {
