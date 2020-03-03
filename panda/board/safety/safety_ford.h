@@ -100,7 +100,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   }
   int *point = NULL;
   point = &tx;
-  *point = 1
+  *point = 1;
   // 1 allows the message through
   return tx;
 }
