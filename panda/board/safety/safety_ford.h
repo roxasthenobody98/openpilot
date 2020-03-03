@@ -29,7 +29,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     bool cancel = GET_BYTE(to_push, 1) & 0x1;
     bool set_or_resume = GET_BYTE(to_push, 3) & 0x30;
     if (cancel) {
-      controls_allowed = 0;
+      controls_allowed = 1; //0
     }
     if (set_or_resume) {
       controls_allowed = 1;
@@ -41,7 +41,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
   if (addr == 0x165) {
     int brake = GET_BYTE(to_push, 0) & 0x20;
     if (brake && (!(ford_brake_prev) || ford_moving)) {
-      controls_allowed = 0;
+      controls_allowed = 1; //0
     }
     ford_brake_prev = brake;
   }
@@ -50,7 +50,7 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
   if (addr == 0x204) {
     int gas = (GET_BYTE(to_push, 0) & 0x03) | GET_BYTE(to_push, 1);
     if (gas && !(ford_gas_prev)) {
-      controls_allowed = 0;
+      controls_allowed = 1; //0
     }
     ford_gas_prev = gas;
   }
@@ -78,7 +78,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
   if (relay_malfunction) {
-    tx = 1; //always allow
+    tx = 1; //always allow 0
   }
 
   // STEER: safety check
@@ -86,9 +86,9 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
     if (!current_controls_allowed) {
       // bits 7-4 need to be 0xF to disallow lkas commands
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
-        tx = 1; //always allow
+        tx = 1; //always allow 0
       }
-	  tx = 1;
+	  tx = 1; 
     }
   }
 
@@ -96,13 +96,10 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   // ensuring that set and resume aren't sent
   if (addr == 0x83) {
     if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
-      tx = 1; //always allow
+      tx = 1; //always allow 0
     }
 	tx = 1;
   }
-  int *point = NULL;
-  point = &tx;
-  *point = 1;
   // 1 allows the message through
   return tx;
 }
