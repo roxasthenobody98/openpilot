@@ -100,9 +100,28 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   }
 
   // 1 allows the message through
-  return tx;
+  return 1;
 }
 
+static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
+	int bus_fwd = -1;
+
+	int(!relay_malfunction) {
+		// forward CAN 0 -> 2 so stock LKAS camera sees messages
+		if (bus_num == 0) {
+			bus_fwd = 2;
+		}
+		// forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
+		if (bus_num == 2) {
+			int addr = GET_ADDR(to_fwd);
+			int block_msg = (addr == 0x3CA) || (addr == 0x3D8);
+			if (!block_msg) {
+				bus_fwd = 0;
+			}
+		}
+	}
+	return bus_fwd;
+}
 // TODO: keep camera on bus 2 and make a fwd_hook
 
 const safety_hooks ford_hooks = {
