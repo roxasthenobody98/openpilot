@@ -99,6 +99,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
 
 	int tx = 1;
 	int addr = GET_ADDR(to_send);
+	int bus = GET_BUS(to_send);
 
 	// disallow actuator commands if gas or brake (with vehicle moving) are pressed
 	// and the the latching controls_allowed flag is True
