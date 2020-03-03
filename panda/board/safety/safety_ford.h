@@ -7,20 +7,20 @@
 //      brake rising edge
 //      brake > 0mph
 
-const int FORD_MAX_STEER = ;//find rt torque limit 
-const int FORD_MAX_RT_DELTA = ;//find max delta torque rt checks
+const int FORD_MAX_STEER = 2048;//find rt torque limit 
+const int FORD_MAX_RT_DELTA = 940;//find max delta torque rt checks
 const uint32_t FORD_RT_INTERVAL = 250000; //250ms between rt checks
-const int FORD_MAX_RATE_UP = ;//find rate up
-const int FORD_MAX_RATE_DOWN = ;//find rate down
-const int FORD_MAX_TORQUE_ERORR = ;//find torque error
-const int FORD_DRIVER_TORQUE_ALLOWANCE = ;//find torque allowance
-const int FORD_DRIVER_TORQUE_FACTOR = ;//find torque factor
+const int FORD_MAX_RATE_UP = 10;//find rate up
+const int FORD_MAX_RATE_DOWN = 25;//find rate down
+//const int FORD_MAX_TORQUE_ERORR = 15; find torque error remark line to test. 
+const int FORD_DRIVER_TORQUE_ALLOWANCE = 15;//find torque allowance
+const int FORD_DRIVER_TORQUE_FACTOR = 1;//find torque factor
 const AddrBus FORD_TX_MSGS[] = {{0x83, 0}, {0x3CA, 2}, {0x3D8, 2}};
 
 AddrCheckStruct ford_rx_checks[] = {
-	{.addr = {0x83},.bus = 0,.expected_timestep = }, //find timestep
-	{.addr = {0x3CA},.bus = 2,.expected_timestep = }, //find timestep
-	{.addr = {0x3D8},.bus = 2,.expected_timestep = }, //find timestep
+	{.addr = {0x83},.bus = 0,.expected_timestep = 10000U}, //find timestep
+	{.addr = {0x3CA},.bus = 2,.expected_timestep = 10000U}, //find timestep
+	{.addr = {0x3D8},.bus = 2,.expected_timestep = 10000U}}, //find timestep
 };
 const int FORD_RX_CHECK_LEN = sizeof(ford_rx_checks) / sizeof(ford_rx_checks[0]);
 
@@ -118,7 +118,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
 		int desired_torque = ((GET_BYTE(to_send, 0) & 0xF0) << 8) + GET_BYTE(to_send, 1);
 		uint32_t ts = TIM2->CNT;
 		bool violation = 0;
-		desired_torque = to_signed(desired_torque, ) //missing desired torque value
+		desired_torque = to_signed(desired_torque_new, 11)
 
 		if (current_controls_allowed){
 			
