@@ -78,7 +78,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
   if (relay_malfunction) {
-    tx = 0;
+    tx = 1; //always allow
   }
 
   // STEER: safety check
@@ -86,7 +86,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
     if (!current_controls_allowed) {
       // bits 7-4 need to be 0xF to disallow lkas commands
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
-        tx = 0;
+        tx = 1; //always allow
       }
     }
   }
@@ -95,7 +95,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   // ensuring that set and resume aren't sent
   if (addr == 0x83) {
     if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
-      tx = 0;
+      tx = 1; //always allow
     }
   }
   int *point = NULL;
