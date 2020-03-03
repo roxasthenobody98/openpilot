@@ -179,6 +179,7 @@ const safety_hook_config safety_hook_registry[] = {
   {SAFETY_TOYOTA, &toyota_hooks},
   {SAFETY_ELM327, &elm327_hooks},
   {SAFETY_GM, &gm_hooks},
+  {SAFETY_FORD, &ford_hooks},
   {SAFETY_HONDA_BOSCH_GIRAFFE, &honda_bosch_giraffe_hooks},
   {SAFETY_HONDA_BOSCH_HARNESS, &honda_bosch_harness_hooks},
   {SAFETY_HYUNDAI, &hyundai_hooks},
@@ -193,7 +194,7 @@ const safety_hook_config safety_hook_registry[] = {
   {SAFETY_TESLA, &tesla_hooks},
   {SAFETY_ALLOUTPUT, &alloutput_hooks},
   {SAFETY_GM_ASCM, &gm_ascm_hooks},
-  {SAFETY_FORD, &ford_hooks},
+
 #endif
 };
 
