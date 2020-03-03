@@ -88,7 +88,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
         tx = 1; //always allow
       }
-	  tx = 1
+	  tx = 1;
     }
   }
 
@@ -98,7 +98,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
     if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
       tx = 1; //always allow
     }
-	tx = 1
+	tx = 1;
   }
   int *point = NULL;
   point = &tx;
