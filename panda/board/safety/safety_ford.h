@@ -77,30 +77,33 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
   bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
-  if (relay_malfunction) {
-    tx = 1; //always allow
-  }
+  //if (relay_malfunction) {
+  //  tx = 1; //always allow
+  //}
 
   // STEER: safety check
-  if (addr == 0x3CA) {
-    if (!current_controls_allowed) {
+  //if (addr == 0x3CA) {
+   // if (!current_controls_allowed) {
       // bits 7-4 need to be 0xF to disallow lkas commands
-      if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
-        tx = 1; //always allow
-      }
-    }
-  }
+     
+	  // if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
+     //   tx = 1; //always allow
+    //  }
+   // }
+  //}
 
   // FORCE CANCEL: safety check only relevant when spamming the cancel button
   // ensuring that set and resume aren't sent
-  if (addr == 0x83) {
-    if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
-      tx = 1; //always allow
-    }
-  }
-  int *point = NULL;
-  point = &tx;
-  *point = 1;
+  
+  //if (addr == 0x83) {
+  //  if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
+  //    tx = 1; //always allow
+  //  }
+  //}
+  //int *point = NULL;
+ // point = &tx;
+  //*point = 1;
+  
   // 1 allows the message through
   return tx;
 }
