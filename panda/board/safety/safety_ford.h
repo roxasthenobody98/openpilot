@@ -70,11 +70,11 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
 
   int tx = 1;
-  int addr = GET_ADDR(to_send);
+  //int addr = GET_ADDR(to_send);
 
   // disallow actuator commands if gas or brake (with vehicle moving) are pressed
   // and the the latching controls_allowed flag is True
-  int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
+  //int pedal_pressed = ford_gas_prev || (ford_brake_prev && ford_moving);
   //bool current_controls_allowed = controls_allowed && !(pedal_pressed);
 
   //if (relay_malfunction) {
