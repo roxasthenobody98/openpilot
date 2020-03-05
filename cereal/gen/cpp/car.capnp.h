@@ -221,6 +221,7 @@ CAPNP_DECLARE_SCHEMA(9fd95523d8dc40ce);
 enum class FingerprintSource_9fd95523d8dc40ce: uint16_t {
   CAN,
   FW,
+  FIXED,
 };
 CAPNP_DECLARE_ENUM(FingerprintSource, 9fd95523d8dc40ce);
 CAPNP_DECLARE_SCHEMA(93fc580a35339568);

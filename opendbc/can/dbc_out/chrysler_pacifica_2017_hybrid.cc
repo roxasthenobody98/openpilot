@@ -2459,7 +2459,7 @@ const Val vals[] = {
     {
       .name = "PRNDL",
       .address = 0x2EA,
-      .def_val = "5 LOW 4 DRIVE 3 NEUTRAL 2 REVERSE 1 PARK",
+      .def_val = "5 L 4 D 3 N 2 R 1 P",
       .sigs = sigs_746,
     },
     {

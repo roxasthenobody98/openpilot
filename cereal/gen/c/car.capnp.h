@@ -248,7 +248,8 @@ enum cereal_CarParams_Ecu {
 
 enum cereal_CarParams_FingerprintSource {
 	cereal_CarParams_FingerprintSource_can = 0,
-	cereal_CarParams_FingerprintSource_fw = 1
+	cereal_CarParams_FingerprintSource_fw = 1,
+	cereal_CarParams_FingerprintSource_fixed = 2
 };
 
 struct cereal_CarEvent {

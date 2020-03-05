@@ -22,7 +22,7 @@ static struct service services[] = {
   { .name = "carState", .port = 8021, .should_log = true, .frequency = 100, .decimation = 10 },
   { .name = "carControl", .port = 8023, .should_log = true, .frequency = 100, .decimation = 10 },
   { .name = "plan", .port = 8024, .should_log = true, .frequency = 20, .decimation = -1 },
-  { .name = "liveLocation", .port = 8025, .should_log = true, .frequency = 0, .decimation = -1 },
+  { .name = "liveLocation", .port = 8025, .should_log = true, .frequency = 0, .decimation = 1 },
   { .name = "gpsLocation", .port = 8026, .should_log = true, .frequency = 1, .decimation = 1 },
   { .name = "ethernetData", .port = 8027, .should_log = true, .frequency = 0, .decimation = -1 },
   { .name = "navUpdate", .port = 8028, .should_log = true, .frequency = 0, .decimation = -1 },

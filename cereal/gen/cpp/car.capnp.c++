@@ -4409,7 +4409,7 @@ const ::capnp::_::RawSchema s_f7119bb759d1d691 = {
 };
 #endif  // !CAPNP_LITE
 CAPNP_DEFINE_ENUM(Ecu_f7119bb759d1d691, f7119bb759d1d691);
-static const ::capnp::_::AlignedData<27> b_9fd95523d8dc40ce = {
+static const ::capnp::_::AlignedData<31> b_9fd95523d8dc40ce = {
   {   0,   0,   0,   0,   5,   0,   6,   0,
     206,  64, 220, 216,  35,  85, 217, 159,
      20,   0,   0,   0,   2,   0,   0,   0,
@@ -4419,7 +4419,7 @@ static const ::capnp::_::AlignedData<27> b_9fd95523d8dc40ce = {
      21,   0,   0,   0,  50,   1,   0,   0,
      37,   0,   0,   0,   7,   0,   0,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
-     33,   0,   0,   0,  55,   0,   0,   0,
+     33,   0,   0,   0,  79,   0,   0,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
      99,  97, 114,  46,  99,  97, 112, 110,
@@ -4428,22 +4428,26 @@ static const ::capnp::_::AlignedData<27> b_9fd95523d8dc40ce = {
     101, 114, 112, 114, 105, 110, 116,  83,
     111, 117, 114,  99, 101,   0,   0,   0,
       0,   0,   0,   0,   1,   0,   1,   0,
-      8,   0,   0,   0,   1,   0,   2,   0,
+     12,   0,   0,   0,   1,   0,   2,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
-     17,   0,   0,   0,  34,   0,   0,   0,
+     29,   0,   0,   0,  34,   0,   0,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
       1,   0,   0,   0,   0,   0,   0,   0,
-      9,   0,   0,   0,  26,   0,   0,   0,
+     21,   0,   0,   0,  26,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,
+      2,   0,   0,   0,   0,   0,   0,   0,
+     13,   0,   0,   0,  50,   0,   0,   0,
       0,   0,   0,   0,   0,   0,   0,   0,
      99,  97, 110,   0,   0,   0,   0,   0,
-    102, 119,   0,   0,   0,   0,   0,   0, }
+    102, 119,   0,   0,   0,   0,   0,   0,
+    102, 105, 120, 101, 100,   0,   0,   0, }
 };
 ::capnp::word const* const bp_9fd95523d8dc40ce = b_9fd95523d8dc40ce.words;
 #if !CAPNP_LITE
-static const uint16_t m_9fd95523d8dc40ce[] = {0, 1};
+static const uint16_t m_9fd95523d8dc40ce[] = {0, 2, 1};
 const ::capnp::_::RawSchema s_9fd95523d8dc40ce = {
-  0x9fd95523d8dc40ce, b_9fd95523d8dc40ce.words, 27, nullptr, m_9fd95523d8dc40ce,
-  0, 2, nullptr, nullptr, nullptr, { &s_9fd95523d8dc40ce, nullptr, nullptr, 0, 0, nullptr }
+  0x9fd95523d8dc40ce, b_9fd95523d8dc40ce.words, 31, nullptr, m_9fd95523d8dc40ce,
+  0, 3, nullptr, nullptr, nullptr, { &s_9fd95523d8dc40ce, nullptr, nullptr, 0, 0, nullptr }
 };
 #endif  // !CAPNP_LITE
 CAPNP_DEFINE_ENUM(FingerprintSource_9fd95523d8dc40ce, 9fd95523d8dc40ce);

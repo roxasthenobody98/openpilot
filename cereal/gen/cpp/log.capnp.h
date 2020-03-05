@@ -4477,6 +4477,8 @@ public:
 
   inline  ::cereal::ThermalData::NetworkType getNetworkType() const;
 
+  inline  ::uint32_t getOffroadPowerUsage() const;
+
 private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
@@ -4577,6 +4579,9 @@ public:
 
   inline  ::cereal::ThermalData::NetworkType getNetworkType();
   inline void setNetworkType( ::cereal::ThermalData::NetworkType value);
+
+  inline  ::uint32_t getOffroadPowerUsage();
+  inline void setOffroadPowerUsage( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -20864,6 +20869,20 @@ inline  ::cereal::ThermalData::NetworkType ThermalData::Builder::getNetworkType(
 inline void ThermalData::Builder::setNetworkType( ::cereal::ThermalData::NetworkType value) {
   _builder.setDataField< ::cereal::ThermalData::NetworkType>(
       ::capnp::bounded<24>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::uint32_t ThermalData::Reader::getOffroadPowerUsage() const {
+  return _reader.getDataField< ::uint32_t>(
+      ::capnp::bounded<13>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint32_t ThermalData::Builder::getOffroadPowerUsage() {
+  return _builder.getDataField< ::uint32_t>(
+      ::capnp::bounded<13>() * ::capnp::ELEMENTS);
+}
+inline void ThermalData::Builder::setOffroadPowerUsage( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
+      ::capnp::bounded<13>() * ::capnp::ELEMENTS, value);
 }
 
 inline  ::uint32_t HealthData::Reader::getVoltage() const {

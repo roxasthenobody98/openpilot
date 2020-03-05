@@ -925,6 +925,7 @@ struct cereal_ThermalData {
 	int32_t batteryVoltage;
 	unsigned usbOnline : 1;
 	enum cereal_ThermalData_NetworkType networkType;
+	uint32_t offroadPowerUsage;
 	uint16_t fanSpeed;
 	unsigned started : 1;
 	uint64_t startedTs;

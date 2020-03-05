@@ -1146,7 +1146,7 @@ const Val vals[] = {
     {
       .name = "PRNDL",
       .address = 0x135,
-      .def_val = "3 REVERSE 2 DRIVE 1 NEUTRAL 0 PARK",
+      .def_val = "3 R 2 D 1 N 0 P",
       .sigs = sigs_309,
     },
     {

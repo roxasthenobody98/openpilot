@@ -740,6 +740,7 @@ void cereal_read_ThermalData(struct cereal_ThermalData *s, cereal_ThermalData_pt
 	s->batteryVoltage = (int32_t) ((int32_t)capn_read32(p.p, 40));
 	s->usbOnline = (capn_read8(p.p, 24) & 2) != 0;
 	s->networkType = (enum cereal_ThermalData_NetworkType)(int) capn_read16(p.p, 48);
+	s->offroadPowerUsage = capn_read32(p.p, 52);
 	s->fanSpeed = capn_read16(p.p, 22);
 	s->started = (capn_read8(p.p, 24) & 1) != 0;
 	s->startedTs = capn_read64(p.p, 32);
@@ -766,6 +767,7 @@ void cereal_write_ThermalData(const struct cereal_ThermalData *s, cereal_Thermal
 	capn_write32(p.p, 40, (uint32_t) (s->batteryVoltage));
 	capn_write1(p.p, 193, s->usbOnline != 0);
 	capn_write16(p.p, 48, (uint16_t) (s->networkType));
+	capn_write32(p.p, 52, s->offroadPowerUsage);
 	capn_write16(p.p, 22, s->fanSpeed);
 	capn_write1(p.p, 192, s->started != 0);
 	capn_write64(p.p, 32, s->startedTs);
