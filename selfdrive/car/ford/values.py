@@ -93,9 +93,6 @@ FINGERPRINTS = {
   #}], 
 }
 
-class ECU: 
-  CAM = 0;
-  
 ECU_FINGERPRINT = {
   Ecu.fwdCamera: [970, 972, 984]
 }
