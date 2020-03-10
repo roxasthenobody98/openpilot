@@ -82,7 +82,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   }
 
   // STEER: safety check
-  if (addr == 970) {
+  if (addr == 0x3CA) {
     if (!current_controls_allowed) {
       // bits 7-4 need to be 0xF to disallow lkas commands
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
@@ -115,7 +115,7 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
       bus_fwd = 2;
     }
     // forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
-    if ((bus_num == 2) && (addr != 970) &&  (addr != 984)) { //0x3CA 0x3D8
+    if ((bus_num == 2) && (addr != 0x3CA) &&  (addr != 0x3D8)) { //0x3CA 0x3D8
       bus_fwd = 0;
     }
     //int block_msg = (addr == 0x3CA) || (addr == 0x3D8);
