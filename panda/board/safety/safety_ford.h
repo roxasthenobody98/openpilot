@@ -114,14 +114,14 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
     if (bus_num == 0) {
       bus_fwd = 2;
     }
-  // forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
-  if ((bus_num == 2) && (addr != 0x3CA || 0x3D8) {
-    bus_fwd = 0;
-  }
-  //int block_msg = (addr == 0x3CA) || (addr == 0x3D8);
-  //if (!block_msg) {
-  //	bus_fwd = 0;
-  //}  
+    // forward all messages from camera except Lane_Keep_Assist_Control and Lane_Keep_Assist_Ui
+    if ((bus_num == 2) && (addr != 0x3CA || 0x3D8) {
+      bus_fwd = 0;
+    }
+    //int block_msg = (addr == 0x3CA) || (addr == 0x3D8);
+    //if (!block_msg) {
+    //  bus_fwd = 0;
+    //}  
   }
   return bus_fwd;
 }
