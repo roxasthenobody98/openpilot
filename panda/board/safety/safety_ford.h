@@ -82,7 +82,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
   }
 
   // STEER: safety check
-  if (addr == 970) {
+  if (addr == 0x3CA) {
     if (!current_controls_allowed) {
       // bits 7-4 need to be 0xF to disallow lkas commands
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
