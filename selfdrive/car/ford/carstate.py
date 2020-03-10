@@ -1,10 +1,13 @@
 from opendbc.can.parser import CANParser
 from common.numpy_fast import mean
 from selfdrive.config import Conversions as CV
-from selfdrive.car.ford.values import DBC
+from selfdrive.car.ford.values import DBC, CAR
 from common.kalman.simple_kalman import KF1D
 
-WHEEL_RADIUS = 0.334
+if CAR is CAR.F150:
+  WHEEL_RADIUS = 0.5
+else
+  WHEEL_RADIUS = 0.334
 
 def get_can_parser(CP):
 
@@ -34,6 +37,7 @@ def get_can_parser(CP):
     ("Door_FR_Open", "Doors", 0.),
     ("Door_RL_Open", "Doors", 0.),
     ("Door_RR_Open", "Doors", 0.),
+    ("SteeringColumnTorque", "EPAS_INFO", 0.), 
   ]
 
   checks = [
@@ -99,6 +103,7 @@ class CarState():
     self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
     self.left_blinker_on = bool(cp.vl["Steering_Buttons"]["Left_Turn_Light"])
     self.right_blinker_on = bool(cp.vl["Steering_Buttons"]["Right_Turn_Light"])
+    self.driver_torque = cp.vl["EPAS_INFO"]['SteeringColumnTorque']
     door_fl_open = bool(cp.vl["Doors"]["Door_FL_Open"])
     door_fr_open = bool(cp.vl["Doors"]["Door_FR_Open"])
     door_rl_open = bool(cp.vl["Doors"]["Door_RL_Open"])
