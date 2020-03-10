@@ -109,7 +109,7 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
   int bus_fwd = -1;
   int addr = GET_ADDR(to_fwd);
 	
-  if (!relay_malfunction) {
+ // if (!relay_malfunction) {
   // forward CAN 0 -> 2 so stock LKAS camera sees messages
     if (bus_num == 0) {
       bus_fwd = 2;
@@ -122,7 +122,7 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
     //if (!block_msg) {
     //  bus_fwd = 0;
     //}  
-  }
+  //}
   return bus_fwd;
 }
 const safety_hooks ford_hooks = {
