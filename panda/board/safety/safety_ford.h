@@ -88,7 +88,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
       if ((GET_BYTE(to_send, 0) & 0xF0) != 0xF0) {
         tx = 1; //always allow 0
       }
-   tx = 1; 
+	  tx = 1; 
     }
   }
 
@@ -98,7 +98,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
     if ((GET_BYTE(to_send, 3) & 0x30) != 0) {
       tx = 1; //always allow 0
     }
-  tx = 1;
+	tx = 1;
   }
   // 1 allows the message through
   return tx;
@@ -119,10 +119,11 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
  }
   return bus_fwd;
 }
+
 const safety_hooks ford_hooks = {
   .init = nooutput_init,
   .rx = ford_rx_hook,
   .tx = ford_tx_hook,
   .tx_lin = nooutput_tx_lin_hook,
-  .fwd = ford_fwd_hook,
+  .fwd = default_fwd_hook,
 };
