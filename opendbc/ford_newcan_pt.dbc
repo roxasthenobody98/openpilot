@@ -487,7 +487,6 @@ VAL_ 935 SodAlrtRight_D_Stat 3 "Bulb_Proveout" 2 "Flash" 1 "On" 0 "Off" ;
 VAL_ 935 SodDetctRight_D_Stat 4 "Sensor_Blocked" 3 "Sensor_Fault" 2 "Flash_On" 1 "Alert_On" 0 "AlertOff_FlashOff_SensrClr" ;
 VAL_ 970 LkaDrvOvrrd_D_Rq 3 "Level_3" 2 "Level_2" 1 "Level_1" 0 "Level_0" ;
 VAL_ 970 Lkas_Action 7 "NotUsed" 6 "LkaIncrIntervRight" 5 "LkaSupprRight" 4 "LkaStandIntervRight" 3 "LkaSupprLeft" 2 "LkaStandIntervLeft" 1 "LkaIncrIntervLeft" 0 "LkaNoInterv" ;
-CM_ VAL_ 970 Lkas_Alert 15 "no_alert" 3 "high_intensity" 2 "mid_intensity" 1 "low_intensity" ;
 VAL_ 970 Steer_angle_Req 4095 "Fault" ;
 VAL_ 970 LaRampType_B_Req 1 "Quick" 0 "Smooth" ;
 VAL_ 970 Lkas_Curvature 4095 "Fault" ;
