@@ -4,11 +4,6 @@ from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.values import DBC
 from common.kalman.simple_kalman import KF1D
 
-if candidate == CAR.F150:
-  WHEEL_RADIUS = 0.5
-elif
-  WHEEL_RADIUS = 0.334
-
 def get_can_parser(CP):
 
   signals = [
@@ -72,11 +67,12 @@ class CarState():
     self.prev_right_blinker_on = self.right_blinker_on
 
     # calc best v_ego estimate, by averaging two opposite corners
-    self.v_wheel_fl = cp.vl["WheelSpeed_CG1"]['WhlRr_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_fr = cp.vl["WheelSpeed_CG1"]['WhlRl_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_rl = cp.vl["WheelSpeed_CG1"]['WhlFr_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_rr = cp.vl["WheelSpeed_CG1"]['WhlFl_W_Meas'] * WHEEL_RADIUS
-    v_wheel = mean([self.v_wheel_fl, self.v_wheel_fr, self.v_wheel_rl, self.v_wheel_rr])
+    self.v_wheel_fl = cp.vl["WheelSpeed_CG1"]['WhlRr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_fr = cp.vl["WheelSpeed_CG1"]['WhlRl_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rl = cp.vl["WheelSpeed_CG1"]['WhlFr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rr = cp.vl["WheelSpeed_CG1"]['WhlFl_W_Meas'] * CV.KPH_TO_MS
+    ret.vEgoRaw = mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr])
+    ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
 
     # Kalman filter
     if abs(v_wheel - self.v_ego) > 2.0:  # Prevent large accelerations when car starts at non zero speed
