@@ -4,7 +4,6 @@ from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.values import DBC
 from common.kalman.simple_kalman import KF1D
 
-WHEEL_RADIUS = 0.334
 
 def get_can_parser(CP):
 
@@ -66,13 +65,15 @@ class CarState():
     # update prevs, update must run once per loop
     self.prev_left_blinker_on = self.left_blinker_on
     self.prev_right_blinker_on = self.right_blinker_on
-
+    ret.steeringTorque = cp.vl["EPAS_INFO"]['SteeringColumnTorque']
+    
     # calc best v_ego estimate, by averaging two opposite corners
-    self.v_wheel_fl = cp.vl["WheelSpeed_CG1"]['WhlRr_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_fr = cp.vl["WheelSpeed_CG1"]['WhlRl_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_rl = cp.vl["WheelSpeed_CG1"]['WhlFr_W_Meas'] * WHEEL_RADIUS
-    self.v_wheel_rr = cp.vl["WheelSpeed_CG1"]['WhlFl_W_Meas'] * WHEEL_RADIUS
-    v_wheel = mean([self.v_wheel_fl, self.v_wheel_fr, self.v_wheel_rl, self.v_wheel_rr])
+    self.v_wheel_fl = cp.vl["WheelSpeed"]['WhlRr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_fr = cp.vl["WheelSpeed"]['WhlRl_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rl = cp.vl["WheelSpeed"]['WhlFr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rr = cp.vl["WheelSpeed"]['WhlFl_W_Meas'] * CV.KPH_TO_MS
+    ret.vEgoRaw = mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr])
+    ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
 
     # Kalman filter
     if abs(v_wheel - self.v_ego) > 2.0:  # Prevent large accelerations when car starts at non zero speed
@@ -99,6 +100,7 @@ class CarState():
     self.generic_toggle = bool(cp.vl["Steering_Buttons"]["Dist_Incr"])
     self.left_blinker_on = bool(cp.vl["Steering_Buttons"]["Left_Turn_Light"])
     self.right_blinker_on = bool(cp.vl["Steering_Buttons"]["Right_Turn_Light"])
+    self.steeringTorque = cp.vl["EPAS_INFO"]['SteeringColumnTorque']
     door_fl_open = bool(cp.vl["Doors"]["Door_FL_Open"])
     door_fr_open = bool(cp.vl["Doors"]["Door_FR_Open"])
     door_rl_open = bool(cp.vl["Doors"]["Door_RL_Open"])
