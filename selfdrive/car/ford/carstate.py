@@ -33,6 +33,7 @@ def get_can_parser(CP):
     ("Door_FR_Open", "Doors", 0.),
     ("Door_RL_Open", "Doors", 0.),
     ("Door_RR_Open", "Doors", 0.),
+    ("SteeringColumnTorque", "EPAS_INFO", 0.), 
   ]
 
   checks = [
@@ -68,10 +69,10 @@ class CarState():
     ret.steeringTorque = cp.vl["EPAS_INFO"]['SteeringColumnTorque']
     
     # calc best v_ego estimate, by averaging two opposite corners
-    self.v_wheel_fl = cp.vl["WheelSpeed"]['WhlRr_W_Meas'] * CV.KPH_TO_MS
-    self.v_wheel_fr = cp.vl["WheelSpeed"]['WhlRl_W_Meas'] * CV.KPH_TO_MS
-    self.v_wheel_rl = cp.vl["WheelSpeed"]['WhlFr_W_Meas'] * CV.KPH_TO_MS
-    self.v_wheel_rr = cp.vl["WheelSpeed"]['WhlFl_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_fl = cp.vl["WheelSpeed_CG1"]['WhlRr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_fr = cp.vl["WheelSpeed_CG1"]['WhlRl_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rl = cp.vl["WheelSpeed_CG1"]['WhlFr_W_Meas'] * CV.KPH_TO_MS
+    self.v_wheel_rr = cp.vl["WheelSpeed_CG1"]['WhlFl_W_Meas'] * CV.KPH_TO_MS
     ret.vEgoRaw = mean([ret.wheelSpeeds.fl, ret.wheelSpeeds.fr, ret.wheelSpeeds.rl, ret.wheelSpeeds.rr])
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
 
