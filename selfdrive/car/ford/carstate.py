@@ -4,9 +4,9 @@ from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.values import DBC, CAR
 from common.kalman.simple_kalman import KF1D
 
-if CAR is CAR.F150:
+if candidate = CAR.F150:
   WHEEL_RADIUS = 0.5
-else
+elif
   WHEEL_RADIUS = 0.334
 
 def get_can_parser(CP):
