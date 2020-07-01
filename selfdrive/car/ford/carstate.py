@@ -1,7 +1,7 @@
 from opendbc.can.parser import CANParser
 from common.numpy_fast import mean
 from selfdrive.config import Conversions as CV
-from selfdrive.car.ford.values import DBC, CAR
+from selfdrive.car.ford.values import DBC
 from common.kalman.simple_kalman import KF1D
 
 if candidate = CAR.F150:
