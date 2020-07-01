@@ -63,6 +63,8 @@ class CarState():
     self.v_ego = 0.0
 
   def update(self, cp):
+    ret = car.CarState.new_message()
+    
     # update prevs, update must run once per loop
     self.prev_left_blinker_on = self.left_blinker_on
     self.prev_right_blinker_on = self.right_blinker_on
