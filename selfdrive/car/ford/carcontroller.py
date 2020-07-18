@@ -2,6 +2,7 @@ from cereal import car
 from selfdrive.car import make_can_msg
 from selfdrive.car.ford.fordcan import create_steer_command, create_lkas_ui, spam_cancel_button
 from opendbc.can.packer import CANPacker
+from selfdrive.car.ford.values import SteerLimitParams
 from selfdrive.car import apply_std_steer_torque_limits
 
 MAX_STEER_DELTA = 1
@@ -22,11 +23,11 @@ class CarController():
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
     #can_sends = []
-    new_steer = actuators.steer
+    new_steer = actuators.steer * SteerLimitParams.STEER_MAX
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
 
     apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last,
-                                                   CS.out.steeringTorque) #, SteerLimitParams)
+                                                   CS.out.steeringTorque, SteerLimitParams)
     self.steer_rate_limited = new_steer != apply_steer #actuators.steer
 
     ahbc = CS.ahbcCommanded
