@@ -8,6 +8,7 @@ class SteerLimitParams:
   STEER_MAX = 255
   STEER_DELTA_UP = 3 
   STEER_DELTA_DOWN = 7
+  STEER_DRIVER_ALLOWANCE = 60
 
 class CAR:
   #Unsupported Ford Models
