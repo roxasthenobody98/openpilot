@@ -4,6 +4,11 @@ Ecu = car.CarParams.Ecu
 
 MAX_ANGLE = 87.  # make sure we never command the extremes (0xfff) which cause latching fault
 
+class SteerLimitParams:
+  STEER_MAX = 255
+  STEER_DELTA_UP = 3 
+  STEER_DELTA_DOWN = 7
+
 class CAR:
   #Unsupported Ford Models
   #CMAX = "FORD C-MAX" C-MAX is not supported on any year or trim. 
