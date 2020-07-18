@@ -21,11 +21,12 @@ class CarController():
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
-    can_sends = []
+    #can_sends = []
+    new_steer = actuators.steer
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
 
     apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last,
-                                                   CS.out.steeringTorque, SteerLimitParams)
+                                                   CS.out.steeringTorque) #, SteerLimitParams)
     self.steer_rate_limited = new_steer != apply_steer #actuators.steer
 
     ahbc = CS.ahbcCommanded
