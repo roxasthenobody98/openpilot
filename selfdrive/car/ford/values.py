@@ -5,7 +5,7 @@ Ecu = car.CarParams.Ecu
 MAX_ANGLE = 87.  # make sure we never command the extremes (0xfff) which cause latching fault
 
 class SteerLimitParams:
-  STEER_MAX = 255
+  STEER_MAX = 400
   STEER_DELTA_UP = 3 
   STEER_DELTA_DOWN = 7
   STEER_DRIVER_ALLOWANCE = 60
