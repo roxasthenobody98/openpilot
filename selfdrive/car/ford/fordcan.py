@@ -15,7 +15,7 @@ def create_steer_command(packer, enabled, lkas_state, angle_steers, curvature, a
   #angle_cmd = clip(angle_cmd * MAX_ANGLE, - MAX_ANGLE, MAX_ANGLE)
 
   values = {
-    "Steer_Angle_Req": apply_steer
+    "Steer_Angle_Req": apply_steer,
     #"Lkas_Action": action,
     "Lkas_Alert": 0xe,             # no alerts
     "Lane_Curvature": clip(curvature, -0.01, 0.01),   # is it just for debug?
