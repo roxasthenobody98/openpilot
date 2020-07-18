@@ -9,6 +9,8 @@ class SteerLimitParams:
   STEER_DELTA_UP = 3 
   STEER_DELTA_DOWN = 7
   STEER_DRIVER_ALLOWANCE = 60
+  STEER_DRIVER_MULTIPLIER = 2
+  STEER_DRIVER_FACTOR = 1
 
 class CAR:
   #Unsupported Ford Models
