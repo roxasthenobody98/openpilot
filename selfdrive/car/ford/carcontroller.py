@@ -18,7 +18,7 @@ class CarController():
     self.generic_toggle_last = 0
     self.steer_alert_last = False
     self.apply_steer_last = 0
-    #self.lkas_action = 0
+    self.curvature_last = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -49,7 +49,9 @@ class CarController():
           curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*3.1415/180., CS.out.vEgo)
         else:
           apply_steer = 0
-
+          curvature = 0
+        self.apply_steer_last = apply_steer
+        self.curvature_last = curvature
         # The use of the toggle below is handy for trying out the various LKAS modes
         #if TOGGLE_DEBUG:
         #  self.lkas_action += int(CS.out.genericToggle and not self.generic_toggle_last)
