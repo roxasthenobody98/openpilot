@@ -2,21 +2,20 @@ from common.numpy_fast import clip
 from selfdrive.car.ford.values import MAX_ANGLE
 
 
-def create_steer_command(packer, enabled, apply_steer, curvature): # lkas_action, angle_cmd, angle_steers):
+def create_steer_command(packer, enabled, apply_steer, curvature, lkas_action): # lkas_action, angle_cmd, angle_steers):
   """Creates a CAN message for the Ford Steer Command."""
-
-  #if enabled and lkas available:
-  #if enabled and lkas_state in [2,3]: #and (frame % 500) >= 3:
-  #  action = lkas_action
-  #else:
-  #  action = 0xf
+  
+  if enabled: # and lkas_state in [2,3]: #and (frame % 500) >= 3:
+    action = lkas_action
+  else:
+    action = 0xf
   #  angle_cmd = angle_steers/MAX_ANGLE
 
   #angle_cmd = clip(angle_cmd * MAX_ANGLE, - MAX_ANGLE, MAX_ANGLE)
 
   values = {
     "Steer_Angle_Req": apply_steer,
-    #"Lkas_Action": action,
+    "Lkas_Action": action,
     "Lkas_Alert": 0xe,             # no alerts
     "Lane_Curvature": clip(curvature, -0.03, 0.03),   # is it just for debug?
     #"Lane_Curvature": 0,   # is it just for debug?
