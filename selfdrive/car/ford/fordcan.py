@@ -18,7 +18,7 @@ def create_steer_command(packer, enabled, apply_steer, curvature): # lkas_action
     "Steer_Angle_Req": apply_steer,
     #"Lkas_Action": action,
     "Lkas_Alert": 0xe,             # no alerts
-    "Lane_Curvature": clip(curvature, -0.01, 0.01),   # is it just for debug?
+    "Lane_Curvature": clip(curvature, -0.03, 0.03),   # is it just for debug?
     #"Lane_Curvature": 0,   # is it just for debug?
     #"Steer_Angle_Req": angle_cmd
   }
