@@ -19,6 +19,7 @@ class CarController():
     self.steer_alert_last = False
     self.apply_steer_last = 0
     self.curvature_last = 0
+    self.lkas_action = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -45,9 +46,11 @@ class CarController():
           apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, SteerLimitParams)
           self.steer_rate_limited = new_steer != apply_steer #actuators.steer
           curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*3.1415/180., CS.out.vEgo)
+          self.lkas_action = 4
         else:
           apply_steer = 0
           curvature = 0
+          self.lkas_action = 0
         self.apply_steer_last = apply_steer
         self.curvature_last = curvature
         # The use of the toggle below is handy for trying out the various LKAS modes
@@ -57,7 +60,7 @@ class CarController():
         #else:
         #  self.lkas_action = 5   # 4 and 5 seem the best. 8 and 9 seem to aggressive and laggy
 
-        can_sends.append(create_steer_command(self.packer, enabled, apply_steer, curvature)) #self.lkas_action , CS.lkas_state,, CS.out.steeringAngle))
+        can_sends.append(create_steer_command(self.packer, enabled, apply_steer, curvature, self.lkas_action)) #self.lkas_action , CS.lkas_state,, CS.out.steeringAngle))
         self.generic_toggle_last = CS.out.genericToggle
 
       if (frame % 100) == 0 or (self.enabled_last != enabled) or (self.main_on_last != CS.out.cruiseState.available) or \
