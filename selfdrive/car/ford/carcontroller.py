@@ -23,7 +23,7 @@ class CarController():
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
     can_sends = []
-
+    steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
 
     ahbc = CS.ahbcCommanded
     defog = CS.ipmaHeater
@@ -42,8 +42,6 @@ class CarController():
         lkas_enabled = enabled
         if lkas_enabled:
           new_steer = actuators.steer * SteerLimitParams.STEER_MAX
-          steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
-
           apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, SteerLimitParams)
           self.steer_rate_limited = new_steer != apply_steer #actuators.steer
           curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*3.1415/180., CS.out.vEgo)
