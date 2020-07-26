@@ -2,7 +2,7 @@ from common.numpy_fast import clip
 from selfdrive.car.ford.values import MAX_ANGLE
 
 
-def create_steer_command(packer, enabled, lkas_state, angle_steers, curvature, apply_steer): # lkas_action, angle_cmd):
+def create_steer_command(packer, enabled, apply_steer, curvature): # lkas_action, angle_cmd, angle_steers):
   """Creates a CAN message for the Ford Steer Command."""
 
   #if enabled and lkas available:
