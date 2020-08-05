@@ -6,6 +6,7 @@ from opendbc.can.packer import CANPacker
 
 MAX_STEER_DELTA = 1
 TOGGLE_DEBUG = False
+COUNTER_MAX = 7
 
 class CarController():
   def __init__(self, dbc_name, CP, VM):
@@ -17,7 +18,7 @@ class CarController():
     self.generic_toggle_last = 0
     self.steer_alert_last = False
     self.lkas_action = 0
-    #self.lkasState = 0
+    self.lkasCounter = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -25,7 +26,8 @@ class CarController():
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
 
     apply_steer = actuators.steer
-    
+    if (frame % 100) == 0:
+      self.lkasCounter +=1 
     if self.enable_camera:
 
       if pcm_cancel:
@@ -35,23 +37,16 @@ class CarController():
       if (frame % 3) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
-
-        # The use of the toggle below is handy for trying out the various LKAS modes
-        if TOGGLE_DEBUG:
-          self.lkas_action += int(CS.out.genericToggle and not self.generic_toggle_last)
-          self.lkas_action &= 0xf
+        self.lkas_action = 4   # 4 and 5 seem the best. 8 and 9 seem to aggressive and laggy
+        if self.lkasCounter < COUNTER_MAX:
+          can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
         else:
-          self.lkas_action = 4   # 4 and 5 seem the best. 8 and 9 seem to aggressive and laggy
-
-        can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
+          self.lkasCounter = 0
+          print("CAN Message successfully blocked for 1 message")
+          pass
+        #can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
         self.generic_toggle_last = CS.out.genericToggle
-        #print("Curvature:", curvature)
-      #if (frame % 100) == 0:
-      #  self.lkasState = 3 if enabled or CS.out.vEgo > 10 else 1
-      #  can_sends.append(create_lkas_status(self.packer, enabled, self.lkasState, CS.out.steeringPressed, CS.out.steerError))
-      #  print("IPMA State:", CS.lkas_state, "Commanded State:", self.lkasState)
-      if (frame % 1) == 0 or (self.enabled_last != enabled) or (self.main_on_last != CS.out.cruiseState.available) or \
-         (self.steer_alert_last != steer_alert):
+      if (frame % 1) == 0 or (self.enabled_last != enabled) or (self.main_on_last != CS.out.cruiseState.available) or \ (self.steer_alert_last != steer_alert):
         can_sends.append(create_lkas_ui(self.packer, CS.out.cruiseState.available, enabled, steer_alert, CS.ipmaHeater, CS.ahbcCommanded, CS.ahbcRamping, CS.ipmaConfig, CS.ipmaNo, CS.ipmaStats))
         self.enabled_last = enabled                         
         self.main_on_last = CS.out.cruiseState.available
