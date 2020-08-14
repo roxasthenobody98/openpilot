@@ -23,14 +23,14 @@ class CarController():
     self.generic_toggle_last = 0
     self.steer_alert_last = False
     self.lkas_action = 0
-    self.lkasToggle = 0
+    self.lkasToggle = 1
     self.lastAngle = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
     can_sends = []
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
-    if (frame % 100) == 0:
+    if (frame % 50) == 0:
       if CS.out.genericToggle == 1:
         self.lkasToggle += 1
       if self.lkasToggle > 6:
