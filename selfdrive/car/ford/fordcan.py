@@ -7,9 +7,9 @@ def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action):
   #if enabled and lkas available:
   if enabled: # and (frame % 500) >= 3:
     action = lkas_action
+    angle_cmd = angle_steers/MAX_ANGLE
   else:
     action = 0xf
-    
     angle_cmd = angle_steers/MAX_ANGLE
 
   angle_cmd = clip(angle_cmd * MAX_ANGLE, - MAX_ANGLE, MAX_ANGLE)
