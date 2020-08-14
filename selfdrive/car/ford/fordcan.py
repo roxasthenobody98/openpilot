@@ -1,12 +1,11 @@
 from common.numpy_fast import clip
 from selfdrive.car.ford.values import MAX_ANGLE
 
-
-def create_steer_command(packer, angle_cmd, enabled, lkas_state, angle_steers, curvature, lkas_action):
+def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action):
   """Creates a CAN message for the Ford Steer Command."""
 
   #if enabled and lkas available:
-  if enabled and lkas_state in [2,3]: # and (frame % 500) >= 3:
+  if enabled: # and (frame % 500) >= 3:
     action = lkas_action
   else:
     action = 0xf
@@ -16,12 +15,10 @@ def create_steer_command(packer, angle_cmd, enabled, lkas_state, angle_steers, c
   angle_cmd = clip(angle_cmd * MAX_ANGLE, - MAX_ANGLE, MAX_ANGLE)
 
   values = {
-    "Lkas_Action": action,
-    "Lkas_Alert": 0xe,             # no alerts
-    "Lane_Curvature": clip(curvature, -0.03, 0.03),   # is it just for debug?
-    "Steer_Angle_Req": angle_cmd
+    "ApaSys_D_Stat": action,
+    "EPASExtAngleStatReq": angle_cmd
   }
-  return packer.make_can_msg("Lane_Keep_Assist_Control", 0, values)
+  return packer.make_can_msg("ParkAid_Data", 0, values)
 
 #def create_lkas_status(packer, enabled, lkasState, steer_pressed, steer_error):
 #  """Creates a CAN message for the Ford LKAS State"""
