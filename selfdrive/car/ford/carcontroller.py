@@ -53,10 +53,10 @@ class CarController():
       if (frame % 3) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
-        if CS.out.genericToggle = 1:
+        if CS.out.genericToggle == 1:
           self.lkasToggle += 1
         if self.lkasToggle > 6:
-          self.lkasToggle = 1
+          self.lkasToggle == 1
         self.lkas_action = self.lkasToggle #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
         #if self.lkasCounter < COUNTER_MAX:
         #  can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
