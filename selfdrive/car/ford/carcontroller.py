@@ -57,6 +57,7 @@ class CarController():
         if self.lkasToggle > 6:
           self.lkasToggle = 1
         self.lkas_action = self.lkasToggle #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
+        print("action:", self.lkas_action, "toggle:", self.lkasToggle)
         #if self.lkasCounter < COUNTER_MAX:
         #  can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
         #else:
