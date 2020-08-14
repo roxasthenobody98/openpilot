@@ -30,7 +30,11 @@ class CarController():
 
     can_sends = []
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
-
+    if (frame % 100) == 0:
+      if CS.out.genericToggle == 1:
+        self.lkasToggle += 1
+      if self.lkasToggle > 6:
+        self.lkasToggle = 1
     apply_steer = actuators.steerAngle
     if self.enable_camera:
       if enabled:       
@@ -52,10 +56,6 @@ class CarController():
       if (frame % 3) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
-        if CS.out.genericToggle == 1:
-          self.lkasToggle += 1
-        if self.lkasToggle > 6:
-          self.lkasToggle = 1
         self.lkas_action = self.lkasToggle #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
         print("action:", self.lkas_action, "toggle:", self.lkasToggle)
         #if self.lkasCounter < COUNTER_MAX:
