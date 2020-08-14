@@ -31,8 +31,6 @@ class CarController():
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
 
     apply_steer = actuators.steerAngle
-    if (frame % 100) == 0:
-      self.lkasCounter +=1 
     if self.enable_camera:
       if enabled:       
         if self.lastAngle * apply_steer > 0.:
