@@ -1,5 +1,6 @@
 from cereal import car
 import numpy as np
+from common.numpy_fast import interp, clip
 from selfdrive.car.ford.fordcan import create_steer_command, create_lkas_ui, spam_cancel_button
 from opendbc.can.packer import CANPacker
 
