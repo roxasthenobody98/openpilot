@@ -27,6 +27,7 @@ class CarController():
     self.lastAngle = 0
     self.angleReq = 0
     self.sappConfig = 0
+    self.sappChime = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -52,6 +53,16 @@ class CarController():
           self.sappConfig = 86
         if CS.sappHandshake == 2:
           self.sappConfig = 224
+      #SAPP Handshake Debug
+        if enabled:
+          if CS.sappHandshake == 3:
+            self.sappChime = 5
+          elif CS.sappHandshake == 2 and self.sappConfig = 224:
+            self.sappChime = 1
+          else:
+            self.sappChime = 0
+        else:
+          self.sappChime = 0
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 0 #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
@@ -75,7 +86,7 @@ class CarController():
         #  self.lkasCounter = 0
         #  print("CAN Message successfully blocked for 1 message")
         #  pass
-        can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.out.steeringAngle, self.lkas_action, self.angleReq, self.sappConfig))
+        can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.out.steeringAngle, self.lkas_action, self.angleReq, self.sappConfig, self.sappChime))
         self.generic_toggle_last = CS.out.genericToggle
       if (frame % 1) == 0 or (self.enabled_last != enabled) or (self.main_on_last != CS.out.cruiseState.available) or (self.steer_alert_last != steer_alert):
         can_sends.append(create_lkas_ui(self.packer, CS.out.cruiseState.available, enabled, steer_alert, CS.ipmaHeater, CS.ahbcCommanded, CS.ahbcRamping, CS.ipmaConfig, CS.ipmaNo, CS.ipmaStats))
