@@ -48,7 +48,6 @@ class CarController():
        can_sends.append(spam_cancel_button(self.packer))
       if (frame % 1) == 0:
         self.main_on_last = CS.out.cruiseState.available
-      if (frame % 2) == 0:
       #SAPP Config Value Handshake
         if CS.out.vEgo < 1:
           self.sappConfig = 70
@@ -60,6 +59,7 @@ class CarController():
             self.angleReq = 1
           self.sappConfig_last = self.sappConfig
           self.angleReq_last = self.angleReq
+      if (frame % 2) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 0 #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
