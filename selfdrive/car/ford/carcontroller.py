@@ -26,7 +26,7 @@ class CarController():
     #self.lkasToggle = 1
     self.lastAngle = 0
     self.angleReq = 0
-    self.sappConfig = 54
+    self.sappConfig = 27
     self.sappChime = 0
     self.chimeCounter = 0
 
@@ -49,32 +49,14 @@ class CarController():
       if (frame % 2) == 0:
       #SAPP Config Value Handshake
         if self.main_on_last == True:
-          if CS.sappHandshake == 0:
-            self.sappConfig = 70
-          if CS.sappHandshake == 1:
-            self.sappConfig = 86
-          if CS.sappHandshake == 2:
-            self.sappConfig = 16
-      #SAPP Handshake Debug
-        if self.chimeCounter < 1:
-          if CS.sappHandshake == 3:
-            self.chimeCounter += 1
-            self.sappChime = 5
-          elif CS.sappHandshake == 2:
-            self.chimeCounter += 1
-            self.sappChime = 1
-        else:
-          self.sappChime = 0
-        if self.main_on_last == False:
-          self.chimeCounter = 0
-        if CS.out.genericToggle == 1:
-          self.sappChime = 2
-        print("Handshake:", CS.sappHandshake, "PAM Config:", CS.sappConfig) #self.sappConfig, "Chime:", self.sappChime)
+          self.sappConfig = 30
+        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig, "Chime:", self.sappChime)
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 0 #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
         if enabled:  
           self.angleReq = 1
+          self.sappConfig = 24
           if self.lastAngle * apply_steer > 0.:
             angle_rate_lim = interp(CS.out.vEgo, ANGLE_DELTA_BP, ANGLE_DELTA_V)
           else:
