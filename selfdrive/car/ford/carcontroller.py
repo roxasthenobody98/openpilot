@@ -26,8 +26,9 @@ class CarController():
     #self.lkasToggle = 1
     self.lastAngle = 0
     self.angleReq = 0
-    self.sappConfig = 0
+    self.sappConfig = 54
     self.sappChime = 0
+    self.chimeCounter = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -48,18 +49,26 @@ class CarController():
       if (frame % 2) == 0:
       #SAPP Config Value Handshake
         if self.main_on_last == True:
-          self.sappConfig = 70
-        if CS.sappHandshake == 1:
-          self.sappConfig = 86
-        if CS.sappHandshake == 2:
-          self.sappConfig = 224
+          if CS.sappHandshake == 0:
+            self.sappConfig = 70
+          if CS.sappHandshake == 1:
+            self.sappConfig = 86
+          if CS.sappHandshake == 2:
+            self.sappConfig = 16
       #SAPP Handshake Debug
-        if CS.sappHandshake == 3:
-          self.sappChime = 5
-        elif CS.sappHandshake == 2:
-          self.sappChime = 1
+        if self.chimeCounter < 1
+          if CS.sappHandshake == 3:
+            self.chimeCounter += 1
+            self.sappChime = 5
+          elif CS.sappHandshake == 2:
+            self.chimeCounter += 1
+            self.sappChime = 1
         else:
           self.sappChime = 0
+        if self.main_on_last == False:
+          self.chimeCounter = 0
+        if CS.out.genericToggle == 1:
+          self.sappChime = 2
         print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig, "Chime:", self.sappChime)
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
