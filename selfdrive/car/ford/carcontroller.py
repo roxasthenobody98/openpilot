@@ -75,7 +75,6 @@ class CarController():
         else:
           self.angleReq = 0
           apply_steer = CS.out.steeringAngle
-        print("AngleReq:", self.angleReq)
         self.lastAngle = apply_steer
         #print("action:", self.lkas_action, "toggle:", self.lkasToggle)
         #if self.lkasCounter < COUNTER_MAX:
