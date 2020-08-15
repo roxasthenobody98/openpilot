@@ -69,7 +69,7 @@ class CarController():
           self.chimeCounter = 0
         if CS.out.genericToggle == 1:
           self.sappChime = 2
-        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig, "Chime:", self.sappChime)
+        print("Handshake:", CS.sappHandshake, "PAM Config:", CS.sappConfig) #self.sappConfig, "Chime:", self.sappChime)
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 0 #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
