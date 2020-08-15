@@ -1,7 +1,7 @@
 from common.numpy_fast import clip
 from selfdrive.car.ford.values import MAX_ANGLE
 
-def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action, angleReq, sappConfig):
+def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action, angleReq, sappConfig, sappChime):
   """Creates a CAN message for the Ford Steer Command."""
 
   #if enabled and lkas available:
@@ -19,6 +19,7 @@ def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action, 
     "EPASExtAngleStatReq": angleReq,
     "ExtSteeringAngleReq2": angle_cmd,
     "SAPPStatusCoding": sappConfig,
+    "ApaChime_D_Rq": sappChime,
   }
   return packer.make_can_msg("ParkAid_Data", 0, values)
 
@@ -35,11 +36,11 @@ def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcrampi
   """Creates a CAN message for the Ford Steer Ui."""
 
   if not main_on:
-    lines = 0x6 #0xf
+    lines = 0x3 #0xf
   elif enabled:
-    lines = 0x6 #0x3
+    lines = 0x3
   else:
-    lines = 0x6
+    lines = 0x3 #0x6
 
   values = {
     "PersIndexIpma_D_Actl": 0x80,
