@@ -58,7 +58,7 @@ class CarController():
           self.angleReq = 0
           apply_steer = CS.out.steeringAngle
         
-      self.lastAngle = apply_steer
+        self.lastAngle = apply_steer
         #print("action:", self.lkas_action, "toggle:", self.lkasToggle)
         #if self.lkasCounter < COUNTER_MAX:
         #  can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
