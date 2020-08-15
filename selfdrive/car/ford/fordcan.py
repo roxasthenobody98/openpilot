@@ -16,8 +16,8 @@ def create_steer_command(packer, angle_cmd, enabled, angle_steers, lkas_action, 
 
   values = {
     "ApaSys_D_Stat": action,
-    "EPASExtAngleStatReq": angleReq
-    "ExtSteeringAngleReq2": angle_cmd
+    "EPASExtAngleStatReq": angleReq,
+    "ExtSteeringAngleReq2": angle_cmd,
   }
   return packer.make_can_msg("ParkAid_Data", 0, values)
 
