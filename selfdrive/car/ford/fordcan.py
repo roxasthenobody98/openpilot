@@ -36,11 +36,11 @@ def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcrampi
   """Creates a CAN message for the Ford Steer Ui."""
 
   if not main_on:
-    lines = 0x3 #0xf
+    lines = 0xf 
   elif enabled:
-    lines = 0x3
+    lines = 0xf #0x3
   else:
-    lines = 0x3 #0x6
+    lines = 0xf #0x6
 
   values = {
     "PersIndexIpma_D_Actl": 0x80,
