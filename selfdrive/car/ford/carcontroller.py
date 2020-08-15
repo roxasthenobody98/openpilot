@@ -56,7 +56,7 @@ class CarController():
           if CS.sappHandshake == 2:
             self.sappConfig = 16
       #SAPP Handshake Debug
-        if self.chimeCounter < 1
+        if self.chimeCounter < 1:
           if CS.sappHandshake == 3:
             self.chimeCounter += 1
             self.sappChime = 5
