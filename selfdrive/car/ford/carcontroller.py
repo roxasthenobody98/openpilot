@@ -58,8 +58,7 @@ class CarController():
           if CS.sappHandshake == 3:
             self.sappChime = 5
           elif CS.sappHandshake == 2:
-            if self.sappConfig = 224:
-              self.sappChime = 1
+            self.sappChime = 1
           else:
             self.sappChime = 0
         else:
