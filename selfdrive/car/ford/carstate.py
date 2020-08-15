@@ -41,7 +41,7 @@ class CarState(CarStateBase):
     ret.steeringTorque = cp.vl["EPAS_INFO"]['SteeringColumnTorque']
     ret.seatbeltUnlatched = cp.vl["RCMStatusMessage2_FD1"]['FirstRowBuckleDriver'] == 2
     ret.stockFcw = cp.vl["ACCDATA_3"]['FcwVisblWarn_B_Rq'] !=0
-    print ("Curvature:", self.laneCurvature, "lkas_state:", self.lkas_state, "steer_override:", ret.steeringPressed) #debug to check lockout state. 
+    #print ("Curvature:", self.laneCurvature, "lkas_state:", self.lkas_state, "steer_override:", ret.steeringPressed) #debug to check lockout state. 
     #Gear Shifter
     gear = cp.vl["TransGearData"]['GearLvrPos_D_Actl']
     if gear == 0:
@@ -65,6 +65,8 @@ class CarState(CarStateBase):
     self.ipmaNo = cp.vl["Lane_Keep_Assist_Ui"]['FeatNoIpmaActl']
     self.laDenyStat = cp.vl["Lane_Keep_Assist_Ui"]['LaDenyStats_B_Dsply']
     self.ipmaStats = cp.vl["Lane_Keep_Assist_Ui"]['CamraStats_D_Dsply']
+    self.sappHandshake = cp.vl["EPAS_INFO"]['SAPPAngleControlStat1']
+    self.sappConfig = cp.vl["ParkAid_Data"]['SAPPStatusCoding']
     return ret
 
   @staticmethod
@@ -110,6 +112,8 @@ class CarState(CarStateBase):
     ("LaDenyStats_B_Dsply", "Lane_Keep_Assist_Ui", 0.),
     ("CamraStats_D_Dsply", "Lane_Keep_Assist_Ui", 0.),
     ("Lane_Curvature", "Lane_Keep_Assist_Control", 0.),
+    ("SAPPAngleControlStat1", "EPAS_INFO", 0.),
+    ("SAPPStatusCoding", "ParkAid_Data", 0.),
     ]
     
     checks = []
