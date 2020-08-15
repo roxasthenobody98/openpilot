@@ -59,6 +59,9 @@ class CarController():
             self.angleReq = 1
           self.sappConfig_last = self.sappConfig
           self.angleReq_last = self.angleReq
+        if CS.out.vEgo > 1 and CS.sappHandshake == 2:
+          self.sappConfig = 224
+          self.angleReq = 1
       if (frame % 2) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
