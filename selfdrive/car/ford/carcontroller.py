@@ -54,13 +54,10 @@ class CarController():
         if CS.sappHandshake == 2:
           self.sappConfig = 224
       #SAPP Handshake Debug
-        if enabled:
-          if CS.sappHandshake == 3:
-            self.sappChime = 5
-          elif CS.sappHandshake == 2:
-            self.sappChime = 1
-          else:
-            self.sappChime = 0
+        if CS.sappHandshake == 3:
+          self.sappChime = 5
+        elif CS.sappHandshake == 2:
+          self.sappChime = 1
         else:
           self.sappChime = 0
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
