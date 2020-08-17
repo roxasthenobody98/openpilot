@@ -102,8 +102,8 @@ REQUESTS = [
   ),
   (
     "ford",
-    [OBD_VERSION_REQUEST],
-    [OBD_VERSION_RESPONSE],
+    [UDS_VERSION_REQUEST],
+    [UDS_VERSION_RESPONSE],
   ),
 ]
 
