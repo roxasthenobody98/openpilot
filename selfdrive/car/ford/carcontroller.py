@@ -27,7 +27,10 @@ class CarController():
 
     apply_steer = actuators.steer
     if (frame % 100) == 0:
-      self.lkasCounter +=1 
+      if enabled:
+        self.lkasCounter +=1 
+      if not enabled and self.enabled_last = True:
+        self.lkasCounter = 0
     if self.enable_camera:
 
       if pcm_cancel:
