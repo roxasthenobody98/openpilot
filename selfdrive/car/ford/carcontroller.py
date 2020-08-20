@@ -6,7 +6,7 @@ from opendbc.can.packer import CANPacker
 
 MAX_STEER_DELTA = 1
 TOGGLE_DEBUG = False
-COUNTER_MAX = 12 #7
+COUNTER_MAX = 7
 
 class CarController():
   def __init__(self, dbc_name, CP, VM):
@@ -19,7 +19,6 @@ class CarController():
     self.steer_alert_last = False
     self.lkas_action = 0
     self.lkasCounter = 0
-    self.lkasToggle = 276
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -34,32 +33,18 @@ class CarController():
         if self.enabled_last == True:
           self.lkasCounter = 0
     if self.enable_camera:
-
       if pcm_cancel:
-       print("CANCELING!!!!")
+       #print("CANCELING!!!!")
        can_sends.append(spam_cancel_button(self.packer))
-      if (frame % 50) == 0:
-        if CS.out.genericToggle == 1:
-          self.lkasToggle += 1
-        if self.main_on_last == False:
-          self.lkasToggle = 276
-      if (frame % 3) == 0:
-      #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
+      if (frame % 1) == 0:
+      #Stock IPMA Message is 33Hz. PSCM accepts commands at 100hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
-        #self.lkas_action = 7   # 4 and 5 seem the best. 8 and 9 seem to aggressive and laggy
-        if enabled:
-          #print("Counter:", self.lkasCounter)
-          print("action:", self.lkasToggle)
-        if self.lkasCounter > COUNTER_MAX:
-          self.lkasToggle += 1
-          self.lkasCounter = 0
-          #can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
-        #else:
-          #self.lkas_action = 7
-          self.lkasCounter = 0
-          #print("LKAS Action is now 7")
-          #pass
-        self.lkas_action = self.lkasToggle
+        self.lkas_action = 2   # 0-7 accepted. 2 and 4 have action. 
+        if self.lkasCounter < COUNTER_MAX:
+          can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
+        else:
+          print("CAN Blocked for 1 message")
+          pass
         #print("Handshake:", CS.sappHandshake, "PAM Config:", CS.sappConfig, "Angle Stat Req:", CS.angleStat)
         can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
         self.generic_toggle_last = CS.out.genericToggle
