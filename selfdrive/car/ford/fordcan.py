@@ -34,13 +34,10 @@ def create_steer_command(packer, angle_cmd, enabled, lkas_state, angle_steers, c
 
 def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats):
   """Creates a CAN message for the Ford Steer Ui."""
-
-  if not main_on:
-    lines = 0xf
-  elif enabled:
-    lines = 0x3
-  else:
+  if enabled:
     lines = 0x6
+  else:
+    lines = 0xc
 
   values = {
     "PersIndexIpma_D_Actl": 0x80,
