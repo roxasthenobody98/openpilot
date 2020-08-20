@@ -30,7 +30,7 @@ class CarController():
       if enabled:
         self.lkasCounter +=1 
       if not enabled:
-        if self.enabled_last = True:
+        if self.enabled_last == True:
           self.lkasCounter = 0
     if self.enable_camera:
 
