@@ -40,13 +40,13 @@ class CarController():
       #Stock IPMA Message is 33Hz. PSCM accepts commands at 100hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 2   # 0-7 accepted. 2 and 4 have action. 
-        if self.lkasCounter < COUNTER_MAX:
-          can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
-        else:
-          print("CAN Blocked for 1 message")
-          pass
+        #if self.lkasCounter < COUNTER_MAX:
+          #can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
+        #else:
+          #print("CAN Blocked for 1 message")
+          #pass
         #print("Handshake:", CS.sappHandshake, "PAM Config:", CS.sappConfig, "Angle Stat Req:", CS.angleStat)
-        #can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
+        can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
         self.generic_toggle_last = CS.out.genericToggle
       if (frame % 1) == 0 or (self.enabled_last != enabled) or (self.main_on_last != CS.out.cruiseState.available) or (self.steer_alert_last != steer_alert):
         can_sends.append(create_lkas_ui(self.packer, CS.out.cruiseState.available, enabled, steer_alert, CS.ipmaHeater, CS.ahbcCommanded, CS.ahbcRamping, CS.ipmaConfig, CS.ipmaNo, CS.ipmaStats))
