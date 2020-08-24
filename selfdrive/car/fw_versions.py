@@ -59,8 +59,8 @@ TOYOTA_VERSION_RESPONSE = b'\x5a\x88\x01'
 OBD_VERSION_REQUEST = b'\x09\x04'
 OBD_VERSION_RESPONSE = b'\x49\x04'
 
-FORD_VERSION_REQUEST = b'\x22\xd1
-FORD_VERSION_RESPONSE = b'\x62\xd1
+FORD_VERSION_REQUEST = b'\x22\xd1'
+FORD_VERSION_RESPONSE = b'\x62\xd1'
 
 # supports subaddressing, request, response
 REQUESTS = [
