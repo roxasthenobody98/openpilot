@@ -64,7 +64,7 @@ FORD_VERSION_RESPONSE = b'\x62\xf1\x88'
 
 FORD_OPEN_IDS_SESSION = b'\x22\x02'
 
-FORD_END_IDS_SESSION_REQ = b'\x22\x02\02'
+FORD_END_IDS_SESSION_REQ = b'\x22\x02\x02'
 FORD_END_IDS_SESSION_RES = b'\x62\x02\x02'
 
 # supports subaddressing, request, response
