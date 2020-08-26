@@ -115,7 +115,7 @@ REQUESTS = [
   # Ford
   (
     "ford",
-    [TESTER_PRESENT_REQUEST, FORD_OPEN_IDS_SESSION, FORD_VERSION_REQUEST],
+    [TESTER_PRESENT_REQUEST, FORD_VERSION_REQUEST],
     [TESTER_PRESENT_RESPONSE, FORD_VERSION_RESPONSE],
   ),
 ]
@@ -253,7 +253,7 @@ if __name__ == "__main__":
   print()
 
   t = time.time()
-  fw_vers = get_fw_versions(logcan, sendcan, 1, extra=extra, debug=args.debug, progress=True)
+  fw_vers = get_fw_versions(logcan, sendcan, 0, extra=extra, debug=args.debug, progress=True)
   candidates = match_fw_to_car(fw_vers)
 
   print()
