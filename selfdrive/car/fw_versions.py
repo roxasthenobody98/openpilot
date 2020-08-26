@@ -51,7 +51,6 @@ HYUNDAI_VERSION_REQUEST_MULTI = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]
   p16(0xf100) + \
   p16(0xf1a0)
 HYUNDAI_VERSION_RESPONSE = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40])
-FORD_VERSION_RESPONSE_GEN = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40])
 
 TOYOTA_VERSION_REQUEST = b'\x1a\x88\x01'
 TOYOTA_VERSION_RESPONSE = b'\x5a\x88\x01'
@@ -61,16 +60,6 @@ OBD_VERSION_RESPONSE = b'\x49\x04'
 
 FORD_VERSION_REQUEST = b'\x22\xf1\x88'
 FORD_VERSION_RESPONSE = b'\x62\xf1\x88'
-
-FORD_VERSION_REQUEST_MULTI = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]) + \
-  p16(0xf47f) + \
-  p16(uds.DATA_IDENTIFIER_TYPE.VEHICLE_MANUFACTURER_ECU_SOFTWARE_NUMBER) + \
-  p16(0xf120) + \
-  p16(0xc1a1) + \
-  p16(0xf106)
-FORD_VERSION_RESPONSE_MULTI = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40])
-
-FORD_OPEN_IDS_SESSION = b'\x22\xf4\x7f'
 
 # supports subaddressing, request, response
 REQUESTS = [
@@ -254,6 +243,7 @@ if __name__ == "__main__":
 
   t = time.time()
   fw_vers = get_fw_versions(logcan, sendcan, 0, extra=extra, debug=args.debug, progress=True)
+    fw_vers += get_fw_versions(logcan, sendcan, 1, extra=extra, debug=args.debug, progress=True)
   candidates = match_fw_to_car(fw_vers)
 
   print()
