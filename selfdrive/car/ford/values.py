@@ -105,22 +105,22 @@ ECU_FINGERPRINT = {
 }
 FW_VERSIONS = {
   CAR.F150: {
-    (Ecu.ipma, 0x706, None): [
+    (Ecu.fwdCamera, 0x706, None): [
       b'FL3T-14G019-DE\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
-    (Ecu.pscm, 0x730, None): [
+    (Ecu.eps, 0x730, None): [
       b'GL34-14D003-AD\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
-    (Ecu.abs, 0x760, None): [
+    (Ecu.esc, 0x760, None): [
       b'FL34-2D053-BA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
-    (Ecu.ccm, 0x764, None): [
+    (Ecu.fwdRadar, 0x764, None): [
       b'FL3T-14D049-AF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
-    (Ecu.pcm, 0x7e0, None): [
+    (Ecu.engine, 0x7e0, None): [
       b'FL3A-14C204-ABL\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
-    (Ecu.rcm, 0x737, None): [
+    (Ecu.srs, 0x737, None): [
       b'GR3T-14C028-AA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
     (Ecu.ipc, 0x720, None): [
