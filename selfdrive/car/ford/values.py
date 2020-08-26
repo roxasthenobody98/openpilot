@@ -111,7 +111,7 @@ FW_VERSIONS = {
     (Ecu.eps, 0x730, None): [
       b'GL34-14D003-AD\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
-    (Ecu.esc, 0x760, None): [
+    (Ecu.esp, 0x760, None): [
       b'FL34-2D053-BA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
     (Ecu.fwdRadar, 0x764, None): [
@@ -122,9 +122,6 @@ FW_VERSIONS = {
     ],
     (Ecu.srs, 0x737, None): [
       b'GR3T-14C028-AA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-    ],
-    (Ecu.ipc, 0x720, None): [
-      b'FL3T-14C026-CJ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
   }
 }
