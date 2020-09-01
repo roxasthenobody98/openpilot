@@ -31,6 +31,7 @@ class CarController():
     self.chimeCounter = 0
     self.sappConfig_last = 0
     self.angleReq_last = 0
+    self.apaCounter = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -49,19 +50,32 @@ class CarController():
       if (frame % 1) == 0:
         self.main_on_last = CS.out.cruiseState.available
       #SAPP Config Value Handshake
-        if CS.out.vEgo < 1:
-          self.sappConfig = 70
-          if CS.sappHandshake in [0,1]:
-            self.sappConfig = 86
-            self.angleReq = 1
-          if CS.sappHandshake == 2:
-            self.sappConfig = 86
-            self.angleReq = 1
-          self.sappConfig_last = self.sappConfig
-          self.angleReq_last = self.angleReq
-        if CS.out.vEgo > 1 and CS.sappHandshake == 2 and not enabled:
-          self.sappConfig = 86
-          self.angleReq = 1
+      if (frame % 2) == 0:
+        self.apaCounter += 1
+	      if CS.out.standstill == 1:
+          self.apaCounter = 0
+          self.apaCounter += 1
+		      self.sappConfig = 168
+		      if CS.sappHandshake == 1 && self.apaCounter == 6:
+			      self.sappConfig = 200
+		      if self.apaCounter == 13:
+			      self.angleReq = 1
+		      if CS.sappHandshake == 2 && self.apaCounter == 14:
+			      self.sappConfig = 226
+			      self.apaCounter = 0
+        #if CS.out.vEgo < 1:
+        #  self.sappConfig = 70
+        #  if CS.sappHandshake in [0,1]:
+        #    self.sappConfig = 86
+        #    self.angleReq = 1
+        #  if CS.sappHandshake == 2:
+        #    self.sappConfig = 86
+        #    self.angleReq = 1
+        #  self.sappConfig_last = self.sappConfig
+        #  self.angleReq_last = self.angleReq
+        #if CS.out.vEgo > 1 and CS.sappHandshake == 2 and not enabled:
+        #  self.sappConfig = 86
+        #  self.angleReq = 1
       if (frame % 2) == 0:
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
