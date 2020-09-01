@@ -53,7 +53,6 @@ class CarController():
       if (frame % 2) == 0:
         self.apaCounter += 1
         if CS.out.standstill == 1:
-          self.apaCounter = 0
           self.apaCounter += 1
           self.sappConfig = 168
           if CS.sappHandshake == 1 and self.apaCounter == 6:
