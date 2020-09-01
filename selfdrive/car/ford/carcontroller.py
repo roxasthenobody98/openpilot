@@ -1,6 +1,7 @@
 from cereal import car
 import numpy as np
 from common.numpy_fast import interp, clip
+from selfdrive.car import make_can_msg
 from selfdrive.car.ford.fordcan import create_steer_command, create_lkas_ui, spam_cancel_button
 from opendbc.can.packer import CANPacker
 
@@ -36,6 +37,10 @@ class CarController():
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
     can_sends = []
+    if (frame % 10) ==0:
+      #silence pam
+      can_sends.append(make_can_msg(736, b'\x02\x3E\x80\x00\x00\x00\x00\x00', 0))
+      can_sends.append(make_can_msg(736, b'\x02\x28\x00\x00\x00\x00\x00\x00', 0))
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
     #if (frame % 50) == 0:
     #  if CS.out.genericToggle == 1:
