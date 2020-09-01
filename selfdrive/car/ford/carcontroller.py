@@ -57,16 +57,20 @@ class CarController():
       #SAPP Config Value Handshake
       if (frame % 2) == 0:
         if CS.out.vEgo < 1:
-          self.sappConfig = 158
+          self.sappConfig = 168
           self.apaCounter += 1
-          if self.apaCounter == 6:
-            self.sappConfig = 168
-          if CS.sappHandshake == 1 and self.apaCounter == 14:
+          #if self.apaCounter == 6:
+          #  self.sappConfig = 168
+          if CS.sappHandshake == 1 and self.apaCounter == 8:
             self.sappConfig = 200
-          if self.apaCounter == 20:
+          if self.apaCounter == 14:
             self.angleReq = 1
-          if CS.sappHandshake == 2 and self.apaCounter == 21:
+          if CS.sappHandshake == 2 and self.apaCounter == 15:
             self.sappConfig = 226
+            self.angleReq = 1
+          if CS.sappHandshake == 2 and self.apaCounter == 17:
+            self.sappConfig = 20
+            self.angleReq = 1
           if CS.sappHandshake == 3:
             self.sappConfig = 0
             self.apaCounter = 0
@@ -74,8 +78,9 @@ class CarController():
         self.angleReq_last = self.angleReq
         if CS.out.vEgo >= 1:
           self.apaCounter = 0 
-          if CS.sappHandshake == 2 and self.sappConfig_last == 226:
-            self.sappConfig = 226
+          if CS.sappHandshake == 2 and self.sappConfig_last == 20:
+            self.sappConfig = 20
+            self.angleReq = 1
         print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Counter:", self.apaCounter)
         #if CS.out.vEgo < 1:
         #  self.sappConfig = 70
@@ -94,9 +99,6 @@ class CarController():
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
         self.lkas_action = 0 #6 Finished 5 NotAccessible 4 ApaCancelled 2 On 1 Off  
-        if enabled:  
-          self.sappConfig = 224
-          self.angleReq = 1
           if self.lastAngle * apply_steer > 0.:
             angle_rate_lim = interp(CS.out.vEgo, ANGLE_DELTA_BP, ANGLE_DELTA_V)
           else:
