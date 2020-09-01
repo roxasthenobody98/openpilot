@@ -52,13 +52,15 @@ class CarController():
       #SAPP Config Value Handshake
       if (frame % 2) == 0:
         if CS.out.vEgo < 1:
-          self.sappConfig = 168
+          self.sappConfig = 158
           self.apaCounter += 1
-          if CS.sappHandshake == 1 and self.apaCounter == 6:
+          if self.apaCounter == 6:
+            self.sappConfig = 168
+          if CS.sappHandshake == 1 and self.apaCounter == 12:
             self.sappConfig = 200
-          if self.apaCounter == 13:
+          if self.apaCounter == 19:
             self.angleReq = 1
-          if CS.sappHandshake == 2 and self.apaCounter == 14:
+          if CS.sappHandshake == 2 and self.apaCounter == 20:
             self.sappConfig = 226
           if CS.sappHandshake == 3:
             self.apaCounter = 0
@@ -68,7 +70,7 @@ class CarController():
           self.apaCounter = 0 
           if CS.sappHandshake == 2 and self.sappConfig_last == 226:
             self.sappConfig = 226
-        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Chime:", self.sappChime)
+        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Counter:", self.apaCounter)
         #if CS.out.vEgo < 1:
         #  self.sappConfig = 70
         #  if CS.sappHandshake in [0,1]:
