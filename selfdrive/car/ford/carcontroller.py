@@ -51,8 +51,7 @@ class CarController():
         self.main_on_last = CS.out.cruiseState.available
       #SAPP Config Value Handshake
       if (frame % 2) == 0:
-        self.apaCounter += 1
-        if CS.out.standstill == 1:
+        if CS.out.vEgo < 1:
           self.apaCounter += 1
           self.sappConfig = 168
           if CS.sappHandshake == 1 and self.apaCounter == 6:
@@ -60,8 +59,13 @@ class CarController():
           if self.apaCounter == 13:
             self.angleReq = 1
           if CS.sappHandshake == 2 and self.apaCounter == 14:
-            self.sappConfig = 2
-            self.apaCounter = 0
+            self.sappConfig = 226
+        self.sappConfig_last = self.sappConfig
+        self.angleReq_last = self.angleReq
+        if CS.out.vEgo >= 1:
+          self.apaCounter = 0 
+          if CS.sappHandshake == 2 and self.sappConfig_last == 226:
+            self.sappConfig = 226
         #if CS.out.vEgo < 1:
         #  self.sappConfig = 70
         #  if CS.sappHandshake in [0,1]:
