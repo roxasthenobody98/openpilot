@@ -56,11 +56,11 @@ class CarController():
           self.apaCounter += 1
           if self.apaCounter == 6:
             self.sappConfig = 168
-          if CS.sappHandshake == 1 and self.apaCounter == 12:
+          if CS.sappHandshake == 1 and self.apaCounter == 14:
             self.sappConfig = 200
-          if self.apaCounter == 19:
+          if self.apaCounter == 20:
             self.angleReq = 1
-          if CS.sappHandshake == 2 and self.apaCounter == 20:
+          if CS.sappHandshake == 2 and self.apaCounter == 21:
             self.sappConfig = 226
           if CS.sappHandshake == 3:
             self.sappConfig = 0
