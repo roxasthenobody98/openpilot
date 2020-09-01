@@ -26,7 +26,7 @@ class CarController():
     #self.lkasToggle = 1
     self.lastAngle = 0
     self.angleReq = 0
-    self.sappConfig = 54
+    self.sappConfig = 0
     self.sappChime = 0
     self.chimeCounter = 0
     self.sappConfig_last = 0
