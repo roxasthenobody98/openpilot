@@ -68,6 +68,7 @@ class CarController():
           self.apaCounter = 0 
           if CS.sappHandshake == 2 and self.sappConfig_last == 226:
             self.sappConfig = 226
+        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Chime:", self.sappChime)
         #if CS.out.vEgo < 1:
         #  self.sappConfig = 70
         #  if CS.sappHandshake in [0,1]:
@@ -97,7 +98,6 @@ class CarController():
         else:
           apply_steer = CS.out.steeringAngle
         self.lastAngle = apply_steer
-        print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Chime:", self.sappChime)
         #print("action:", self.lkas_action, "toggle:", self.lkasToggle)
         #if self.lkasCounter < COUNTER_MAX:
         #  can_sends.append(create_steer_command(self.packer, apply_steer, enabled, CS.lkas_state, CS.out.steeringAngle, curvature, self.lkas_action))
