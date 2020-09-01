@@ -63,6 +63,7 @@ class CarController():
           if CS.sappHandshake == 2 and self.apaCounter == 20:
             self.sappConfig = 226
           if CS.sappHandshake == 3:
+            self.sappConfig = 0
             self.apaCounter = 0
         self.sappConfig_last = self.sappConfig
         self.angleReq_last = self.angleReq
