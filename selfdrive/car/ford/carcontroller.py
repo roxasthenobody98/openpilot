@@ -55,7 +55,7 @@ class CarController():
         if CS.out.standstill == 1:
           self.apaCounter = 0
           self.apaCounter += 1
-	  self.sappConfig = 168
+          self.sappConfig = 168
 	  if CS.sappHandshake == 1 && self.apaCounter == 6:
 	    self.sappConfig = 200
 	    if self.apaCounter == 13:
