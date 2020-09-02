@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import traceback
-
+import panda.python.uds as uds
 import cereal.messaging as messaging
 from selfdrive.car.isotp_parallel_query import IsoTpParallelQuery
 from selfdrive.swaglog import cloudlog
 
 EXT_DIAG_REQUEST = b'\x10\x03'
 EXT_DIAG_RESPONSE = b'\x50\x03'
+TESTER_REQUEST = bytes([uds.SERVICE_TYPE.TESTER_PRESENT, 0x0])
+TESTER_RESPONSE = bytes([uds.SERVICE_TYPE.TESTER_PRESENT + 0x40, 0x0])
 COM_CONT_REQUEST = b'\x28\x83\x03'
 COM_CONT_RESPONSE = b''
 
@@ -16,6 +18,7 @@ def disable_ecu(ecu_addr, logcan, sendcan, bus, timeout=0.1, retry=5, debug=Fals
     try:
       # enter extended diagnostic session
       query = IsoTpParallelQuery(sendcan, logcan, bus, [ecu_addr], [EXT_DIAG_REQUEST], [EXT_DIAG_RESPONSE], debug=debug)
+      query = IsoTpParallelQuery(sendcan, logcan, bus, [ecu_addr], [TESTER_REQUEST], [TESTER_RESPONSE], debug=debug)
       for addr, dat in query.get_data(timeout).items():
         print(f"ecu communication control disable tx/rx ...")
         # communication control disable tx and rx
