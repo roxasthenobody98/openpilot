@@ -59,25 +59,22 @@ class CarController():
         if CS.out.vEgo < 1:
           self.apaCounter += 1
           self.angleReq = 1
-          if self.apaCounter == 3:
-            self.sappConfig = 226
-          if self.apaCounter >= 9:
-            self.sappConfig = 20
+          self.sappConfig = 168
           #if self.apaCounter == 6:
           #  self.sappConfig = 168
-        #  if CS.sappHandshake == 1 and self.apaCounter == 8:
-        #    self.sappConfig = 200
-        #  if self.apaCounter == 14:
-        #    self.angleReq = 1
-        #  if CS.sappHandshake == 2 and self.apaCounter == 15:
-        #    self.sappConfig = 226
-        #    self.angleReq = 1
-        #  if CS.sappHandshake == 2 and self.apaCounter == 17:
-        #    self.sappConfig = 20
-        #    self.angleReq = 1
-        #  if CS.sappHandshake == 3:
-        #    self.sappConfig = 0
-        #    self.apaCounter = 0
+          if CS.sappHandshake == 1 and self.apaCounter >= 8:
+            self.sappConfig = 200
+          if self.apaCounter == 14:
+            self.angleReq = 1
+          if CS.sappHandshake == 2 and self.apaCounter >= 15:
+            self.sappConfig = 226
+            self.angleReq = 1
+          if CS.sappHandshake == 2 and self.apaCounter >= 17:
+            self.sappConfig = 20
+            self.angleReq = 1
+          if CS.sappHandshake == 3:
+            self.sappConfig = 0
+            self.apaCounter = 0
         self.sappConfig_last = self.sappConfig
         self.angleReq_last = self.angleReq
         if CS.out.vEgo >= 1:
