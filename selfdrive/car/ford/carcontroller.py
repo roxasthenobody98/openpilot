@@ -61,16 +61,16 @@ class CarController():
             self.apaCounter = 0
             self.sappConfig = 200
             print("config 200")
-          if CS.sappHandshake == 1 and self.apaCounter == 5 and self.sappConfig_last == 200:
+          if CS.sappHandshake == 1 and self.apaCounter == 13 and self.sappConfig_last == 200:
             self.apaCounter = 0
             self.angleReq = 1
             print("angle 1")
-          if CS.sappHandshake == 2 and self.apaCounter == 1:
+          if CS.sappHandshake == 2 and self.apaCounter == 15:
             self.apaCounter = 0
             self.sappConfig = 226
             self.angleReq = 1
             print("config 226 angle 1")
-          if CS.sappHandshake == 2 and self.apaCounter == 2 and self.sappConfig_last == 226:
+          if CS.sappHandshake == 2 and self.apaCounter == 17 and self.sappConfig_last == 226:
             self.apaCounter = 0
             self.sappConfig = 20
             self.angleReq = 1
