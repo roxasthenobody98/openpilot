@@ -34,6 +34,7 @@ class CarController():
     self.angleReq_last = 0
     self.apaCounter = 0
     self.sappAction = 0
+    self.eightysix = 0
 
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
 
@@ -61,7 +62,10 @@ class CarController():
           #  self.sappConfig = 168
           if CS.sappHandshake == 1 and self.apaCounter > 8:
             self.sappConfig = 86 #200 perpendicular
+            self.eightysix += 1
             print("config 86")
+          if self.sappConfig_last == 86 and self.eightysix == 10:
+            self.apaCounter = 0
           if CS.sappHandshake == 1 and self.apaCounter > 13 and self.sappConfig_last == 86:
             self.angleReq = 1
             print("angle 1")
