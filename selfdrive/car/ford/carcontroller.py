@@ -53,7 +53,7 @@ class CarController():
         self.main_on_last = CS.out.cruiseState.available
       #SAPP Config Value Handshake
       if (frame % 2) == 0:
-        if CS.out.vEgo < 1:
+        if CS.out.vEgo >= 1:
           self.apaCounter += 1
           if self.sappConfig_last != 16:
             self.sappConfig = 70 #168 perpendicular
@@ -77,11 +77,11 @@ class CarController():
             self.apaCounter = 0
         self.sappConfig_last = self.sappConfig
         self.angleReq_last = self.angleReq
-        if CS.out.vEgo >= 1:
-          self.apaCounter = 0 
-          if CS.sappHandshake == 2 and self.sappConfig_last == 16:
-            self.sappConfig = 16
-            self.angleReq = 1
+        #if CS.out.vEgo >= 1:
+        #  self.apaCounter = 0 
+        #  if CS.sappHandshake == 2 and self.sappConfig_last == 16:
+        #    self.sappConfig = 16
+        #    self.angleReq = 1
         print("Handshake:", CS.sappHandshake, "Config:", self.sappConfig_last, "Counter:", self.apaCounter, "AngleRequest:", self.angleReq, "fwdAction:", self.sappAction)
       #Stock IPMA Message is 33Hz. PSCM accepts commands at max 44Hz. 
         curvature = self.vehicle_model.calc_curvature(actuators.steerAngle*np.pi/180., CS.out.vEgo)
