@@ -10,7 +10,7 @@ EXT_DIAG_RESPONSE = b'\x50\x03'
 TESTER_REQUEST = bytes([uds.SERVICE_TYPE.TESTER_PRESENT, 0x0])
 TESTER_RESPONSE = bytes([uds.SERVICE_TYPE.TESTER_PRESENT + 0x40, 0x0])
 COM_CONT_REQUEST = b'\x28\x83\x03'
-COM_CONT_RESPONSE = b''
+COM_CONT_RESPONSE = b'\x68\x83\x03'
 
 def disable_ecu(ecu_addr, logcan, sendcan, bus, timeout=0.1, retry=5, debug=False):
   print(f"ecu disable {hex(ecu_addr)} ...")
