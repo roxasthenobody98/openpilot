@@ -495,7 +495,7 @@ class Controls:
     controlsState.forceDecel = bool(force_decel)
     controlsState.canErrorCounter = self.can_error_counter
 
-    if CS.safetyModel == car.CarParams.SafetyModel.ford:
+    if CS.CP.carFingerprint in FORD:
       disable_ecu(0x736, can_sock, pm.sock['sendcan'], 1 if has_relay else 0, timeout=1, retry=10)
       
     if self.CP.lateralTuning.which() == 'pid':
