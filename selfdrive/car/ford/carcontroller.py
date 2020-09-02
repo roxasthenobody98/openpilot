@@ -39,8 +39,8 @@ class CarController():
     can_sends = []
     if (frame % 10) ==0:
       #silence pam
-      can_sends.append([0x736, b"\x02\x3E\x00\x00\x00\x00\x00\x00", 0])
-      can_sends.append([0x736, b"\x02\x28\x00\x00\x00\x00\x00\x00", 0])
+      can_sends.append([0x736, 0, b"\x02\x3E\x00\x00\x00\x00\x00\x00"])
+      can_sends.append([0x736, 0, b"\x02\x28\x00\x00\x00\x00\x00\x00"])
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
     #if (frame % 50) == 0:
     #  if CS.out.genericToggle == 1:
