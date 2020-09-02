@@ -39,8 +39,8 @@ class CarController():
     can_sends = []
     if (frame % 10) ==0:
       #silence pam
-      can_sends.append(make_can_msg(736, b'\x02\x3E\x80\x00\x00\x00\x00\x00', 0))
-      can_sends.append(make_can_msg(736, b'\x02\x28\x00\x00\x00\x00\x00\x00', 0))
+      #can_sends.append(make_can_msg(736, b'\x02\x3E\x80\x00\x00\x00\x00\x00', 0))
+      #can_sends.append(make_can_msg(736, b'\x02\x28\x00\x00\x00\x00\x00\x00', 0))
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
     #if (frame % 50) == 0:
     #  if CS.out.genericToggle == 1:
@@ -57,23 +57,25 @@ class CarController():
       #SAPP Config Value Handshake
       if (frame % 2) == 0:
         if CS.out.vEgo < 1:
-          self.sappConfig = 168
+          self.angleReq = 1
           self.apaCounter += 1
+          if self.apaCounter >= 6:
+            self.sappConfig = 20
           #if self.apaCounter == 6:
           #  self.sappConfig = 168
-          if CS.sappHandshake == 1 and self.apaCounter == 8:
-            self.sappConfig = 200
-          if self.apaCounter == 14:
-            self.angleReq = 1
-          if CS.sappHandshake == 2 and self.apaCounter == 15:
-            self.sappConfig = 226
-            self.angleReq = 1
-          if CS.sappHandshake == 2 and self.apaCounter == 17:
-            self.sappConfig = 20
-            self.angleReq = 1
-          if CS.sappHandshake == 3:
-            self.sappConfig = 0
-            self.apaCounter = 0
+        #  if CS.sappHandshake == 1 and self.apaCounter == 8:
+        #    self.sappConfig = 200
+        #  if self.apaCounter == 14:
+        #    self.angleReq = 1
+        #  if CS.sappHandshake == 2 and self.apaCounter == 15:
+        #    self.sappConfig = 226
+        #    self.angleReq = 1
+        #  if CS.sappHandshake == 2 and self.apaCounter == 17:
+        #    self.sappConfig = 20
+        #    self.angleReq = 1
+        #  if CS.sappHandshake == 3:
+        #    self.sappConfig = 0
+        #    self.apaCounter = 0
         self.sappConfig_last = self.sappConfig
         self.angleReq_last = self.angleReq
         if CS.out.vEgo >= 1:
