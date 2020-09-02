@@ -64,7 +64,7 @@ class CarController():
           if CS.sappHandshake == 1 and self.apaCounter > 13 and self.sappConfig_last == 86:
             self.angleReq = 1
             print("angle 1")
-          if CS.sappHandshake == 2: # and self.apaCounter in range (15,16):
+          if CS.sappHandshake == 2 and self.sappConfig_last != 16: # and self.apaCounter in range (15,16):
             self.sappConfig = 224
             self.sappAction += 1
             print("config 224 angle 1")
