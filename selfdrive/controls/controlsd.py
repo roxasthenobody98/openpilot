@@ -96,7 +96,10 @@ class Controls:
     params.put("CarParams", cp_bytes)
     put_nonblocking("CarParamsCache", cp_bytes)
     put_nonblocking("LongitudinalControl", "1" if self.CP.openpilotLongitudinalControl else "0")
-
+    
+    if CP.safetyModel in car.CarParams.SafetyModel.ford:
+      disable_ecu(0x736, can_sock, pm.sock['sendcan'], 1 if has_relay else 0, timeout=1, retry=10)
+      
     self.CC = car.CarControl.new_message()
     self.AM = AlertManager()
     self.events = Events()
@@ -494,9 +497,6 @@ class Controls:
     controlsState.mapValid = self.sm['plan'].mapValid
     controlsState.forceDecel = bool(force_decel)
     controlsState.canErrorCounter = self.can_error_counter
-
-    if CP.safetyModel in car.CarParams.SafetyModel.ford:
-      disable_ecu(0x736, can_sock, pm.sock['sendcan'], 1 if has_relay else 0, timeout=1, retry=10)
       
     if self.CP.lateralTuning.which() == 'pid':
       controlsState.lateralControlState.pidState = lac_log
