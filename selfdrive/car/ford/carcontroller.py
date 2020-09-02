@@ -55,7 +55,8 @@ class CarController():
       if (frame % 2) == 0:
         if CS.out.vEgo < 1:
           self.apaCounter += 1
-          self.sappConfig = 70 #168 perpendicular
+          if self.sappConfig_last != 16:
+            self.sappConfig = 70 #168 perpendicular
           #if self.apaCounter == 6:
           #  self.sappConfig = 168
           if CS.sappHandshake == 1 and self.apaCounter > 8:
