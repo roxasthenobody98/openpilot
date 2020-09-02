@@ -58,6 +58,7 @@ class CarController():
       if (frame % 2) == 0:
         if CS.out.vEgo < 1:
           self.angleReq = 1
+          self.sappConfig = 226
           self.apaCounter += 1
           if self.apaCounter >= 6:
             self.sappConfig = 20
