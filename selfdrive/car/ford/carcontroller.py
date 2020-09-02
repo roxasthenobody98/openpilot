@@ -58,7 +58,7 @@ class CarController():
           self.sappConfig = 168
           #if self.apaCounter == 6:
           #  self.sappConfig = 168
-          if CS.sappHandshake == 1 and self.apaCounter in range (8,15):
+          if CS.sappHandshake == 1 and self.apaCounter > 8:
             self.sappConfig = 200
             print("config 200")
           if CS.sappHandshake == 1 and self.apaCounter in range (13,14) and self.sappConfig_last == 200:
