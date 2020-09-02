@@ -97,7 +97,7 @@ class Controls:
     put_nonblocking("CarParamsCache", cp_bytes)
     put_nonblocking("LongitudinalControl", "1" if self.CP.openpilotLongitudinalControl else "0")
     
-    if self.CP.safetyModel in car.CarParams.SafetyModel.ford:
+    if self.CP.safetyModel == car.CarParams.SafetyModel.ford:
       disable_ecu(0x736, can_sock, pm.sock['sendcan'], 1 if has_relay else 0, timeout=1, retry=10)
       
     self.CC = car.CarControl.new_message()
