@@ -51,7 +51,7 @@ class CarController():
       if (frame % 1) == 0:
         self.main_on_last = CS.out.cruiseState.available
       #SAPP Config Value Handshake
-      if (frame % 2) == 0:
+      if (frame % 1) == 0:
         if CS.out.vEgo < 1:
           self.apaCounter += 1
           self.sappConfig = 168
