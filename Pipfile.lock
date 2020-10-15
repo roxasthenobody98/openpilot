@@ -2790,13 +2790,13 @@
                 "sha256:f5f27528570fc0d7b90668be10c5dfd90d6ceb8fd2ed62d7d679554acb616bfe"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         },
         "tensorflow-estimator": {
             "hashes": [
                 "sha256:d09dacdd127f2579cea8d5af21f4a918036b8ae246adc82f26b61f91cc247dc2"
             ],
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         },
         "termcolor": {
             "hashes": [
