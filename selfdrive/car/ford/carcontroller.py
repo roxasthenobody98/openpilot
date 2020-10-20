@@ -53,7 +53,7 @@ class CarController():
           steer_chime = 2
         else:
           steer_chime = 0
-        can_sends.append(create_lkas_ui(self.packer, CS.out.cruiseState.available, enabled, steer_chime, CS.ipmaHeater, CS.ahbcCommanded, CS.ahbcRamping, CS.ipmaConfig, CS.ipmaNo, CS.ipmaStats))
+        can_sends.append(create_lkas_ui(self.packer, CS.out.cruiseState.available, enabled, steer_chime, CS.ipmaHeater, CS.ahbcCommanded, CS.ahbcRamping, CS.ipmaConfig, CS.ipmaNo, CS.ipmaStats, CS.persipma, CS.dasdsply, CS.x30))
         self.enabled_last = enabled  
         self.main_on_last = CS.out.cruiseState.available
       self.steer_alert_last = steer_alert
