@@ -77,11 +77,12 @@ class CarInterface(CarInterfaceBase):
   def update(self, c, can_strings):
     # ******************* do can recv *******************
     self.cp.update_strings(can_strings)
+    self.cp_cam.update_strings(can_strings)
 
-    ret = self.CS.update(self.cp)
+    ret = self.CS.update(self.cp, self.cp_cam)
 
     #ret = car.CarState.new_message()               
-    ret.canValid = self.cp.can_valid
+    ret.canValid = self.cp.can_valid and self.cp_cam.can_valid
        
     # events
     events = self.create_common_events(ret)
