@@ -71,8 +71,9 @@ class CarState(CarStateBase):
     self.sappConfig = cp.vl["ParkAid_Data"]['SAPPStatusCoding']
     self.angleStat = cp.vl["ParkAid_Data"]['EPASExtAngleStatReq']
     self.persipma = cp_cam.vl["Lane_Keep_Assist_Ui"]['PersIndexIpma_D_Actl']
-    self.dasdsply = cp_cam.vl["Lane_Keep_Assist_Ui"]['Set_Me_X30']
-    self.x30 = cp_cam.vl["Lane_Keep_Assist_Ui"]['CamraStats_D_Dsply']
+    self.dasdsply = cp_cam.vl["Lane_Keep_Assist_Ui"]['CamraStats_D_Dsply']
+    self.x30 = cp_cam.vl["Lane_Keep_Assist_Ui"]['Set_Me_X30']
+    
     return ret
 
   @staticmethod
@@ -113,6 +114,7 @@ class CarState(CarStateBase):
       ("LaActDeny_B_Actl", "Lane_Keep_Assist_Status", 0.),
       ("SAPPAngleControlStat1", "EPAS_INFO", 0.),
       ("SteeringColumnTorque", "EPAS_INFO", 0.),
+      ("AccMemEnbl_B_RqDrv", "ACCDATA_3", 0.),
     ]
     
     checks = []
