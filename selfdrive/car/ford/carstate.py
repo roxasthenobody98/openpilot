@@ -26,6 +26,7 @@ class CarState(CarStateBase):
     ret.cruiseState.available = cp.vl["Cruise_Status"]['Cruise_State'] != 0
     ret.gas = cp.vl["EngineData_14"]['ApedPosScal_Pc_Actl'] / 100.
     ret.gasPressed = ret.gas > 1e-6
+    print("ret.gas:", ret.gas, "ret.gasPressed:", ret.gasPressed)
     ret.brakePressed = bool(cp.vl["Cruise_Status"]['Brake_Drv_Appl'])
     ret.brakeLights = bool(cp.vl["BCM_to_HS_Body"]['Brake_Lights'])
     ret.genericToggle = bool(cp.vl["Steering_Buttons"]['Dist_Incr'])
