@@ -43,6 +43,7 @@ class CarState(CarStateBase):
     self.cruise_mode = cp.vl["ACCDATA_3"]['AccMemEnbl_B_RqDrv']
     ret.stockFcw = cp.vl["ACCDATA_3"]['FcwVisblWarn_B_Rq'] !=0
     ret.stockAeb = self.cruise_mode !=0 and ret.cruiseState.enabled and ret.stockFcw
+    self.engineRPM = cp.vl["EngineData_14"]['EngAout_N_Actl']
     #print ("Curvature:", self.laneCurvature, "lkas_state:", self.lkas_state, "steer_override:", ret.steeringPressed) #debug to check lockout state. 
     #Gear Shifter
     gear = cp.vl["TransGearData"]['GearLvrPos_D_Actl']
@@ -115,6 +116,7 @@ class CarState(CarStateBase):
       ("SAPPAngleControlStat1", "EPAS_INFO", 0.),
       ("SteeringColumnTorque", "EPAS_INFO", 0.),
       ("AccMemEnbl_B_RqDrv", "ACCDATA_3", 0.),
+      ("EngAout_N_Actl", "EngineData_14", 0.),
     ]
     
     checks = []
