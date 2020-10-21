@@ -83,7 +83,8 @@ class CarInterface(CarInterfaceBase):
 
     #ret = car.CarState.new_message()               
     ret.canValid = self.cp.can_valid and self.cp_cam.can_valid
-       
+    ret.engineRPM = self.CS.engineRPM
+    
     # events
     events = self.create_common_events(ret)
     
