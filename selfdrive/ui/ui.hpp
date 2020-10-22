@@ -22,7 +22,7 @@
 #include "common/modeldata.h"
 #include "sound.hpp"
 
-#define STATUS_STOPPED 0
+#define STATUS_OFFROAD 0
 #define STATUS_DISENGAGED 1
 #define STATUS_ENGAGED 2
 #define STATUS_WARNING 3
