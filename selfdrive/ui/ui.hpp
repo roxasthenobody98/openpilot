@@ -82,11 +82,11 @@ const int TRACK_POINTS_MAX_CNT = 50 * 2;
 const int SET_SPEED_NA = 255;
 
 const uint8_t bg_colors[][4] = { //I reduced the alpha of all alerts except for the red critical alert. -wirelessnet2
-  [STATUS_STOPPED] = {0x00, 0x00, 0x00, 0x7D},
+  [STATUS_STOPPED] = {0x01, 0x50, 0x01, 0x7D},
   [STATUS_DISENGAGED] = {0x00, 0x00, 0x00, 0x7D},
   [STATUS_ENGAGED] = {0x01, 0x50, 0x01, 0x7D},
   [STATUS_WARNING] = {0x80, 0x80, 0x80, 0x87},
-  [STATUS_ALERT] = {0xC9, 0x22, 0x31, 0xff},
+  [STATUS_ALERT] = {0xff, 0x7f, 0x00, 0xff},
 };
 
 typedef struct UIScene {
