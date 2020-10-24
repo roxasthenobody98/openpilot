@@ -18,7 +18,7 @@ class CarState(CarStateBase):
     ret.vEgoRaw = ((ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.) / speed_factor
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
-    ret.steeringAngle = cp.vl["Steering_Wheel_Data_CG1"]['SteWhlRelInit_An_Sns']
+    ret.steeringAngle = cp.vl["BrakeSnData_5"]['SteWhlRelInit_An_Sns']
     ret.steeringPressed = cp.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl'] != 0
     ret.steerError = cp.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl'] == 1
     ret.cruiseState.speed = cp.vl["Cruise_Status"]['Set_Speed'] * CV.MPH_TO_MS
@@ -85,7 +85,7 @@ class CarState(CarStateBase):
       ("WhlRl_W_Meas", "WheelSpeed", 0.),
       ("WhlFr_W_Meas", "WheelSpeed", 0.),
       ("WhlFl_W_Meas", "WheelSpeed", 0.),
-      ("SteWhlRelInit_An_Sns", "Steering_Wheel_Data_CG1", 0.),
+      ("SteWhlRelInit_An_Sns", "BrakeSnData_5", 0.),
       ("Cruise_State", "Cruise_Status", 0.),
       ("Set_Speed", "Cruise_Status", 0.),
       ("ApedPosScal_Pc_Actl", "EngineData_14", 0.),
