@@ -1,6 +1,10 @@
 from cereal import log
 from common.numpy_fast import clip, interp
 from selfdrive.controls.lib.pid import PIController
+from common.op_params import opParams, ENABLE_COASTING, EVAL_COAST_LONG, ENABLE_LONG_PARAMS, \
+                              GAS_MAX_BP, GAS_MAX_V, ENABLE_BRAKE_PARAMS, ENABLE_GAS_PARAMS, BRAKE_MAX_BP, BRAKE_MAX_V, \
+                              ENABLE_LONG_PID_PARAMS, LONG_PID_KP_BP, LONG_PID_KP_V, LONG_PID_KI_BP, LONG_PID_KI_V, \
+                              ENABLE_LONG_DEADZONE_PARAMS, LONG_DEADZONE_BP, LONG_DEADZONE_V, LONG_PID_KF, LONG_PID_SAT_LIMIT
 
 LongCtrlState = log.ControlsState.LongControlState
 
@@ -57,7 +61,15 @@ class LongControl():
                             (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                             rate=RATE,
                             sat_limit=0.8,
-                            convert=compute_gb)
+                            convert=compute_gb,
+                            p_bp_key=LONG_PID_KP_BP,
+                            p_v_key=LONG_PID_KP_V,
+                            i_bp_key=LONG_PID_KI_BP,
+                            i_v_key=LONG_PID_KI_V,
+                            f_key=LONG_PID_KF,
+                            sat_key=LONG_PID_SAT_LIMIT,
+                            OP=self.op_params,
+                            use_ops=lambda op: op.get(ENABLE_LONG_PARAMS) and op.get(ENABLE_LONG_PID_PARAMS))
     self.v_pid = 0.0
     self.last_output_gb = 0.0
 

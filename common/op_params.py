@@ -73,6 +73,33 @@ class opParams:
                         'supercloak_reregister': Param(False, bool, "dump your supercloak Dongle ID if it gets banned"),
                         'uploadsAllowed': Param(True, bool, "Allow uploads to Comma. Not recommended. If you are not cloaked and supercloaked, you risk your device being banned."),
                         #'use_car_caching': Param(True, bool, 'Whether to use fingerprint caching'),
+
+                        ENABLE_COASTING: Param(False, bool, 'When true the car will try to coast down hills instead of braking.', live=True, depends_on=SHOW_EXPERIMENTAL_OPTS),
+                        COAST_SPEED: Param(10.0, VT.number, 'The amount of speed to coast by before applying the brakes. Unit: MPH',
+                                          live=True, depends_on=ENABLE_COASTING),
+                        SETPOINT_OFFSET: Param(0, int, 'The difference between the car\'s set cruise speed and OP\'s. Unit: MPH', live=True),
+                        DOWNHILL_INCLINE: Param(-1, VT.number, 'If the angle between the current road and the future predicted road is less than this value, '
+                                                              'the car will try to coast downhill. Unit: degrees', live=True, depends_on=ENABLE_COASTING),
+                        ALWAYS_EVAL_COAST: Param(False, bool, live=True, depends_on=ENABLE_COASTING),
+                        EVAL_COAST_LONG: Param(False, bool, live=True, depends_on=ENABLE_COASTING),
+                        ENABLE_LONG_PARAMS: Param(False, bool, live=True, description='When true the long controller will used the params in opParam '
+                                                  'instead of the car\' params'),
+                        ENABLE_GAS_PARAMS: Param(True, bool, live=True, depends_on=ENABLE_LONG_PARAMS),
+                        GAS_MAX_BP: Param([0., 20, 33], [list, float, int], live=True, depends_on=ENABLE_GAS_PARAMS),
+                        GAS_MAX_V: Param([0.3, 0.2, 0.075], [list, float], live=True, depends_on=ENABLE_GAS_PARAMS),
+                        ENABLE_BRAKE_PARAMS: Param(False, bool, live=True, depends_on=ENABLE_LONG_PARAMS),
+                        BRAKE_MAX_BP: Param([0., 20, 33], [list, float, int], live=True, depends_on=ENABLE_BRAKE_PARAMS),
+                        BRAKE_MAX_V: Param([0.5, 0.5, 0.5], [list, float], live=True, depends_on=ENABLE_BRAKE_PARAMS),
+                        ENABLE_LONG_PID_PARAMS: Param(False, bool, live=True, depends_on=ENABLE_LONG_PARAMS),
+                        LONG_PID_KP_BP: Param([0., 5., 35.], [list, float, int], live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        LONG_PID_KP_V: Param([3.6, 2.4, 1.5], [list, float, int], live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        LONG_PID_KI_BP: Param([0., 35.], [list, float, int], live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        LONG_PID_KI_V: Param([0.54, 0.36], [list, float, int], live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        LONG_PID_KF: Param(1., VT.number, live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        LONG_PID_SAT_LIMIT: Param(0.8, VT.number, live=True, depends_on=ENABLE_LONG_PID_PARAMS),
+                        ENABLE_LONG_DEADZONE_PARAMS: Param(False, bool, live=True, depends_on=ENABLE_LONG_PARAMS),
+                        LONG_DEADZONE_BP: Param([0., 9.], [list, float, int], live=True, depends_on=ENABLE_LONG_DEADZONE_PARAMS),
+                        LONG_DEADZONE_V: Param([0., .15], [list, float, int], live=True, depends_on=ENABLE_LONG_DEADZONE_PARAMS),
                         }
 
     self._params_file = '/data/op_params.json'
@@ -193,6 +220,80 @@ class opParams:
       return False
 
   def _write(self):
+<<<<<<< HEAD
     if not travis:
       with open(self._params_file, "w") as f:
         f.write(json.dumps(self.params, indent=2))  # can further speed it up by remove indentation but makes file hard to read
+=======
+    if not travis or os.path.isdir("/data/"):
+      try:
+        with open(self._params_file, "w") as f:
+          f.write(json.dumps(self.params, indent=2))  # can further speed it up by remove indentation but makes file hard to read
+        return True
+      except Exception as e:
+        print("Unable to write file: " + str(e))
+        return False
+
+
+ENABLE_UNSAFE_STEERING_RATE = "enable_unsafe_steering_rate"
+
+ENABLE_COASTING = "enable_coasting"
+COAST_SPEED = "coast_speed"
+SETPOINT_OFFSET = "setpoint_offset"
+DOWNHILL_INCLINE = "downhill_incline"
+ALWAYS_EVAL_COAST = "always_eval_coast_plan"
+EVAL_COAST_LONG = "eval_coast_long_controller"
+
+SHOW_INDI_PARAMS = 'show_indi_params'
+INDI_SHOW_BREAKPOINTS = 'indi_show_breakpoint_opts'
+
+SHOW_A_CRUISE = 'a_cruise_show_opts'
+
+ENABLE_LONG_PARAMS = 'enable_long_params'
+ENABLE_GAS_PARAMS = 'enable_gas_params'
+GAS_MAX_BP = 'gas_max_bp'
+GAS_MAX_V = 'gas_max_v'
+ENABLE_BRAKE_PARAMS = 'enable_brake_params'
+BRAKE_MAX_BP = 'brake_max_bp'
+BRAKE_MAX_V = 'brake_max_v'
+ENABLE_LONG_PID_PARAMS = 'enable_long_pid_params'
+LONG_PID_KP_BP = 'long_pid_kp_bp'
+LONG_PID_KP_V = 'long_pid_kp_v'
+LONG_PID_KI_BP = 'long_pid_ki_bp'
+LONG_PID_KI_V = 'long_pid_ki_v'
+LONG_PID_KF = 'long_pid_kf'
+LONG_PID_SAT_LIMIT = 'long_pid_sat_limit'
+ENABLE_LONG_DEADZONE_PARAMS = 'enable_long_deadzone_params'
+LONG_DEADZONE_BP = 'long_deadzone_bp'
+LONG_DEADZONE_V = 'long_deadzone_v'
+
+ENABLE_LAT_PARAMS = 'enable_lat_params'
+WHICH_LAT_CTRL = 'which_lat_controller'
+
+SHOW_LQR_PARAMS = 'show_lqr_params'
+LQR_SCALE = 'lqr_scale'
+LQR_KI = 'lqr_ki'
+LQR_A = 'lqr_a'
+LQR_B = 'lqr_b'
+LQR_C = 'lqr_c'
+LQR_K = 'lqr_k'
+LQR_L = 'lqr_l'
+LQR_DC_GAIN = 'lqr_dc_gain'
+STEER_LIMIT_TIMER = 'steer_limit_timer'
+
+SHOW_ACTUATOR_DELAY_PARAMS = "show_actuator_delay_params"
+STEER_ACTUATOR_DELAY = 'steer_actuator_delay'
+ENABLE_ACTUATOR_DELAY_BPS = 'enable_actuator_delay_breakpoints'
+STEER_ACTUATOR_DELAY_BP = 'steer_actuator_delay_bp'
+STEER_ACTUATOR_DELAY_V = 'steer_actuator_delay_v'
+
+SHOW_LAT_PID_PARAMS = 'show_lat_pid_params'
+LAT_PID_KP_BP = 'lat_pid_kp_bp'
+LAT_PID_KP_V = 'lat_pid_kp_v'
+LAT_PID_KI_BP = 'lat_pid_ki_bp'
+LAT_PID_KI_V = 'lat_pid_ki_v'
+LAT_PID_KF = 'lat_pid_kf'
+
+SHOW_UNSAFE_OPTS = 'show_unsafe_options'
+SHOW_EXPERIMENTAL_OPTS = 'show_experimental_options'
+>>>>>>> 905b7e85... fix(pid): properly pass p, i, and f to pid controller using car and op params
