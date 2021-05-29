@@ -15,7 +15,7 @@ class CarState(CarStateBase):
     ret.wheelSpeeds.rl = cp.vl["WheelSpeed"]['WhlRl_W_Meas'] * CV.MPH_TO_MS
     ret.wheelSpeeds.fr = cp.vl["WheelSpeed"]['WhlFr_W_Meas'] * CV.MPH_TO_MS
     ret.wheelSpeeds.fl = cp.vl["WheelSpeed"]['WhlFl_W_Meas'] * CV.MPH_TO_MS
-    ret.vEgoRaw = cp.vl["EngVehicleSpThrottle2"]['Veh_V_ActlEng'] * CV.KPH_TO_MS
+    ret.vEgoRaw = ((ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.) / speed_factor
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
     ret.steeringAngleDeg = cp.vl["ParkAid_Data"]['ExtSteeringAngleReq2'] #cp_cam.vl["EPS_SAS"]['SAS']
