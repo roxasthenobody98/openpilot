@@ -65,13 +65,13 @@ class opParams:
                         'alca_min_speed': Param(20, VT.number, 'Speed limit to start ALC in MPH'),
                         'alca_nudge_required': Param(False, bool, "Require nudge to start ALC"),
                         'apaAcknowledge': Param(False, bool, "acknowledge the safety constraints and limitations"),
-                        'athenaAllowed': Param(False, bool, "Enable Comma Athena. Not recommended. Comma get access to everything on your device."),
+                        'athenaAllowed': Param(True, bool, "Enable Comma Athena. Not recommended. Comma get access to everything on your device."),
                         'autoUpdate': Param(True, bool, 'Whether to auto-update'),
                         'camera_offset': Param(0.06, VT.number, 'Your camera offset to use in lane_planner.py', live=True),
                         'cloak': Param(False, bool, "make comma believe you are on their fork"),
                         'supercloak': Param(False, bool, "give comma a fake dongle ID, sparing your old one. Still carries a risk of your device being banned."),
                         'supercloak_reregister': Param(False, bool, "dump your supercloak Dongle ID if it gets banned"),
-                        'uploadsAllowed': Param(False, bool, "Allow uploads to Comma. Not recommended. If you are not cloaked and supercloaked, you risk your device being banned."),
+                        'uploadsAllowed': Param(True, bool, "Allow uploads to Comma. Not recommended. If you are not cloaked and supercloaked, you risk your device being banned."),
                         #'use_car_caching': Param(True, bool, 'Whether to use fingerprint caching'),
                         }
 
