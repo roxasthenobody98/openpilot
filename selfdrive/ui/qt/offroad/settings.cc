@@ -18,6 +18,7 @@
 
 QWidget * fork_toggles() {
   QVBoxLayout *forktoggles_list = new QVBoxLayout();
+  forktoggles_list->setSpacing(30);
 
   forktoggles_list->addWidget(new ButtonControl("Acknowledge Ford APA Safety", "READ",
                                    "This must be read and acknowledged before steering will be allowed.", [=]() {
@@ -266,10 +267,10 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     font-size: 90px;
     font-weight: bold;
     border 1px grey solid;
-    border-radius: 50px;
+    border-radius: 75px;
     background-color: #292929;
   )");
-  close_btn->setFixedSize(100, 100);
+  close_btn->setFixedSize(150, 150);
   sidebar_layout->addSpacing(20);
   sidebar_layout->addWidget(close_btn, 0, Qt::AlignLeft);
   QObject::connect(close_btn, SIGNAL(released()), this, SIGNAL(closeSettings()));
@@ -309,7 +310,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     nav_btns->addButton(btn);
     sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
 
-    panel->setContentsMargins(50, 25, 50, 25);
+    panel->setContentsMargins(60, 40, 60, 40);
     QScrollArea *panel_frame = new QScrollArea;
     panel_frame->setWidget(panel);
     panel_frame->setWidgetResizable(true);
