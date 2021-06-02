@@ -18,9 +18,8 @@
 
 QWidget * fork_toggles(QWidget * parent) {
   QVBoxLayout *forktoggles_list = new QVBoxLayout();
-  QList<ButtonControl*> fork_btns;
 
-  fork_btns.append(new ButtonControl("Acknowledge Ford APA Safety", "READ",
+  forktoggles_list->addWidget(new ButtonControl("Acknowledge Ford APA Safety", "READ",
                                    "This must be read and acknowledged before steering will be allowed.", [=]() {
     if (ConfirmationDialog::confirm("This system uses the Ford Active Park system for steering. Angles are constrained within safe limits, but you must always be vigilant and monitor what the system is doing. For more information, visit https://github.com/roxasthenobody98/phoenixpilot")) {
       Params().write_db_value("apaAcknowledged", "1");
@@ -45,15 +44,10 @@ QWidget * fork_toggles(QWidget * parent) {
                                             "../assets/offroad/icon_openpilot.png"
                                               ));
   forktoggles_list->addWidget(horizontal_line());
-  for(auto &btn : fork_btns){
-    forktoggles_list->addWidget(horizontal_line());
-    QObject::connect(parent, SIGNAL(offroadTransition(bool)), btn, SLOT(setEnabled(bool)));
-    forktoggles_list->addWidget(btn);
-  }
-
-  QWidget *widget = new QWidget;
-  widget->setLayout(forktoggles_list);
-  return widget;
+  
+  QWidget *forkwidget = new QWidget;
+  forkwidget->setLayout(forktoggles_list);
+  return forkwidget;
 }
 
 QWidget * toggles_panel() {
