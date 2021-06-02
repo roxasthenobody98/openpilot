@@ -16,7 +16,7 @@
 #include "common/util.h"
 #include "selfdrive/hardware/hw.h"
 
-QWidget * fork_toggles() {
+QWidget * fork_toggles(QWidget * parent) {
   QVBoxLayout *forktoggles_list = new QVBoxLayout();
   QList<ButtonControl*> fork_btns;
 
@@ -45,10 +45,10 @@ QWidget * fork_toggles() {
                                             "../assets/offroad/icon_openpilot.png"
                                               ));
   forktoggles_list->addWidget(horizontal_line());
-  for(auto &btn : offroad_btns){
-    device_layout->addWidget(horizontal_line());
+  for(auto &btn : fork_btns){
+    forktoggles_list->addWidget(horizontal_line());
     QObject::connect(parent, SIGNAL(offroadTransition(bool)), btn, SLOT(setEnabled(bool)));
-    device_layout->addWidget(btn);
+    forktoggles_list->addWidget(btn);
   }
 
   QWidget *widget = new QWidget;
