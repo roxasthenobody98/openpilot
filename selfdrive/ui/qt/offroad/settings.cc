@@ -16,7 +16,7 @@
 #include "common/util.h"
 #include "selfdrive/hardware/hw.h"
 
-QWidget * fork_toggles(QWidget * parent) {
+QWidget * fork_toggles() {
   QVBoxLayout *forktoggles_list = new QVBoxLayout();
 
   forktoggles_list->addWidget(new ButtonControl("Acknowledge Ford APA Safety", "READ",
