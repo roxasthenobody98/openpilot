@@ -1,5 +1,6 @@
 from cereal import car
 import numpy as np
+from selfdrive.config import Conversions as CV
 from common.numpy_fast import interp, clip
 from selfdrive.car.ford.fordcan import create_steer_command, create_lkas_ui, spam_cancel_button
 from opendbc.can.packer import CANPacker
@@ -61,7 +62,7 @@ class CarController():
           else:
             angle_rate_lim = interp(CS.out.vEgo, ANGLE_DELTA_BP, ANGLE_DELTA_VU)
           
-          apply_steer = clip(apply_steer, self.lastAngle - angle_rate_lim, self.lastAngle + angle_rate_lim) 
+          apply_steer = clip(apply_steer, self.lastAngle - angle_rate_lim, self.lastAngle + angle_rate_lim) * CV.DEG_TO_MRAD
         else:
           apply_steer = CS.out.steeringAngle
         self.lastAngle = apply_steer
