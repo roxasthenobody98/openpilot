@@ -13,6 +13,8 @@ class Conversions:
   #Angle
   DEG_TO_RAD = np.pi/180.
   RAD_TO_DEG = 1. / DEG_TO_RAD
+  DEG_TO_MRAD = (1000*np.pi)/180
+  MRAD_TO_DEG = 1. / DEG_TO_MRAD
   #Mass
   LB_TO_KG = 0.453592
 
