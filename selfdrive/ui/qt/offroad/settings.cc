@@ -32,6 +32,12 @@ QWidget * fork_toggles() {
                                             "Require a wheel touch to start an ALC maneuver",
                                             "../assets/offroad/icon_road.png"
                                               ));
+  forktoggles_list->addWidget(horizontal_line())
+  forktoggles_list->addWidget(new ParamControl("OpenpilotLongitudinal",
+                                            "Enable openpilot Longitudinal",
+                                            "Use openpilot to provide ACC. Must either be on a Stop/Go vehicle, have enabled ACC in the ABS with Forscan, or have a smartCCM to use these commands",
+                                            "../assets/offroad/icon_road.png"
+                                              ));
   forktoggles_list->addWidget(horizontal_line());
   forktoggles_list->addWidget(new ParamControl("athenaAllowed",
                                             "Enable Athena",
