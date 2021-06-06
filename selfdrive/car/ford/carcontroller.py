@@ -57,6 +57,11 @@ class CarController():
     self.sappAction = 0
     self.eightysix = 0
     self.alwaysTrue = True
+    self.params = CarControllerParams(CP)
+    
+    P = self.params
+    
+    
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
   
     frame_step = CarControllerParams.FRAME_STEP
