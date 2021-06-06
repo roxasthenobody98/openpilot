@@ -56,6 +56,9 @@ class CarController():
     self.apaCounter = 0
     self.sappAction = 0
     self.eightysix = 0
+    self.acc_decel_command = 0
+    self.desiredSpeed = 20
+    self.stopStat = 0
     self.alwaysTrue = True   
     
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel):
@@ -69,6 +72,10 @@ class CarController():
       if CS.epsAssistLimited:
         print("PSCM Assist Limited")
       if (frame % 2) == 0:
+        if apply_brake <= 0.04:
+          self.acc_decel_command = 1
+        else:
+          self.acc_decel_command = 0
         brake, self.braking, self.brake_steady = actuator_hystereses(actuators.brake, self.braking, self.brake_steady, CS.out.vEgo, CS.CP.carFingerprint)
         apply_gas = clip(actuators.gas, 0., 1.)
         apply_brake = int(clip(self.brake_last * CarControllerParams.BRAKE_MAX, 0, CarControllerParams.BRAKE_MAX - 1))
