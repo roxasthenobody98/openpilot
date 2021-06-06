@@ -103,7 +103,7 @@ def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcrampi
   }
   return packer.make_can_msg("Lane_Keep_Assist_Ui", 0, values)
 
-def create_accdata(packer, enabled, acc_gas, acc_brk, acc_decel, acc_spd, stopstat)
+def create_accdata(packer, enabled, acc_gas, acc_brk, acc_decel, acc_spd, stopstat):
   """Creates a CAN message for ACCDATA"""
   
   values = {
@@ -118,7 +118,7 @@ def create_accdata(packer, enabled, acc_gas, acc_brk, acc_decel, acc_spd, stopst
   }
   return packer.make_can_msg("ACCDATA", 0, values)
 
-def create_accdata2(packer, enabled, frame_step, fcwhud_1, fcwhud_2, fcwhud_3, hud_intensity, flash_rate)
+def create_accdata2(packer, enabled, frame_step, fcwhud_1, fcwhud_2, fcwhud_3, hud_intensity, flash_rate):
   """Creates a CAN message for ACCDATA_2"""
   csum = 0
   values = {
@@ -132,7 +132,7 @@ def create_accdata2(packer, enabled, frame_step, fcwhud_1, fcwhud_2, fcwhud_3, h
   }
   return packer.make_can_msg("ACCDATA_2", 0, values)
 
-def create_accdata3(packer, enabled, fcw_status, fcw_sensitivity, chevrons, gap)
+def create_accdata3(packer, enabled, fcw_status, fcw_sensitivity, chevrons, gap):
   """Creates a CAN message for ACCDATA_3"""
   
   values = {
