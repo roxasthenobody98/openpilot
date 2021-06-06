@@ -58,6 +58,7 @@ class LateralPlanner():
     self.setup_mpc()
     self.solution_invalid_cnt = 0
     self.use_lanelines = Params().get('EndToEndToggle') != b'1'
+    self.lane_change_enabled = Params().get('LaneChangeEnabled') == b'1'
     self.lane_change_state = LaneChangeState.off
     self.lane_change_direction = LaneChangeDirection.none
     self.lane_change_timer = 0.0
@@ -69,7 +70,7 @@ class LateralPlanner():
     self.plan_yaw = np.zeros((TRAJECTORY_SIZE,))
     self.t_idxs = np.arange(TRAJECTORY_SIZE)
     self.y_pts = np.zeros(TRAJECTORY_SIZE)
-    self.alca_nudge_required = self.op_params.get('alca_nudge_required')
+    self.alca_nudge_required = Params().get('alca_nudge_required') == b'1'
     self.alca_min_speed = self.op_params.get('alca_min_speed')
 
   def setup_mpc(self):
@@ -109,7 +110,7 @@ class LateralPlanner():
     elif sm['carState'].rightBlinker:
       self.lane_change_direction = LaneChangeDirection.right
 
-    if (not active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX):
+    if (not active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX) or (not self.lane_change_enabled):
       self.lane_change_state = LaneChangeState.off
       self.lane_change_direction = LaneChangeDirection.none
     else:
