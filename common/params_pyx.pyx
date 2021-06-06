@@ -83,6 +83,12 @@ keys = {
   b"Offroad_UpdateFailed": [TxType.CLEAR_ON_MANAGER_START],
   b"Offroad_HardwareUnsupported": [TxType.CLEAR_ON_MANAGER_START],
   b"ForcePowerDown": [TxType.CLEAR_ON_MANAGER_START],
+  b"apaAcknowledged": [TxType.PERSISTENT],
+  b"alca_nudge_required": [TxType.PERSISTENT],
+  b"athenaAllowed": [TxType.PERSISTENT],
+  b"uploadsAllowed": [TxType.PERSISTENT],
+  b"OpenpilotLongitudinal": [TxType.PERSISTENT],
+  b"LaneChangeEnabled": [TxType.PERSISTENT],
 }
 
 def ensure_bytes(v):
