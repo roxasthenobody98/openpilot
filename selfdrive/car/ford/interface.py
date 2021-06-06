@@ -98,8 +98,9 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     ret.steerControlType = car.CarParams.SteerControlType.angle
-
+    longToggle = Params().get('OpenpilotLongitudinal') == b'1'
     ret.enableCamera = True
+    ret.openpilotLongitudinalControl = ret.enableCamera and longToggle
     cloudlog.warning("ECU Camera Simulated: %r", ret.enableCamera)
 
     return ret
