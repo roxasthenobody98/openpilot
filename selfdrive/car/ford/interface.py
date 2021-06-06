@@ -7,9 +7,10 @@ from selfdrive.car.ford.values import MAX_ANGLE, CAR
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
 from common.op_params import opParams
+from common.params import Params
 
 op_params = opParams()
-apaAcknowledge = op_params.get('apaAcknowledge')
+apaAcknowledged = Params().get('apaAcknowledged') == b'1'
 
 class CarInterface(CarInterfaceBase):
 
@@ -117,7 +118,7 @@ class CarInterface(CarInterfaceBase):
 
     # events
     events = self.create_common_events(ret)
-    if not apaAcknowledge:
+    if not apaAcknowledged:
       events.add(car.CarEvent.EventName.apaNotAcknowledged)
     if self.CC.enabled_last:
       #if self.CS.sappHandshake != 2 and self.CC.sappConfig_last != 16:
