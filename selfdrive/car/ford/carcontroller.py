@@ -1,13 +1,38 @@
 from cereal import car
 from common.numpy_fast import interp, clip
 from selfdrive.car import make_can_msg
-from selfdrive.car.ford.fordcan import create_steer_command, create_speed_command, create_speed_command2, create_ds_118, create_lkas_ui, spam_cancel_button
+from selfdrive.car.ford.fordcan import create_steer_command, create_speed_command, create_speed_command2, create_ds_118, create_lkas_ui, create_accdata, create_accdata2, create_accdata3, spam_cancel_button
 from selfdrive.car.ford.values import CAR, CarControllerParams
 from opendbc.can.packer import CANPacker
 
 MAX_STEER_DELTA = 0.2
 TOGGLE_DEBUG = False
 COUNTER_MAX = 7
+
+def actuator_hystereses(brake, braking, brake_steady, v_ego, car_fingerprint):
+  # hyst params
+  brake_hyst_on = 0.02     # to activate brakes exceed this value
+  brake_hyst_off = 0.005                     # to deactivate brakes below this value
+  brake_hyst_gap = 0.01                      # don't change brake command for small oscillations within this value
+
+  #*** hysteresis logic to avoid brake blinking. go above 0.1 to trigger
+  if (brake < brake_hyst_on and not braking) or brake < brake_hyst_off:
+    brake = 0.
+  braking = brake > 0.
+
+  # for small brake oscillations within brake_hyst_gap, don't change the brake command
+  if brake == 0.:
+    brake_steady = 0.
+  elif brake > brake_steady + brake_hyst_gap:
+    brake_steady = brake - brake_hyst_gap
+  elif brake < brake_steady - brake_hyst_gap:
+    brake_steady = brake + brake_hyst_gap
+  brake = brake_steady
+
+  if (car_fingerprint in (CAR.ACURA_ILX, CAR.CRV, CAR.CRV_EU)) and brake > 0.0:
+    brake += 0.15
+
+  return brake, braking, brake_steady
 
 class CarController():
   def __init__(self, dbc_name, CP, VM):
@@ -19,6 +44,10 @@ class CarController():
     self.generic_toggle_last = 0
     self.steer_alert_last = False
     self.lkas_action = 0
+    self.braking = False
+    self.brake_steady = 0.
+    self.brake_last = 0.
+    self.apply_brake_last = 0
     #self.lkasToggle = 1
     self.lastAngle = 0
     self.angleReq = 0
@@ -42,6 +71,13 @@ class CarController():
       if CS.epsAssistLimited:
         print("PSCM Assist Limited")
       if (frame % 2) == 0:
+        brake, self.braking, self.brake_steady = actuator_hystereses(actuators.brake, self.braking, self.brake_steady, CS.out.vEgo, CS.CP.carFingerprint)
+        apply_gas = clip(actuators.gas, 0., 1.)
+        apply_brake = int(clip(self.brake_last * P.BRAKE_MAX, 0, P.BRAKE_MAX - 1))
+        can_sends.append(create_accdata(self.packer, enabled, apply_gas, apply_brake, self.acc_decel_command, self.desiredSpeed, self.stopStat)
+        can_sends.append(create_accdata2(self.packer, enabled, frame, 0, 0, 0, 0, 0)
+        can_sends.append(create_accdata3(self.packer, enabled, 1, 3, 0, 2)
+        self.apply_brake_last = apply_brake
         if self.alwaysTrue == True:
           self.actlnocs = 0
           self.actlbrknocs = 0
