@@ -80,12 +80,12 @@ def create_speed_command2(packer, enabled, frame, speed2, lsmcdecel, actlbrknocs
   }
   return packer.make_can_msg("BrakeSysFeatures", 2, values)
 
-def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats, persipma, dasdsply, x30, daschime):
+def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats, persipma, dasdsply, x30, daschime, lines):
   """Creates a CAN message for the Ford Steer Ui."""
-  if enabled:
-    lines = 0x6
-  else:
-    lines = 0xc
+  #if enabled:
+  #  lines = 0x6
+  #else:
+  #  lines = 0xc
 
   values = {
     "PersIndexIpma_D_Actl": persipma,
