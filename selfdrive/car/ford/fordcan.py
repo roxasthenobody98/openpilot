@@ -1,91 +1,66 @@
 from common.numpy_fast import clip
 from selfdrive.car.ford.values import MAX_ANGLE
+from cereal import car
 
-def create_steer_command(packer, angle_cmd, enabled, angle_steers, action, angleReq, sappConfig, sappChime):
+def fordchecksum(cnt, speed):
+  # Checksum is 256 - cnt - speed - 4 with bitwise shifting and rounding on the speed.
+  speed = int(round(speed / 0.01, 2))
+  top = speed >> 8
+  bottom = speed & 0xff
+  cs = 256 - cnt - top - bottom - 4
+  if cs < 0:
+    cs = cs + 256
+  return cs
+
+def create_steer_command(packer, angle_cmd, enabled, action, angleReq):
   """Creates a CAN message for the Ford Steer Command."""
-
+  
   values = {
     "ApaSys_D_Stat": action,
     "EPASExtAngleStatReq": angleReq,
     "ExtSteeringAngleReq2": angle_cmd,
-    "SAPPStatusCoding": sappConfig,
-    "ApaChime_D_Rq": sappChime,
   }
   return packer.make_can_msg("ParkAid_Data", 2, values)
 
-def create_ds_118(packer, filler1, filler2, filler3, brakectr, awdlckmax, awdlckmn, drvstate, drvtq, emergbrk, stoplmp, angle):
-  """Creates a CAN message for the Ford 118 message."""
-
-  values = {
-    "BrkCtrFnd_B_Stat":  brakectr,
-    "AwdLck_Tq_RqMx": awdlckmax,
-    "AwdLck_Tq_RqMn": awdlckmn,
-    "DrvSte_D_Stat": drvstate,
-    "DrvSte_Tq_Rq": drvtq,
-    "EmgcyBrkLamp_D_Rq": emergbrk,
-    "StopLamp_B_RqBrk": stoplmp,
-    "SteWhlRelInit_An_Sns": angle,
-    "DS_Filler_1": filler1,
-    "DS_Filler_2": filler2,
-    "DS_Filler_3": filler3,
-  }
-  return packer.make_can_msg("BrakeSnData_5", 2, values)
-
-def create_speed_command(packer, enabled, frame, speed, trlraid, actlnocs, actlnocnt, actlqf, gear, frame_step):
+def create_speed_command(packer, enabled, frame, speed, gear, frame_step):
   """Creates a CAN message for the Ford Speed Command."""
-  #Checksum is similar to mazda. Start with 249, then subtract the messages per line, then add 10. Bitwise shifting will be needed in order to specify a speed, otherwise if it is 0, then no action is needed. 
-  cnt = frame/frame_step % 16 #message only sends odd numbered counters for some weird reason. this might work. not in sync with 1045. 
-  csum_a = 249 - gear - trlraid - cnt - actlqf -  speed
-  csum_a = csum_a + 10
-  cksum_a = csum_a
-  #if enabled:
-  #  cksum_a = csum_a
-  #  cnt = frame/frame_step % 16
-  #else:
-  #  cksum_a = actlnocs
-  #  cnt = actlnocnt
-     
+    
+  if gear == GearShifter.reverse:
+    reverse = 3
+    trailer = 1
+  else:
+    reverse = 1
+    trailer = 0
+    
+  cnt = frame % frame_step
+  cs = fordchecksum(cnt, speed)
+  
   values = {
-    "VehVTrlrAid_B_Avail": trlraid,
-    "VehVActlEng_No_Cs": cksum_a,
+    "VehVTrlrAid_B_Avail": trailer,
+    "VehVActlEng_No_Cs": cs,
     "VehVActlEng_No_Cnt": cnt,
-    "VehVActlEng_D_Qf": actlqf,
-    "GearRvrse_D_Actl": gear,
+    "VehVActlEng_D_Qf": 3,
+    "GearRvrse_D_Actl": reverse,
     "Veh_V_ActlEng": speed,
   }
   return packer.make_can_msg("EngVehicleSpThrottle2", 2, values)
 
-def create_speed_command2(packer, enabled, frame, speed2, lsmcdecel, actlbrknocs, actlbrknocnt, actlbrkqf, brklvl, vehstab, frame_step):
+def create_speed_command2(packer, enabled, frame, speed2, frame_step):
   """Creates a CAN message for the Ford Speed Command."""
-  #Checksum is similar to mazda. Start with 249, then subtract the messages per line, then add 10. Bitwise shifting will be needed in order to specify a speed, otherwise if it is 0, then no action is needed. 
-  cnt2 = frame/frame_step % 16
-  csum_b = 249 - speed2 - actlbrkqf - cnt2 - brklvl - lsmcdecel - vehstab
-  csum_b = csum_b + 10
-  cksum_b = csum_b
-  print("cnt2:", cnt2)
-  #if enabled:
-  #  cksum_a = csum_a
-  #  cnt2 = frame/frame_step % 16
-  #else:
-  #  cksum_a = actlnocs
-  #  cnt2 = actlnocnt
+  cnt = frame % frame_step
+  cs = fordchecksum(cnt, speed)
+  
   values = {
     "Veh_V_ActlBrk": speed2,
-    "LsmcBrkDecel_D_Stat": lsmcdecel,
-    "VehVActlBrk_No_Cs": cksum_b,
-    "VehVActlBrk_No_Cnt": cnt2,
-    "VehVActlBrk_D_Qf": actlbrkqf,
-    "BrkFluidLvl_D_Stat": brklvl,
-    "VehStab_D_Stat": vehstab,
+    "LsmcBrkDecel_D_Stat": 4,
+    "VehVActlBrk_No_Cs": cs,
+    "VehVActlBrk_No_Cnt": cnt,
+    "VehVActlBrk_D_Qf": 3,
   }
   return packer.make_can_msg("BrakeSysFeatures", 2, values)
 
 def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats, persipma, dasdsply, x30, daschime, lines):
   """Creates a CAN message for the Ford Steer Ui."""
-  #if enabled:
-  #  lines = 0x6
-  #else:
-  #  lines = 0xc
 
   values = {
     "PersIndexIpma_D_Actl": persipma,

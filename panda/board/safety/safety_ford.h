@@ -112,7 +112,7 @@ static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
 	
  if (!relay_malfunction) {
     // Forward everything except for 514 speed and 936 apa
-    if ((bus_num == 0) && (addr != 0x3A8) && (addr != 0x202) && (addr != 0x76) && (addr != 0x415)) {
+    if ((bus_num == 0) && (addr != 0x3A8) && (addr != 0x202) && (addr != 0x415)) {
       bus_fwd = 2;
     }
     // legacy forward from lkas

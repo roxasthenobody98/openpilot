@@ -48,21 +48,6 @@ BO_ 76 RCMStatusMessage2_FD1: 8 GWM
  SG_ EDRTriggerEvntSync : 29|1@0+ (1,0) [0|1] "SED"  IPMA_ADAS
  SG_ PassRstrnInd_Req : 31|2@0+ (1,0) [0|3] "SED" Vector__XXX
 
-BO_ 130 EPAS_INFO: 8 PSCM
- SG_ DrvSteActv_B_Stat : 10|1@0+ (1,0) [0|1] "SED"  GWM,ABS_ESC
- SG_ DrvSte_Tq_Actl : 47|8@0+ (0.0625,-8) [-8|7.8125] "Nm"  GWM,ABS_ESC
- SG_ SteMdule_D_Stat : 55|3@0+ (1,0) [0|7] "SED"  GWM
- SG_ SteMdule_U_Meas : 39|8@0+ (0.05,6) [6|18.7] "Volts"  GWM
- SG_ SteMdule_I_Est : 21|12@0+ (0.05,-64) [-64|140.7] "Amps"  GWM
- SG_ EPAS_Failure : 9|2@0+ (1,0) [0|3] "SED"  IPMA_ADAS,GWM
- SG_ SteeringColumnTorque : 7|8@0+ (0.0625,-8) [-8|7.8125] "Nm"  GWM,IPMA_ADAS,ABS_ESC
- SG_ SAPPAngleControlStat6 : 15|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
- SG_ SAPPAngleControlStat5 : 14|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
- SG_ SAPPAngleControlStat4 : 13|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
- SG_ SAPPAngleControlStat3 : 12|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
- SG_ SAPPAngleControlStat2 : 11|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
- SG_ SAPPAngleControlStat1 : 23|2@0+ (1,0) [0|3] "SED"  GWM,IPMA_ADAS
-
 BO_ 118 BrakeSnData_5: 8 ABS_ESC
  SG_ BrkCtrFnd_B_Stat : 39|1@0+ (1,0) [0|1] "SED" GWM
  SG_ AwdLck_Tq_RqMx : 35|12@0+ (1,0) [0|4095] "Nm" GWM,TCCM
@@ -81,6 +66,21 @@ BO_ 119 BrakeSnData_3: 8 ABS_ESC
  SG_ VehLongComp_A_Actl : 49|10@0+ (0.035,-17.9) [-17.9|17.835] "m/s^2"  VDM,ECM_Diesel,PCM,PCM_HEV,TCM_DSL,PSCM,GWM
  SG_ VehLatComp_A_Actl : 43|10@0+ (0.035,-17.9) [-17.9|17.835] "m/s^2"  VDM,ECM_Diesel,PCM,PCM_HEV,TCM_DSL,PSCM,TCCM,GWM
  SG_ VehYawComp_W_Actl : 19|12@0+ (0.03663,-75) [-75|74.92659] "deg/s"  VDM,TCCM,IPMA_ADAS,ECM_Diesel,PCM,PCM_HEV,TCM_DSL,PSCM,GWM
+ 
+BO_ 130 EPAS_INFO: 8 PSCM
+ SG_ DrvSteActv_B_Stat : 10|1@0+ (1,0) [0|1] "SED"  GWM,ABS_ESC
+ SG_ DrvSte_Tq_Actl : 47|8@0+ (0.0625,-8) [-8|7.8125] "Nm"  GWM,ABS_ESC
+ SG_ SteMdule_D_Stat : 55|3@0+ (1,0) [0|7] "SED"  GWM
+ SG_ SteMdule_U_Meas : 39|8@0+ (0.05,6) [6|18.7] "Volts"  GWM
+ SG_ SteMdule_I_Est : 21|12@0+ (0.05,-64) [-64|140.7] "Amps"  GWM
+ SG_ EPAS_Failure : 9|2@0+ (1,0) [0|3] "SED"  IPMA_ADAS,GWM
+ SG_ SteeringColumnTorque : 7|8@0+ (0.0625,-8) [-8|7.8125] "Nm"  GWM,IPMA_ADAS,ABS_ESC
+ SG_ SAPPAngleControlStat6 : 15|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
+ SG_ SAPPAngleControlStat5 : 14|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
+ SG_ SAPPAngleControlStat4 : 13|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
+ SG_ SAPPAngleControlStat3 : 12|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
+ SG_ SAPPAngleControlStat2 : 11|1@0+ (1,0) [0|1] "SED"  GWM,IPMA_ADAS
+ SG_ SAPPAngleControlStat1 : 23|2@0+ (1,0) [0|3] "SED"  GWM,IPMA_ADAS
  
 BO_ 131 Steering_Buttons: 8 GWM
  SG_ Right_Turn_Light : 5|1@0+ (1,0) [0|0] "SED"  IPMA_ADAS,PSCM
