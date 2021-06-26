@@ -28,13 +28,17 @@ else:
     env = env.Clone()
     env['FRAMEWORKS'] = ['OpenCL', 'OpenGL']
 
-env.SharedLibrary('snapshot/visionipc',
-  ["#selfdrive/common/visionipc.c", "#selfdrive/common/ipc.c"])
-
 env.Program('camerad', [
     'main.cc',
     'cameras/camera_common.cc',
-    'transforms/rgb_to_yuv.c',
+    'transforms/rgb_to_yuv.cc',
     'imgproc/utils.cc',
     cameras,
   ], LIBS=libs)
+
+if GetOption("test"):
+  env.Program('test/ae_gray_test', [
+      'test/ae_gray_test.cc',
+      'cameras/camera_common.cc',
+      'transforms/rgb_to_yuv.cc',
+    ], LIBS=libs)

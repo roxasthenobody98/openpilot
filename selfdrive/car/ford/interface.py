@@ -6,7 +6,11 @@ from selfdrive.config import Conversions as CV
 from selfdrive.car.ford.values import MAX_ANGLE, CAR
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
+from common.op_params import opParams
+from common.params import Params
 
+op_params = opParams()
+apaAcknowledged = Params().get('apaAcknowledged') == b'1'
 
 class CarInterface(CarInterfaceBase):
 
@@ -27,10 +31,36 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 18.0
       ret.mass = 4770. * CV.LB_TO_KG + STD_CARGO_KG
       ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGain = 4.0
-      ret.lateralTuning.indi.outerLoopGain = 3.5
-      ret.lateralTuning.indi.timeConstant = 2.0
-      ret.lateralTuning.indi.actuatorEffectiveness = 1.0
+      ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      ret.lateralTuning.indi.innerLoopGainV = [4.0]
+      ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      ret.lateralTuning.indi.outerLoopGainV = [3.5]
+      ret.lateralTuning.indi.timeConstantBP = [0.]
+      ret.lateralTuning.indi.timeConstantV = [2.0]
+      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [1.0]
+      ret.steerActuatorDelay = 0.3
+      ret.steerLimitTimer = 0.8
+      ret.steerRateCost = 1.0
+      ret.centerToFront = ret.wheelbase * 0.44
+      tire_stiffness_factor = 0.5328
+      ret.longitudinalTuning.kpBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kiBP = [0., 35.]
+      ret.longitudinalTuning.kiV = [0.18, 0.12]
+    elif candidate == CAR.TRANSIT:
+      ret.wheelbase = 3.04
+      ret.steerRatio = 14.8
+      ret.mass = 3900. * CV.LB_TO_KG + STD_CARGO_KG
+      ret.lateralTuning.init('indi')
+      ret.lateralTuning.indi.innerLoopGainBP = [0.]
+      ret.lateralTuning.indi.innerLoopGainV = [4.0]
+      ret.lateralTuning.indi.outerLoopGainBP = [0.]
+      ret.lateralTuning.indi.outerLoopGainV = [3.5]
+      ret.lateralTuning.indi.timeConstantBP = [0.]
+      ret.lateralTuning.indi.timeConstantV = [2.0]
+      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
+      ret.lateralTuning.indi.actuatorEffectivenessV = [1.0]
       ret.steerActuatorDelay = 0.3
       ret.steerLimitTimer = 0.8
       ret.steerRateCost = 1.0
@@ -68,8 +98,9 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     ret.steerControlType = car.CarParams.SteerControlType.angle
-
+    longToggle = Params().get('OpenpilotLongitudinal') == b'1'
     ret.enableCamera = True
+    ret.openpilotLongitudinalControl = ret.enableCamera and longToggle
     cloudlog.warning("ECU Camera Simulated: %r", ret.enableCamera)
 
     return ret
@@ -88,7 +119,8 @@ class CarInterface(CarInterfaceBase):
 
     # events
     events = self.create_common_events(ret)
-      
+    if not apaAcknowledged:
+      events.add(car.CarEvent.EventName.apaNotAcknowledged)
     if self.CC.enabled_last:
       #if self.CS.sappHandshake != 2 and self.CC.sappConfig_last != 16:
       #  events.add(car.CarEvent.EventName.pscmHandshaking)
@@ -106,7 +138,10 @@ class CarInterface(CarInterfaceBase):
   def apply(self, c):
 
     can_sends = self.CC.update(c.enabled, self.CS, self.frame, c.actuators,
-                               c.hudControl.visualAlert, c.cruiseControl.cancel)
+                               c.hudControl.visualAlert, c.cruiseControl.cancel,
+                               c.hudControl.leftLaneVisible, c.hudControl.rightLaneVisible,
+                               c.hudControl.leadVisible, c.hudControl.leftLaneDepart,
+                               c.hudControl.rightLaneDepart)
 
     self.frame += 1
     return can_sends

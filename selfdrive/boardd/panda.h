@@ -3,6 +3,9 @@
 #include <ctime>
 #include <cstdint>
 #include <pthread.h>
+#include <mutex>
+#include <vector>
+#include <optional>
 
 #include <libusb-1.0/libusb.h>
 
@@ -30,6 +33,7 @@ struct __attribute__((packed)) health_t {
   uint8_t car_harness_status;
   uint8_t usb_power_mode;
   uint8_t safety_model;
+  int16_t safety_param;
   uint8_t fault_status;
   uint8_t power_save_enabled;
 };
@@ -41,7 +45,7 @@ class Panda {
  private:
   libusb_context *ctx = NULL;
   libusb_device_handle *dev_handle = NULL;
-  pthread_mutex_t usb_lock;
+  std::mutex usb_lock;
   void handle_usb_issue(int err, const char func[]);
   void cleanup();
 
@@ -49,9 +53,8 @@ class Panda {
   Panda();
   ~Panda();
 
-  bool connected = true;
-  cereal::HealthData::HwType hw_type = cereal::HealthData::HwType::UNKNOWN;
-  bool is_pigeon = false;
+  std::atomic<bool> connected = true;
+  cereal::PandaState::PandaType hw_type = cereal::PandaState::PandaType::UNKNOWN;
   bool has_rtc = false;
 
   // HW communication
@@ -61,7 +64,7 @@ class Panda {
   int usb_bulk_read(unsigned char endpoint, unsigned char* data, int length, unsigned int timeout=TIMEOUT);
 
   // Panda functionality
-  cereal::HealthData::HwType get_hw_type();
+  cereal::PandaState::PandaType get_hw_type();
   void set_safety_model(cereal::CarParams::SafetyModel safety_model, int safety_param=0);
   void set_unsafe_mode(uint16_t unsafe_mode);
   void set_rtc(struct tm sys_time);
@@ -69,14 +72,13 @@ class Panda {
   void set_fan_speed(uint16_t fan_speed);
   uint16_t get_fan_speed();
   void set_ir_pwr(uint16_t ir_pwr);
-  health_t get_health();
+  health_t get_state();
   void set_loopback(bool loopback);
-  const char* get_firmware_version();
-  const char* get_serial();
+  std::optional<std::vector<uint8_t>> get_firmware_version();
+  std::optional<std::string> get_serial();
   void set_power_saving(bool power_saving);
-  void set_usb_power_mode(cereal::HealthData::UsbPowerMode power_mode);
+  void set_usb_power_mode(cereal::PandaState::UsbPowerMode power_mode);
   void send_heartbeat();
   void can_send(capnp::List<cereal::CanData>::Reader can_data_list);
-  int can_receive(cereal::Event::Builder &event);
-
+  int can_receive(kj::Array<capnp::word>& out_buf);
 };

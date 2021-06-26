@@ -18,7 +18,7 @@ class CarState(CarStateBase):
     ret.vEgoRaw = ((ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.) / speed_factor
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
-    ret.steeringAngle = cp.vl["ParkAid_Data"]['ExtSteeringAngleReq2'] #cp_cam.vl["EPS_SAS"]['SAS']
+    ret.steeringAngleDeg = cp.vl["ParkAid_Data"]['ExtSteeringAngleReq2'] #cp_cam.vl["EPS_SAS"]['SAS']
     ret.steeringPressed = cp_cam.vl["Lane_Keep_Assist_Status"]['LaHandsOff_B_Actl'] == 0
     ret.steerError = cp_cam.vl["Lane_Keep_Assist_Status"]['LaActDeny_B_Actl'] == 1
     ret.cruiseState.speed = cp.vl["Cruise_Status"]['Set_Speed'] * CV.MPH_TO_MS
@@ -86,6 +86,8 @@ class CarState(CarStateBase):
     self.actlnocnt = cp.vl["EngVehicleSpThrottle2"]['VehVActlEng_No_Cnt']
     self.actlqf = cp.vl["EngVehicleSpThrottle2"]['VehVActlEng_D_Qf']
     self.epsgear = cp.vl["EngVehicleSpThrottle2"]['GearRvrse_D_Actl']
+    self.stab_stat = cp.vl["BrakeSysFeatures"]['VehStab_D_Stat']
+    self.brkfld = cp.vl["BrakeSysFeatures"]['BrkFluidLvl_D_Stat']
     self.lsmcdecel = cp.vl["BrakeSysFeatures"]['LsmcBrkDecel_D_Stat']
     self.actlbrknocs = cp.vl["BrakeSysFeatures"]['VehVActlBrk_No_Cs']
     self.actlbrknocnt = cp.vl["BrakeSysFeatures"]['VehVActlBrk_No_Cnt']
@@ -141,6 +143,8 @@ class CarState(CarStateBase):
       ("VehVActlEng_D_Qf", "EngVehicleSpThrottle2", 0.),
       ("GearRvrse_D_Actl", "EngVehicleSpThrottle2", 0.),
       ("VehVActlEng_No_Cnt", "EngVehicleSpThrottle2", 0.),
+      ("VehStab_D_Stat", "BrakeSysFeatures", 0.),
+      ("BrkFluidLvl_D_Stat", "BrakeSysFeatures", 0.),
       ("Veh_V_ActlBrk", "BrakeSysFeatures", 0.),
       ("LsmcBrkDecel_D_Stat", "BrakeSysFeatures", 0.),
       ("VehVActlBrk_No_Cs", "BrakeSysFeatures", 0.),

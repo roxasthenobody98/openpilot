@@ -52,67 +52,100 @@ HYUNDAI_VERSION_REQUEST_MULTI = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]
   p16(0xf1a0)
 HYUNDAI_VERSION_RESPONSE = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40])
 
+
 TOYOTA_VERSION_REQUEST = b'\x1a\x88\x01'
 TOYOTA_VERSION_RESPONSE = b'\x5a\x88\x01'
 
-OBD_VERSION_REQUEST = b'\x09\x04'
-OBD_VERSION_RESPONSE = b'\x49\x04'
+VOLKSWAGEN_VERSION_REQUEST_MULTI = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]) + \
+  p16(uds.DATA_IDENTIFIER_TYPE.VEHICLE_MANUFACTURER_SPARE_PART_NUMBER) + \
+  p16(uds.DATA_IDENTIFIER_TYPE.VEHICLE_MANUFACTURER_ECU_SOFTWARE_VERSION_NUMBER) + \
+  p16(uds.DATA_IDENTIFIER_TYPE.APPLICATION_DATA_IDENTIFICATION)
+VOLKSWAGEN_VERSION_RESPONSE = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40])
 
 FORD_VERSION_REQUEST = b'\x22\xf1\x88'
 FORD_VERSION_RESPONSE = b'\x62\xf1\x88'
 
 FORD_VERSION_REQUEST_A = b'\x22\xf1\x89'
 FORD_VERSION_RESPONSE_A = b'\x62\xf1\x89'
-# supports subaddressing, request, response
+
+OBD_VERSION_REQUEST = b'\x09\x04'
+OBD_VERSION_RESPONSE = b'\x49\x04'
+
+DEFAULT_RX_OFFSET = 0x8
+VOLKSWAGEN_RX_OFFSET = 0x6a
+
+# brand, request, response, response offset
 REQUESTS = [
-  # Hundai
+  # Hyundai
   (
     "hyundai",
     [HYUNDAI_VERSION_REQUEST_SHORT],
     [HYUNDAI_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   (
     "hyundai",
     [HYUNDAI_VERSION_REQUEST_LONG],
     [HYUNDAI_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   (
     "hyundai",
     [HYUNDAI_VERSION_REQUEST_MULTI],
     [HYUNDAI_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   # Honda
   (
     "honda",
     [UDS_VERSION_REQUEST],
     [UDS_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   # Toyota
   (
     "toyota",
     [SHORT_TESTER_PRESENT_REQUEST, TOYOTA_VERSION_REQUEST],
     [SHORT_TESTER_PRESENT_RESPONSE, TOYOTA_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   (
     "toyota",
     [SHORT_TESTER_PRESENT_REQUEST, OBD_VERSION_REQUEST],
     [SHORT_TESTER_PRESENT_RESPONSE, OBD_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   (
     "toyota",
     [TESTER_PRESENT_REQUEST, DEFAULT_DIAGNOSTIC_REQUEST, EXTENDED_DIAGNOSTIC_REQUEST, UDS_VERSION_REQUEST],
     [TESTER_PRESENT_RESPONSE, DEFAULT_DIAGNOSTIC_RESPONSE, EXTENDED_DIAGNOSTIC_RESPONSE, UDS_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
+  ),
+  # Volkswagen
+  (
+    "volkswagen",
+    [VOLKSWAGEN_VERSION_REQUEST_MULTI],
+    [VOLKSWAGEN_VERSION_RESPONSE],
+    VOLKSWAGEN_RX_OFFSET,
+  ),
+  (
+    "volkswagen",
+    [VOLKSWAGEN_VERSION_REQUEST_MULTI],
+    [VOLKSWAGEN_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET,
   ),
   # Ford
   (
     "ford",
     [TESTER_PRESENT_REQUEST, FORD_VERSION_REQUEST],
     [TESTER_PRESENT_RESPONSE, FORD_VERSION_RESPONSE],
+    DEFAULT_RX_OFFSET, #new verify fpv2 still works
   ),
     (
     "ford",
     [TESTER_PRESENT_REQUEST, FORD_VERSION_REQUEST_A],
     [TESTER_PRESENT_RESPONSE, FORD_VERSION_RESPONSE_A],
+    DEFAULT_RX_OFFSET, #new
   ),
 ]
 
@@ -142,7 +175,7 @@ def match_fw_to_car(fw_versions):
         continue
 
       # TODO: on some toyota, the engine can show on two different addresses
-      if ecu_type == Ecu.engine and candidate in [TOYOTA.COROLLA_TSS2, TOYOTA.CHR, TOYOTA.LEXUS_IS] and found_version is None:
+      if ecu_type == Ecu.engine and candidate in [TOYOTA.COROLLA_TSS2, TOYOTA.CHR, TOYOTA.LEXUS_IS, TOYOTA.AVALON] and found_version is None:
         continue
 
       # ignore non essential ecus
@@ -187,12 +220,12 @@ def get_fw_versions(logcan, sendcan, bus, extra=None, timeout=0.1, debug=False, 
   fw_versions = {}
   for i, addr in enumerate(tqdm(addrs, disable=not progress)):
     for addr_chunk in chunks(addr):
-      for brand, request, response in REQUESTS:
+      for brand, request, response, response_offset in REQUESTS:
         try:
           addrs = [(a, s) for (b, a, s) in addr_chunk if b in (brand, 'any')]
 
           if addrs:
-            query = IsoTpParallelQuery(sendcan, logcan, bus, addrs, request, response, debug=debug)
+            query = IsoTpParallelQuery(sendcan, logcan, bus, addrs, request, response, response_offset, debug=debug)
             t = 2 * timeout if i == 0 else timeout
             fw_versions.update(query.get_data(t))
         except Exception:
@@ -217,13 +250,16 @@ def get_fw_versions(logcan, sendcan, bus, extra=None, timeout=0.1, debug=False, 
 
 if __name__ == "__main__":
   import time
+  import json
   import argparse
   import cereal.messaging as messaging
   from selfdrive.car.vin import get_vin
+  import selfdrive.crash as crash
 
-  parser = argparse.ArgumentParser(description='Get firmware version of ECUs')
-  parser.add_argument('--scan', action='store_true')
-  parser.add_argument('--debug', action='store_true')
+  parser = argparse.ArgumentParser(description='Get firmware version of ECU\'s')
+  parser.add_argument('--scan', '-s', action='store_true', help='In-depth scan of ECU\'s. May cause module faults')
+  parser.add_argument('--debug', '-d', action='store_true')
+  parser.add_argument('--json', '-j', type=str, nargs=2, metavar=('USERNAME', 'MODEL'), help='Toggles upload of results to a JSON server, Sentry, or both. This helps the fork maintainer. Enter your discord username, and car model. Example: \"./fw_versions.py -j Happy123 COROLLA_TSS2\"')
   args = parser.parse_args()
 
   logcan = messaging.sub_sock('can')
@@ -238,7 +274,6 @@ if __name__ == "__main__":
       extra[(Ecu.unknown, 0x700 + i, None)] = []
       extra[(Ecu.unknown, 0x750, i)] = []
     extra = {"any": {"debug": extra}}
-
   time.sleep(1.)
 
   t = time.time()
@@ -252,15 +287,21 @@ if __name__ == "__main__":
   fw_vers = get_fw_versions(logcan, sendcan, 0, extra=extra, debug=args.debug, progress=True)
   fw_vers += get_fw_versions(logcan, sendcan, 1, extra=extra, debug=args.debug, progress=True)
   candidates = match_fw_to_car(fw_vers)
-
+  versions = []
   print()
   print("Found FW versions")
   print("{")
   for version in fw_vers:
     subaddr = None if version.subAddress == 0 else hex(version.subAddress)
-    print(f"  (Ecu.{version.ecu}, {hex(version.address)}, {subaddr}): [{version.fwVersion}]")
+    vers = (f"  (Ecu.{version.ecu}, {hex(version.address)}, {subaddr}): [{version.fwVersion}]")
+    versions.append('('+vers+')')
+    print(vers)
   print("}")
-
   print()
   print("Possible matches:", candidates)
   print("Getting fw took %.3f s" % (time.time() - t))
+  if args.json:
+    username, model = args.json
+    vers_str = ''.join(versions)
+    crash.capture_info('Username is: '+username+'. Model is: '+model+'. '+vers_str)
+    print("Uploaded JSON & Sentry to fork maintainer")

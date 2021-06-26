@@ -27,10 +27,14 @@ class Api():
       'iat': now,
       'exp': now + timedelta(hours=1)
     }
-    return jwt.encode(payload, self.private_key, algorithm='RS256').decode('utf8')
+    token = jwt.encode(payload, self.private_key, algorithm='RS256')
+    if isinstance(token, bytes):
+      token = token.decode('utf8')
+    return token
+    
 
 def api_get(endpoint, method='GET', timeout=None, access_token=None, **params):
-  backend = "https://api.commadotai.com/"
+  backend = "https://api.retropilot.org/"
 
   headers = {}
   if access_token is not None:

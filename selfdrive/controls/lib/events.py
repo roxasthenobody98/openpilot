@@ -36,6 +36,7 @@ class ET:
 # get event name from enum
 EVENT_NAME = {v: k for k, v in EventName.schema.enumerants.items()}
 
+
 class Events:
   def __init__(self):
     self.events = []
@@ -194,7 +195,7 @@ def calibration_incomplete_alert(CP: car.CarParams, sm: messaging.SubMaster, met
     Priority.LOWEST, VisualAlert.none, AudibleAlert.none, 0., 0., .2)
 
 def no_gps_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool) -> Alert:
-  gps_integrated = sm['health'].hwType in [log.HealthData.HwType.uno, log.HealthData.HwType.dos]
+  gps_integrated = sm['pandaState'].pandaType in [log.PandaState.PandaType.uno, log.PandaState.PandaType.dos]
   return Alert(
     "Poor GPS reception",
     "If sky is visible, contact support" if gps_integrated else "Check GPS antenna placement",
@@ -250,6 +251,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "Always keep hands on wheel and eyes on road",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 15.),
+  },
+
+  EventName.dashcamMode: {
+    ET.PERMANENT: Alert(
+      "Dashcam Mode",
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOWEST, VisualAlert.none, AudibleAlert.none, 0., 0., .2),
   },
 
   EventName.invalidLkasSetting: {
@@ -320,6 +329,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   },
 
   EventName.vehicleModelInvalid: {
+    ET.NO_ENTRY: NoEntryAlert("Vehicle Parameter Identification Failed"),
     ET.WARNING: Alert(
       "Vehicle Parameter Identification Failed",
       "",
@@ -458,6 +468,11 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   EventName.cameraMalfunction: {
     ET.PERMANENT: NormalPermanentAlert("Camera Malfunction", "Contact Support"),
   },
+
+  EventName.gpsMalfunction: {
+    ET.PERMANENT: NormalPermanentAlert("GPS Malfunction", "Contact Support"),
+  },
+  
   EventName.pscmHandshaking: {
     ET.WARNING: Alert(
       "RELEASE THE WHEEL",
@@ -473,14 +488,21 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .0, .1),
   },
   EventName.pscmLostHandshake: {
-    ET.IMMEDIATE_DISABLE: ImmediateDisableAlert("PSCM APA Handshake Lost.")
+    ET.IMMEDIATE_DISABLE: ImmediateDisableAlert("PSCM APA Handshake Lost")
   },
+  
   # ********** events that affect controls state transitions **********
 
   EventName.pcmEnable: {
     ET.ENABLE: EngagementAlert(AudibleAlert.chimeEngage),
   },
 
+  EventName.apaNotAcknowledged: {
+    ET.PERMANENT: NormalPermanentAlert("APA Safety not acknowledged", "See Settings to acknowledge"),
+    ET.NO_ENTRY: NoEntryAlert("APA Safety not acknowledged. See Settings to acknowledge",
+                              audible_alert=AudibleAlert.chimeDisengage),
+  },
+  
   EventName.buttonEnable: {
     ET.ENABLE: EngagementAlert(AudibleAlert.chimeEngage),
   },
@@ -524,7 +546,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "TAKE CONTROL",
       "Steering Temporarily Unavailable",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.chimeWarning1, .4, 2., 3.),
+      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.chimeWarning1, .4, 2., 1.),
     ET.NO_ENTRY: NoEntryAlert("Steering Temporarily Unavailable",
                               duration_hud_alert=0.),
   },
@@ -618,15 +640,9 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
                               audible_alert=AudibleAlert.chimeDisengage),
   },
 
-  EventName.radarCommIssue: {
-    ET.SOFT_DISABLE: SoftDisableAlert("Radar Communication Issue"),
-    ET.NO_ENTRY: NoEntryAlert("Radar Communication Issue",
+  EventName.processNotRunning: {
+    ET.NO_ENTRY: NoEntryAlert("System Malfunction: Reboot Your Device",
                               audible_alert=AudibleAlert.chimeDisengage),
-  },
-
-  EventName.radarCanError: {
-    ET.SOFT_DISABLE: SoftDisableAlert("Radar Error: Restart the Car"),
-    ET.NO_ENTRY: NoEntryAlert("Radar Error: Restart the Car"),
   },
 
   EventName.radarFault: {
@@ -740,7 +756,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   EventName.speedTooHigh: {
     ET.WARNING: Alert(
       "Speed Too High",
-      "Slow down to resume operation",
+      "Model uncertain at this speed",
       AlertStatus.normal, AlertSize.mid,
       Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.none, 2.2, 3., 4.),
     ET.NO_ENTRY: Alert(
@@ -748,13 +764,6 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "Slow down to engage",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.chimeError, .4, 2., 3.),
-  },
-
-  # TODO: this is unclear, update check only happens offroad
-  EventName.internetConnectivityNeeded: {
-    ET.PERMANENT: NormalPermanentAlert("Connect to Internet", "An Update Check Is Required to Engage"),
-    ET.NO_ENTRY: NoEntryAlert("Connect to Internet",
-                              audible_alert=AudibleAlert.chimeDisengage),
   },
 
   EventName.lowSpeedLockout: {

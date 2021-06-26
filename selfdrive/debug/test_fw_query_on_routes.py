@@ -48,8 +48,8 @@ if __name__ == "__main__":
       lr = LogReader(qlog_path)
 
       for msg in lr:
-        if msg.which() == "health":
-          if msg.health.hwType not in ['uno', 'blackPanda']:
+        if msg.which() == "pandaState":
+          if msg.pandaState.pandaType not in ['uno', 'blackPanda']:
             dongles.append(dongle_id)
             break
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
           print("Mismatches")
           found = False
-          for car_fws in [TOYOTA_FW_VERSIONS, HONDA_FW_VERSIONS, HYUNDAI_FW_VERSIONS, FORD_FW_VERSIONS]:
+          for car_fws in [TOYOTA_FW_VERSIONS, HONDA_FW_VERSIONS, HYUNDAI_FW_VERSIONS]:
             if live_fingerprint in car_fws:
               found = True
               expected = car_fws[live_fingerprint]

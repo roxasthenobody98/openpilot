@@ -3,7 +3,16 @@ from cereal import car
 Ecu = car.CarParams.Ecu
 
 MAX_ANGLE = 30.  # make sure we never command the extremes (0xfff) which cause latching fault
-
+  
+class CarControllerParams: 
+  ANGLE_MAX_BP = [0., 11., 36.]
+  ANGLE_MAX_V = [410., 35., 15.]
+  ANGLE_DELTA_BP = [0., 5., 15.]
+  ANGLE_DELTA_V = [5., .8, .15]     #windup
+  ANGLE_DELTA_VU = [5., 3.5, 0.4] #unwind
+  BRAKE_MAX = 1024//4
+  FRAME_STEP = 2
+  
 class CAR:
   #Unsupported Ford Models
   #CMAX = "FORD C-MAX" C-MAX is not supported on any year or trim. 
@@ -121,6 +130,20 @@ FW_VERSIONS = {
     (Ecu.srs, 0x737, None): [
       b'GR3T-14C028-AA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     ],
+  }, 
+  CAR.TRANSIT: {
+    (Ecu.eps, 0x730, None): [
+      b'HV6T-14C217-AC\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    ], 
+    (Ecu.srs, 0x737, None): [
+      b'DT1T-14C028-BA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    ],
+    (Ecu.esp, 0x760, None): [
+      b'DV61-14C036-AG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    ],
+    (Ecu.engine, 0x7e0, None): [
+      b'DV6A-14C204-CG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    ],
   }
 }
 #FEATURES = {
@@ -141,7 +164,7 @@ SPEED_FACTOR = {
   #CAR.TAURUS:
   #CAR.FLEX: 
   #CAR.FOCUS: 
-  #CAR.TRANSIT: 
+  CAR.TRANSIT: 1.,
   #CAR.AVIATOR: 
   #CAR.CONTINENTAL: 
   #CAR.CORSAIR: 
@@ -169,7 +192,7 @@ DBC = {
   #CAR.TAURUS: dbc_dict('placeholder', 'placeholder'),
   #CAR.FLEX: dbc_dict('placeholder', 'placeholder'),
   #CAR.FOCUS: dbc_dict('placeholder', 'placeholder'),
-  #CAR.TRANSIT: dbc_dict('placeholder', 'placeholder'),
+  CAR.TRANSIT: dbc_dict('ford_lincoln_base_pt', None),
   #Lincoln
   #CAR.AVIATOR: dbc_dict('placeholder', 'placeholder'),
   #CAR.CONTINENTAL: dbc_dict('placeholder', 'placeholder'),
