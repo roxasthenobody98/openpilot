@@ -16,6 +16,46 @@
 #include "common/util.h"
 #include "selfdrive/hardware/hw.h"
 
+QWidget * fork_toggles() {
+  QVBoxLayout *forktoggles_list = new QVBoxLayout();
+  forktoggles_list->setSpacing(30);
+
+  forktoggles_list->addWidget(new ButtonControl("Acknowledge Ford APA Safety", "READ",
+                                   "This must be read and acknowledged before steering will be allowed.", [=]() {
+    if (ConfirmationDialog::confirm("This system uses the Ford Active Park system for steering. Angles are constrained within safe limits, but you must always be vigilant and monitor what the system is doing. For more information, visit https://github.com/roxasthenobody98/phoenixpilot")) {
+      Params().write_db_value("apaAcknowledged", "1");
+    }
+  }));
+  forktoggles_list->addWidget(horizontal_line());
+  forktoggles_list->addWidget(new ParamControl("alca_nudge_required",
+                                            "Require nudge to start ALC",
+                                            "Require a wheel touch to start an ALC maneuver",
+                                            "../assets/offroad/icon_road.png"
+                                              ));
+  forktoggles_list->addWidget(horizontal_line());
+  forktoggles_list->addWidget(new ParamControl("OpenpilotLongitudinal",
+                                            "Enable openpilot Longitudinal",
+                                            "Use openpilot to provide ACC. Must either be on a Stop/Go vehicle, have enabled ACC in the ABS with Forscan, or have a smartCCM to use these commands",
+                                            "../assets/offroad/icon_road.png"
+                                              ));
+  forktoggles_list->addWidget(horizontal_line());
+  forktoggles_list->addWidget(new ParamControl("athenaAllowed",
+                                            "Enable Athena",
+                                            "Enable the Athena Daemon. This uses the RetroPilot server.",
+                                            "../assets/offroad/icon_openpilot.png"
+                                              ));
+  forktoggles_list->addWidget(horizontal_line());
+  forktoggles_list->addWidget(new ParamControl("uploadsAllowed",
+                                            "Enable Drive Logging and Upload",
+                                            "Enable logging and uploads. This uses the RetroPilot server.",
+                                            "../assets/offroad/icon_openpilot.png"
+                                              ));
+  forktoggles_list->addWidget(horizontal_line());
+  
+  QWidget *forkwidget = new QWidget;
+  forkwidget->setLayout(forktoggles_list);
+  return forkwidget;
+}
 
 QWidget * toggles_panel() {
   QVBoxLayout *toggles_list = new QVBoxLayout();
@@ -49,6 +89,12 @@ QWidget * toggles_panel() {
                                             "Use features from the open source community that are not maintained or supported by comma.ai and have not been confirmed to meet the standard safety model. These features include community supported cars and community supported hardware. Be extra cautious when using these features",
                                             "../assets/offroad/icon_shell.png"
                                             ));
+  toggles_list->addWidget(horizontal_line());
+  toggles_list->addWidget(new ParamControl("LaneChangeEnabled",
+                                            "Enable Automatic Lane Change",
+                                            "Turn on/off the Automatic Lane Change feature. Changing this setting takes effect when the car is powered off.",
+                                            "../assets/offroad/icon_road.png"
+                                              ));
   toggles_list->addWidget(horizontal_line());
   ParamControl *record_toggle = new ParamControl("RecordFront",
                                             "Record and Upload Driver Camera",
@@ -227,12 +273,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     font-size: 90px;
     font-weight: bold;
     border 1px grey solid;
-    border-radius: 100px;
+    border-radius: 75px;
     background-color: #292929;
   )");
-  close_btn->setFixedSize(200, 200);
-  sidebar_layout->addSpacing(45);
-  sidebar_layout->addWidget(close_btn, 0, Qt::AlignCenter);
+  close_btn->setFixedSize(150, 150);
+  sidebar_layout->addSpacing(20);
+  sidebar_layout->addWidget(close_btn, 0, Qt::AlignLeft);
   QObject::connect(close_btn, SIGNAL(released()), this, SIGNAL(closeSettings()));
 
   // setup panels
@@ -243,6 +289,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     {"Device", device},
     {"Network", network_panel(this)},
     {"Toggles", toggles_panel()},
+	{"Fork Toggles", fork_toggles()},
     {"Developer", new DeveloperPanel()},
   };
 
@@ -256,7 +303,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
         color: grey;
         border: none;
         background: none;
-        font-size: 65px;
+        font-size: 50px;
         font-weight: 500;
         padding-top: 35px;
         padding-bottom: 35px;
@@ -269,7 +316,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     nav_btns->addButton(btn);
     sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
 
-    panel->setContentsMargins(50, 25, 50, 25);
+    panel->setContentsMargins(60, 40, 60, 40);
     QScrollArea *panel_frame = new QScrollArea;
     panel_frame->setWidget(panel);
     panel_frame->setWidgetResizable(true);

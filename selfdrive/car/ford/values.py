@@ -10,6 +10,7 @@ class CarControllerParams:
   ANGLE_DELTA_BP = [0., 5., 15.]
   ANGLE_DELTA_V = [5., .8, .15]     #windup
   ANGLE_DELTA_VU = [5., 3.5, 0.4] #unwind
+  BRAKE_MAX = 1024//4
   FRAME_STEP = 2
   
 class CAR:

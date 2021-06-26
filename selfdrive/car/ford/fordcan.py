@@ -80,12 +80,12 @@ def create_speed_command2(packer, enabled, frame, speed2, lsmcdecel, actlbrknocs
   }
   return packer.make_can_msg("BrakeSysFeatures", 2, values)
 
-def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats, persipma, dasdsply, x30, daschime):
+def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcramping, config, noipma, stats, persipma, dasdsply, x30, daschime, lines):
   """Creates a CAN message for the Ford Steer Ui."""
-  if enabled:
-    lines = 0x6
-  else:
-    lines = 0xc
+  #if enabled:
+  #  lines = 0x6
+  #else:
+  #  lines = 0xc
 
   values = {
     "PersIndexIpma_D_Actl": persipma,
@@ -102,6 +102,48 @@ def create_lkas_ui(packer, main_on, enabled, steer_alert, defog, ahbc, ahbcrampi
     "DasWarn_D_Dsply": daschime,
   }
   return packer.make_can_msg("Lane_Keep_Assist_Ui", 0, values)
+
+def create_accdata(packer, enabled, acc_gas, acc_brk, acc_decel, acc_spd, stopstat):
+  """Creates a CAN message for ACCDATA"""
+  
+  values = {
+    "AccBrkTot_A_Rq": acc_brk,
+    "AccPrpl_A_Pred": acc_gas, 
+    "AccPrpl_A_Rq": acc_gas, 
+    "AccVeh_V_Trg": acc_spd, 
+    "AccBrkPrchg_B_Rq": acc_decel, 
+    "AccBrkDecel_B_Rq": acc_decel,
+    "Cmbb_B_Enbl": 1,
+    "AccStopStat_B_Rq": stopstat,
+  }
+  return packer.make_can_msg("ACCDATA", 0, values)
+
+def create_accdata2(packer, enabled, frame_step, fcwhud_1, fcwhud_2, fcwhud_3, hud_intensity, flash_rate):
+  """Creates a CAN message for ACCDATA_2"""
+  csum = 0
+  values = {
+    "CmbbBrkDecel_No_Cs": csum, 
+    "CmbbBrkDecel_No_Cnt": frame_step, 
+    "HudBlk1_B_Rq": fcwhud_1,
+    "HudBlk2_B_Rq": fcwhud_2,
+    "HudBlk3_B_Rq": fcwhud_3,
+    "HudDsplyIntns_No_Actl": hud_intensity, 
+    "HudFlashRate_D_Actl": flash_rate,
+  }
+  return packer.make_can_msg("ACCDATA_2", 0, values)
+
+def create_accdata3(packer, enabled, fcw_status, fcw_sensitivity, chevrons, gap):
+  """Creates a CAN message for ACCDATA_3"""
+  
+  values = {
+    "FdaMem_B_Stat": 1, 
+    "AccMemEnbl_B_RqDrv": 1,
+    "FcwMemStat_B_Actl": fcw_status,
+    "FcwMemSens_D_Actl": fcw_sensitivity, 
+    "AccFllwMde_B_Dsply": chevrons, 
+    "AccTGap_B_Dsply": gap
+  }
+  return packer.make_can_msg("ACCDATA_3", 0, values)
 
 def spam_cancel_button(packer):
   values = {
