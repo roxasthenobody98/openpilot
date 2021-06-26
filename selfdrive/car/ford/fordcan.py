@@ -25,7 +25,7 @@ def create_steer_command(packer, angle_cmd, enabled, action, angleReq):
 def create_speed_command(packer, enabled, frame, speed, gear, frame_step):
   """Creates a CAN message for the Ford Speed Command."""
     
-  if gear == GearShifter.reverse:
+  if gear == 1:
     reverse = 3
     trailer = 1
   else:
