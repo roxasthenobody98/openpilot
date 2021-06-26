@@ -110,6 +110,7 @@ class CarState(CarStateBase):
       ("Veh_V_ActlBrk", "BrakeSysFeatures", 0.),
       ("AccMemEnbl_B_RqDrv", "ACCDATA_3", 0.),
       ("EngAout_N_Actl", "EngineData_14", 0.),
+    ]
     
     checks = []
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, checks, 0)
