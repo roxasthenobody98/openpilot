@@ -45,13 +45,13 @@ def create_speed_command(packer, enabled, frame, speed, gear, frame_step):
   }
   return packer.make_can_msg("EngVehicleSpThrottle2", 2, values)
 
-def create_speed_command2(packer, enabled, frame, speed2, frame_step):
+def create_speed_command2(packer, enabled, frame, speed, frame_step):
   """Creates a CAN message for the Ford Speed Command."""
   cnt = frame % frame_step
   cs = fordchecksum(cnt, speed)
   
   values = {
-    "Veh_V_ActlBrk": speed2,
+    "Veh_V_ActlBrk": speed,
     "LsmcBrkDecel_D_Stat": 4,
     "VehVActlBrk_No_Cs": cs,
     "VehVActlBrk_No_Cnt": cnt,
