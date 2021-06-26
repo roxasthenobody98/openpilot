@@ -100,8 +100,8 @@ class CarController():
           speed = 0
         else:
           speed = CS.out.vEgo * CV.MS_TO_KPH
-        can_sends.append(create_speed_command(self.packer, frame, enabled, speed, CS.out.gearShifter, frame_step))
-        can_sends.append(create_speed_command2(self.packer, frame, enabled, speed, frame_step))
+        can_sends.append(create_speed_command(self.packer, enabled, frame, speed, CS.out.gearShifter, frame_step))
+        can_sends.append(create_speed_command2(self.packer, enabled, frame, speed, frame_step))
       #Angle Limits
       if (frame % 2) == 0:
         angle_lim = interp(CS.out.vEgo, CarControllerParams.ANGLE_MAX_BP, CarControllerParams.ANGLE_MAX_V)
