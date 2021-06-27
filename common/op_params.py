@@ -239,19 +239,12 @@ class opParams:
         return False
 
 
-ENABLE_UNSAFE_STEERING_RATE = "enable_unsafe_steering_rate"
-
-ENABLE_COASTING = "enable_coasting"
-COAST_SPEED = "coast_speed"
-SETPOINT_OFFSET = "setpoint_offset"
-DOWNHILL_INCLINE = "downhill_incline"
-ALWAYS_EVAL_COAST = "always_eval_coast_plan"
-EVAL_COAST_LONG = "eval_coast_long_controller"
-
-SHOW_INDI_PARAMS = 'show_indi_params'
-INDI_SHOW_BREAKPOINTS = 'indi_show_breakpoint_opts'
-
-SHOW_A_CRUISE = 'a_cruise_show_opts'
+ENABLE_COASTING = 'enable_coasting'
+COAST_SPEED = 'coast_speed'
+SETPOINT_OFFSET = 'setpoint_offset'
+DOWNHILL_INCLINE = 'downhill_incline'
+ALWAYS_EVAL_COAST = 'always_eval_coast_plan'
+EVAL_COAST_LONG = 'eval_coast_long_controller'
 
 ENABLE_LONG_PARAMS = 'enable_long_params'
 ENABLE_GAS_PARAMS = 'enable_gas_params'
@@ -271,32 +264,3 @@ ENABLE_LONG_DEADZONE_PARAMS = 'enable_long_deadzone_params'
 LONG_DEADZONE_BP = 'long_deadzone_bp'
 LONG_DEADZONE_V = 'long_deadzone_v'
 
-ENABLE_LAT_PARAMS = 'enable_lat_params'
-WHICH_LAT_CTRL = 'which_lat_controller'
-
-SHOW_LQR_PARAMS = 'show_lqr_params'
-LQR_SCALE = 'lqr_scale'
-LQR_KI = 'lqr_ki'
-LQR_A = 'lqr_a'
-LQR_B = 'lqr_b'
-LQR_C = 'lqr_c'
-LQR_K = 'lqr_k'
-LQR_L = 'lqr_l'
-LQR_DC_GAIN = 'lqr_dc_gain'
-STEER_LIMIT_TIMER = 'steer_limit_timer'
-
-SHOW_ACTUATOR_DELAY_PARAMS = "show_actuator_delay_params"
-STEER_ACTUATOR_DELAY = 'steer_actuator_delay'
-ENABLE_ACTUATOR_DELAY_BPS = 'enable_actuator_delay_breakpoints'
-STEER_ACTUATOR_DELAY_BP = 'steer_actuator_delay_bp'
-STEER_ACTUATOR_DELAY_V = 'steer_actuator_delay_v'
-
-SHOW_LAT_PID_PARAMS = 'show_lat_pid_params'
-LAT_PID_KP_BP = 'lat_pid_kp_bp'
-LAT_PID_KP_V = 'lat_pid_kp_v'
-LAT_PID_KI_BP = 'lat_pid_ki_bp'
-LAT_PID_KI_V = 'lat_pid_ki_v'
-LAT_PID_KF = 'lat_pid_kf'
-
-SHOW_UNSAFE_OPTS = 'show_unsafe_options'
-SHOW_EXPERIMENTAL_OPTS = 'show_experimental_options'
