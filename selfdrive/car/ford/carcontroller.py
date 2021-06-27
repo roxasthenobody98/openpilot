@@ -52,6 +52,7 @@ class CarController():
     self.desiredSpeed = 20
     self.stopStat = 0
     self.steerAllowed = False
+    self.apaCntr = 0
     
   def update(self, enabled, CS, frame, actuators, visual_alert, pcm_cancel, left_line, right_line, lead, left_lane_depart, right_lane_depart):
   
@@ -61,6 +62,8 @@ class CarController():
     steer_alert = visual_alert == car.CarControl.HUDControl.VisualAlert.steerRequired
     apply_steer = actuators.steeringAngleDeg
     if self.enable_camera:
+      if not self.steerAllowed:
+        self.apaCntr = 0
       if enabled:
         self.steerAllowed = True
       if CS.epsAssistLimited:
@@ -83,6 +86,8 @@ class CarController():
        #print("CANCELING!!!!")
         can_sends.append(spam_cancel_button(self.packer))
       if (frame % 1) == 0:
+        if self.steerAllowed:
+          self.apaCntr += 1
         self.main_on_last = CS.out.cruiseState.available
         #SAPP Handshake
       if (frame % 2) == 0:
