@@ -72,10 +72,10 @@ class opParams:
                         'supercloak': Param(False, bool, "give comma a fake dongle ID, sparing your old one. Still carries a risk of your device being banned."),
                         'supercloak_reregister': Param(False, bool, "dump your supercloak Dongle ID if it gets banned"),
                         'uploadsAllowed': Param(True, bool, "Allow uploads to Comma. Not recommended. If you are not cloaked and supercloaked, you risk your device being banned."),
-                        'long_kpBP': Param([0., 5., 35.], [list, float, int], live=True),
-                        'long_kpV': Param([1.2, 0.8, 0.5], [list, float, int], live=True),
-                        'long_kiBP': Param([0., 35.], [list, float, int], live=True),
-                        'long_kiV': Param([0.18, 0.12], [list, float, int], live=True),
+                        'long_kpBP': Param([0., 5., 35.], [list, float, int], allowed_types=VT.number, live=True),
+                        'long_kpV': Param([1.2, 0.8, 0.5], [list, float, int], allowed_types=VT.number live=True),
+                        'long_kiBP': Param([0., 35.], [list, float, int], allowed_types=VT.number live=True),
+                        'long_kiV': Param([0.18, 0.12], [list, float, int], allowed_types=VT.number live=True),
                         #'use_car_caching': Param(True, bool, 'Whether to use fingerprint caching'),
                         }
 
