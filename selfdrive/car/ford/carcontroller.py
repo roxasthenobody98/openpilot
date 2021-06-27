@@ -75,12 +75,12 @@ class CarController():
         if CS.CP.openpilotLongitudinalControl:
           brake, self.braking, self.brake_steady = actuator_hystereses(actuators.brake, self.braking, self.brake_steady, CS.out.vEgo, CS.CP.carFingerprint)
           self.brake_last = brake
-          apply_gas = clip(actuators.gas, 0., 5.)
-          apply_brake = self.brake_last * -1
-          #if apply_brake <= -0.04:
-          #  self.acc_decel_command = 1
-          #else:
-          #  self.acc_decel_command = 0
+          apply_gas = actuators.gas * 5
+          apply_brake = self.brake_last * -20
+          if apply_brake <= -0.08:
+            self.acc_decel_command = 1
+          else:
+            self.acc_decel_command = 0
           print("Brake Actuator:", actuators.brake, "Gas Actuator:", actuators.gas, "Clipped Brake:", apply_brake, "Clipped Gas:", apply_gas)
           can_sends.append(create_accdata(self.packer, enabled, apply_gas, apply_brake, self.acc_decel_command, self.desiredSpeed, self.stopStat))
           can_sends.append(create_accdata2(self.packer, enabled, frame, 0, 0, 0, 0, 0))
