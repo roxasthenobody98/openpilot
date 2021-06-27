@@ -107,7 +107,7 @@ class CarController():
         if self.steerAllowed:
           speed = 0
         else:
-          speed = CS.out.vEgo * CV.MS_TO_KPH
+          speed = CS.vehSpeed
         print("Is steering allowed?", self.steerAllowed, "Speed:", speed)
         can_sends.append(create_speed_command(self.packer, enabled, frame, speed, CS.out.gearShifter, frame_step))
         can_sends.append(create_speed_command2(self.packer, enabled, frame, speed, frame_step))
