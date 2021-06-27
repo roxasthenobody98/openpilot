@@ -44,10 +44,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRateCost = 1.0
       ret.centerToFront = ret.wheelbase * 0.44
       tire_stiffness_factor = 0.5328
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kiV = [0.18, 0.12]
+      ret.longitudinalTuning.kpBP = op_params.get('long_kpBP') #[0., 5., 35.]
+      ret.longitudinalTuning.kpV = op_params.get('long_kpV') #[1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kiBP = op_params.get('long_kiBP') #[0., 35.]
+      ret.longitudinalTuning.kiV = op_params.get('long_kiV') #[0.18, 0.12]
     elif candidate == CAR.TRANSIT:
       ret.wheelbase = 3.04
       ret.steerRatio = 14.8
