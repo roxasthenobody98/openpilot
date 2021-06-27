@@ -76,7 +76,7 @@ class CarController():
           brake, self.braking, self.brake_steady = actuator_hystereses(actuators.brake, self.braking, self.brake_steady, CS.out.vEgo, CS.CP.carFingerprint)
           apply_gas = clip(actuators.gas, 0., 1.)
           if CS.out.genericToggle:
-            apply_brake = 0.5
+            apply_brake = -0.5
             self.acc_decel_command = 1
           else:
             apply_brake = int(clip(self.brake_last * CarControllerParams.BRAKE_MAX, 0, CarControllerParams.BRAKE_MAX - 1))
