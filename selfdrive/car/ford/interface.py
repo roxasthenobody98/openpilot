@@ -11,6 +11,10 @@ from common.params import Params
 
 op_params = opParams()
 apaAcknowledged = Params().get('apaAcknowledged') == b'1'
+long_kpBP = 0
+long_kpV = 0
+long_kiBP = 0
+long_kiV = 0
 
 class CarInterface(CarInterfaceBase):
 
@@ -44,10 +48,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRateCost = 1.0
       ret.centerToFront = ret.wheelbase * 0.44
       tire_stiffness_factor = 0.5328
-      ret.longitudinalTuning.kpBP = op_params.get('long_kpBP') #[0., 5., 35.]
-      ret.longitudinalTuning.kpV = op_params.get('long_kpV') #[1.2, 0.8, 0.5]
-      ret.longitudinalTuning.kiBP = op_params.get('long_kiBP') #[0., 35.]
-      ret.longitudinalTuning.kiV = op_params.get('long_kiV') #[0.18, 0.12]
+      ret.longitudinalTuning.kpBP = long_kpBP #[0., 5., 35.]
+      ret.longitudinalTuning.kpV = long_kpV #[1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kiBP = long_kiBP #[0., 35.]
+      ret.longitudinalTuning.kiV = long_kiV #[0.18, 0.12]
     elif candidate == CAR.TRANSIT:
       ret.wheelbase = 3.04
       ret.steerRatio = 14.8
@@ -116,6 +120,10 @@ class CarInterface(CarInterfaceBase):
     #ret = car.CarState.new_message()               
     ret.canValid = self.cp.can_valid and self.cp_cam.can_valid
     ret.engineRPM = self.CS.engineRPM
+    long_kpBP = op_params.get('long_kpBP') #[0., 5., 35.]
+    long_kpV = op_params.get('long_kpV') #[1.2, 0.8, 0.5]
+    long_kiBP = op_params.get('long_kiBP') #[0., 35.]
+    long_kiV = op_params.get('long_kiV') #[0.18, 0.12]
 
     # events
     events = self.create_common_events(ret)
