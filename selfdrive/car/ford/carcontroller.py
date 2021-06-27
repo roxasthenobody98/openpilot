@@ -87,10 +87,11 @@ class CarController():
         #SAPP Handshake
       if (frame % 2) == 0:
         if CS.sappHandshake in [1,2]:
-          self.sappState = 2
           if self.steerAllowed:
+            self.sappState = 2
             self.angleReq = 1
           else:
+            self.sappState = 1
             self.angleReq = 0
         else:
           self.sappState = 1
