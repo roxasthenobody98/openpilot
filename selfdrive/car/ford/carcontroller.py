@@ -76,10 +76,11 @@ class CarController():
           brake, self.braking, self.brake_steady = actuator_hystereses(actuators.brake, self.braking, self.brake_steady, CS.out.vEgo, CS.CP.carFingerprint)
           apply_gas = clip(actuators.gas, 0., 1.)
           apply_brake = int(clip(self.brake_last * CarControllerParams.BRAKE_MAX, 0, CarControllerParams.BRAKE_MAX - 1))
-          if apply_brake <= -0.04:
-            self.acc_decel_command = 1
-          else:
-            self.acc_decel_command = 0
+          #if apply_brake <= -0.04:
+          #  self.acc_decel_command = 1
+          #else:
+          #  self.acc_decel_command = 0
+          print("Brake Actuator:", actuators.brake, "Gas Actuator:", actuators.gas, "Clipped Brake:", apply_brake, "Clipped Gas:", apply_gas)
           can_sends.append(create_accdata(self.packer, enabled, apply_gas, apply_brake, self.acc_decel_command, self.desiredSpeed, self.stopStat))
           can_sends.append(create_accdata2(self.packer, enabled, frame, 0, 0, 0, 0, 0))
           can_sends.append(create_accdata3(self.packer, enabled, 1, 3, lead, 2))
@@ -108,7 +109,6 @@ class CarController():
           speed = 0
         else:
           speed = CS.vehSpeed
-        print("Is steering allowed?", self.steerAllowed, "Speed:", speed)
         can_sends.append(create_speed_command(self.packer, enabled, frame, speed, CS.out.gearShifter, frame_step))
         can_sends.append(create_speed_command2(self.packer, enabled, frame, speed, frame_step))
       #Angle Limits
