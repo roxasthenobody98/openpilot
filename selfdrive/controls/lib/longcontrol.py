@@ -1,5 +1,6 @@
 from cereal import log
 from common.numpy_fast import clip, interp
+from common.op_params import opParams
 from selfdrive.controls.lib.pid import PIController
 
 LongCtrlState = log.ControlsState.LongControlState
@@ -51,13 +52,17 @@ def long_control_state_trans(active, long_control_state, v_ego, v_target, v_pid,
 
 
 class LongControl():
-  def __init__(self, CP, compute_gb):
+  def __init__(self, CP, compute_gb, OP = None):
     self.long_control_state = LongCtrlState.off  # initialized to off
-    self.pid = PIController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
-                            (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
-                            rate=RATE,
-                            sat_limit=0.8,
-                            convert=compute_gb)
+    if OP is None:
+      OP = opParams()
+    self.op_params = OP
+    self.compute_gb = compute_gb
+    #self.pid = PIController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
+    #                        (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
+    #                        rate=RATE,
+    #                        sat_limit=0.8,
+    #                        convert=compute_gb)
     self.v_pid = 0.0
     self.last_output_gb = 0.0
 
@@ -68,6 +73,21 @@ class LongControl():
 
   def update(self, active, CS, v_target, v_target_future, a_target, CP):
     """Update longitudinal control. This updates the state machine and runs a PID loop"""
+    if self.op_params.get('enable_long_live'):
+      long_kpBP = op_params.get('long_kpBP') #[0., 5., 35.]
+      long_kpV = op_params.get('long_kpV') #[1.2, 0.8, 0.5]
+      long_kiBP = op_params.get('long_kiBP') #[0., 35.]
+      long_kiV = op_params.get('long_kiV') #[0.18, 0.12]
+    else:
+      long_kpBP = CP.longitudinalTuning.kpBP
+      long_kpV = CP.longitudinalTuning.kpV
+      long_kiBP = CP.longitudinalTuning.kiBP
+      long_kiV = CP.longitudinalTuning.kiV
+    self.pid = PIController((long_kpBP, long_kpV),
+                            (long_kiBP, long_kiV),
+                            rate=RATE,
+                            sat_limit=0.8,
+                            convert=self.compute_gb)
     # Actuation limits
     gas_max = interp(CS.vEgo, CP.gasMaxBP, CP.gasMaxV)
     brake_max = interp(CS.vEgo, CP.brakeMaxBP, CP.brakeMaxV)
