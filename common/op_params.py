@@ -220,11 +220,6 @@ class opParams:
       return False
 
   def _write(self):
-<<<<<<< HEAD
-    if not travis:
-      with open(self._params_file, "w") as f:
-        f.write(json.dumps(self.params, indent=2))  # can further speed it up by remove indentation but makes file hard to read
-=======
     if not travis or os.path.isdir("/data/"):
       try:
         with open(self._params_file, "w") as f:
@@ -296,4 +291,3 @@ LAT_PID_KF = 'lat_pid_kf'
 
 SHOW_UNSAFE_OPTS = 'show_unsafe_options'
 SHOW_EXPERIMENTAL_OPTS = 'show_experimental_options'
->>>>>>> 905b7e85... fix(pid): properly pass p, i, and f to pid controller using car and op params
