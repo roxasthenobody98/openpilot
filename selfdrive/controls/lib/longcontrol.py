@@ -58,6 +58,7 @@ class LongControl():
       OP = opParams()
     self.op_params = OP
     self.compute_gb = compute_gb
+    self.pid = 0
     #self.pid = PIController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
     #                        (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
     #                        rate=RATE,
