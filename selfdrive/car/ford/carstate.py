@@ -11,10 +11,10 @@ class CarState(CarStateBase):
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
     speed_factor = SPEED_FACTOR[self.CP.carFingerprint]
-    ret.wheelSpeeds.rr = cp.vl["WheelSpeed"]['WhlRr_W_Meas'] * CV.MPH_TO_MS
-    ret.wheelSpeeds.rl = cp.vl["WheelSpeed"]['WhlRl_W_Meas'] * CV.MPH_TO_MS
-    ret.wheelSpeeds.fr = cp.vl["WheelSpeed"]['WhlFr_W_Meas'] * CV.MPH_TO_MS
-    ret.wheelSpeeds.fl = cp.vl["WheelSpeed"]['WhlFl_W_Meas'] * CV.MPH_TO_MS
+    #ret.wheelSpeeds.rr = cp.vl["WheelSpeed"]['WhlRr_W_Meas'] * CV.MPH_TO_MS
+    #ret.wheelSpeeds.rl = cp.vl["WheelSpeed"]['WhlRl_W_Meas'] * CV.MPH_TO_MS
+    #ret.wheelSpeeds.fr = cp.vl["WheelSpeed"]['WhlFr_W_Meas'] * CV.MPH_TO_MS
+    #ret.wheelSpeeds.fl = cp.vl["WheelSpeed"]['WhlFl_W_Meas'] * CV.MPH_TO_MS
     ret.vEgoRaw = cp.vl["BrakeSysFeatures"]['Veh_V_ActlBrk'] * CV.KPH_TO_MS
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
