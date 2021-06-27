@@ -19,7 +19,7 @@ class ValueTypes:
 
 
 class Param:
-  def __init__(self, default=None, allowed_types=[], description=None, live=False, hidden=False, depends_on=None):
+  def __init__(self, default=None, allowed_types=[], description=None, live=False, hidden=False):
     self.default = default
     if not isinstance(allowed_types, list):
       allowed_types = [allowed_types]
@@ -27,8 +27,6 @@ class Param:
     self.description = description
     self.hidden = hidden
     self.live = live
-    self.depends_on = depends_on
-    self.children = []
     self._create_attrs()
 
   def is_valid(self, value):
@@ -83,11 +81,10 @@ class opParams:
                         'supercloak': Param(False, bool, "give comma a fake dongle ID, sparing your old one. Still carries a risk of your device being banned."),
                         'supercloak_reregister': Param(False, bool, "dump your supercloak Dongle ID if it gets banned"),
                         'uploadsAllowed': Param(True, bool, "Allow uploads to Comma. Not recommended. If you are not cloaked and supercloaked, you risk your device being banned."),
-                        'enable_long_live': Param(False, bool, live=true)
-                        'long_kpBP': Param([0., 5., 35.], [list, float, int], live=True, depends_on='enable_long_live'),
-                        'long_kpV': Param([1.2, 0.8, 0.5], [list, float, int], live=True, depends_on='enable_long_live'),
-                        'long_kiBP': Param([0., 35.], [list, float, int], live=True, depends_on='enable_long_live'),
-                        'long_kiV': Param([0.18, 0.12], [list, float, int], live=True, depends_on='enable_long_live'),
+                        'long_kpBP': Param([0., 5., 35.], [list, float, int], live=True),
+                        'long_kpV': Param([1.2, 0.8, 0.5], [list, float, int], live=True),
+                        'long_kiBP': Param([0., 35.], [list, float, int], live=True),
+                        'long_kiV': Param([0.18, 0.12], [list, float, int], live=True),
                         #'use_car_caching': Param(True, bool, 'Whether to use fingerprint caching'),
                         }
 
@@ -104,13 +101,6 @@ class opParams:
     self.fork_params['op_edit_live_mode'] = Param(False, bool, 'This parameter controls which mode opEdit starts in', hidden=True)
     self.fork_params["uniqueID"] = Param(None, [type(None), str], 'User\'s unique ID', hidden=True)
     self.params = self._get_all_params(default=True)  # in case file is corrupted
-    
-    for k, p in self.fork_params.items():
-      d = p.depends_on
-      while d:
-        fp = self.fork_params[d]
-        fp.children.append(k)
-        d = fp.depends_on
 
     if travis:
       return
