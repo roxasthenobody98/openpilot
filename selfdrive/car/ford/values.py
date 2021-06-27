@@ -11,7 +11,7 @@ class CarControllerParams:
   ANGLE_DELTA_V = [5., .8, .15]     #windup
   ANGLE_DELTA_VU = [5., 3.5, 0.4] #unwind
   BRAKE_MAX = 1024//4
-  FRAME_STEP = 2
+  FRAME_STEP = 16
   
 class CAR:
   #Unsupported Ford Models
