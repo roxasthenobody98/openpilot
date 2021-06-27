@@ -34,16 +34,25 @@ class Param:
   def is_valid(self, value):
     if not self.has_allowed_types:  # always valid if no allowed types, otherwise checks to make sure
       return True
-    return type(value) in self.allowed_types
+    if self.is_list and isinstance(value, list):
+      for v in value:
+        if type(v) not in self.allowed_types:
+          return False
+      return True
+    else:
+      return type(value) in self.allowed_types or value in self.allowed_types
 
   def _create_attrs(self):  # Create attributes and check Param is valid
     self.has_allowed_types = isinstance(self.allowed_types, list) and len(self.allowed_types) > 0
     self.has_description = self.description is not None
     self.is_list = list in self.allowed_types
+    self.is_bool = bool in self.allowed_types
     if self.has_allowed_types:
-      assert type(self.default) in self.allowed_types, 'Default value type must be in specified allowed_types!'
-    if self.is_list:
-      self.allowed_types.remove(list)
+      assert type(self.default) in self.allowed_types or self.default in self.allowed_types, 'Default value type must be in specified allowed_types!'
+
+      if self.is_list and self.default:
+        for v in self.default:
+          assert type(v) in self.allowed_types, 'Default value type must be in specified allowed_types!'
 
 
 class opParams:
