@@ -66,6 +66,8 @@ class CarController():
         self.apaCntr = 0
       if enabled:
         self.steerAllowed = True
+      else:
+        self.steerAllowed = False
       if CS.epsAssistLimited:
         print("PSCM Assist Limited")
       #op Long (Buggy)
