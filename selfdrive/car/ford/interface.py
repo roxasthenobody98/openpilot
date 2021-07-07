@@ -21,45 +21,32 @@ class CarInterface(CarInterfaceBase):
     ret.communityFeature = True                              
     ret.safetyModel = car.CarParams.SafetyModel.ford
     ret.dashcamOnly = False
+    ret.steerLimitAlert = False
+    ret.enableCamera = True
+    ret.steerRateCost = 0.5
+    ret.steerActuatorDelay = 0.1
+    ret.lateralTuning.pid.kf = 0.00006
+    ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.0], [0.0]]
+    ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.01], [0.005]]
+    ret.steerMaxBP = [0.]  # m/s
+    ret.steerMaxV = [1.]
     
     if candidate in [CAR.F150, CAR.F150SG]:
       ret.wheelbase = 3.68
       ret.steerRatio = 18.0
       ret.mass = 4770. * CV.LB_TO_KG + STD_CARGO_KG
-      ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGain = 4.0
-      ret.lateralTuning.indi.outerLoopGain = 3.5
-      ret.lateralTuning.indi.timeConstant = 2.0
-      ret.lateralTuning.indi.actuatorEffectiveness = 1.0
-      ret.steerActuatorDelay = 0.3
-      ret.steerLimitTimer = 0.8
-      ret.steerRateCost = 1.0
       ret.centerToFront = ret.wheelbase * 0.44
       tire_stiffness_factor = 0.5328
     if candidate == CAR.EDGE:
-      ret.wheelbase = 3.68
-      ret.steerRatio = 18.0
-      ret.mass = 4770. * CV.LB_TO_KG + STD_CARGO_KG
-      ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGain = 4.0
-      ret.lateralTuning.indi.outerLoopGain = 3.5
-      ret.lateralTuning.indi.timeConstant = 2.0
-      ret.lateralTuning.indi.actuatorEffectiveness = 1.0
-      ret.steerActuatorDelay = 0.3
-      ret.steerLimitTimer = 0.8
-      ret.steerRateCost = 1.0
+      ret.wheelbase = 3.00
+      ret.steerRatio = 16.0
+      ret.mass = 4100. * CV.LB_TO_KG + STD_CARGO_KG
       ret.centerToFront = ret.wheelbase * 0.44
       tire_stiffness_factor = 0.5328
     elif candidate in [CAR.FUSION, CAR.FUSIONSG, CAR.MONDEO]:
       ret.wheelbase = 2.85
       ret.steerRatio = 14.8
       ret.mass = 3045. * CV.LB_TO_KG + STD_CARGO_KG
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.01], [0.005]]     # TODO: tune this
-      ret.lateralTuning.pid.kf = 1. / MAX_ANGLE   # MAX Steer angle to normalize FF
-      ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
-      ret.steerLimitTimer = 0.8
-      ret.steerRateCost = 1.0
       ret.centerToFront = ret.wheelbase * 0.44
       tire_stiffness_factor = 0.5328
     
